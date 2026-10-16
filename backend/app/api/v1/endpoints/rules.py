@@ -54,8 +54,8 @@ async def calculate_cost_sharing(
             detail=f"Validation failed for field '{exc.field_name or 'input'}': {exc.message}",
         )
     except Exception as exc:
-        logger.error("Unexpected calculation error: %s", exc)
+        logger.error("Unexpected calculation error: %s", type(exc).__name__)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Internal error during cost calculation: {str(exc)}",
+            detail="An unexpected internal error occurred during cost calculation. Please verify input values or try again later.",
         )

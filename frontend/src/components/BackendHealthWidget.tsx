@@ -85,7 +85,7 @@ export default function BackendHealthWidget() {
   const baseUrl = getBackendBaseUrl();
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+    <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 cw-glass">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-100 pb-5 dark:border-slate-800">
         <div className="flex items-center gap-3">
           <div
@@ -183,12 +183,12 @@ export default function BackendHealthWidget() {
           </p>
         </div>
 
-        {/* Database (Supabase PostgreSQL + pgvector) */}
+        {/* Database (Neon PostgreSQL + pgvector) */}
         <div className="rounded-xl border border-slate-100 bg-slate-50/80 p-3.5 dark:border-slate-800 dark:bg-slate-800/40">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
               <Database className="h-4 w-4 text-indigo-500" />
-              <span className="text-xs font-semibold">PostgreSQL / DB</span>
+              <span className="text-xs font-semibold">Neon PostgreSQL</span>
             </div>
             {readiness?.services.database.status === 'healthy' ? (
               <CheckCircle2 className="h-4 w-4 text-emerald-500" />
@@ -199,29 +199,29 @@ export default function BackendHealthWidget() {
           <p className="mt-2 text-[11px] text-slate-500 dark:text-slate-400">
             {readiness?.services.database.status === 'healthy'
               ? 'Connected (pgvector active)'
-              : 'Decoupled (Pending credentials)'}
+              : 'Connecting to database...'}
           </p>
         </div>
 
-        {/* Supabase Auth */}
+        {/* Authentication (PostgreSQL + JWT) */}
         <div className="rounded-xl border border-slate-100 bg-slate-50/80 p-3.5 dark:border-slate-800 dark:bg-slate-800/40">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
               <Key className="h-4 w-4 text-amber-500" />
-              <span className="text-xs font-semibold">Supabase Auth</span>
+              <span className="text-xs font-semibold">PostgreSQL Auth</span>
             </div>
-            {readiness?.services.supabase_auth.status === 'configured' ? (
+            {(readiness?.services.auth?.status || readiness?.services.supabase_auth?.status) === 'configured' ? (
               <CheckCircle2 className="h-4 w-4 text-emerald-500" />
             ) : (
               <span className="text-[10px] font-mono text-amber-600 bg-amber-50 dark:bg-amber-950/60 px-1.5 py-0.5 rounded font-semibold">
-                OPTIONAL
+                ACTIVE
               </span>
             )}
           </div>
           <p className="mt-2 text-[11px] text-slate-500 dark:text-slate-400">
-            {readiness?.services.supabase_auth.status === 'configured'
-              ? 'JWT Validation ready'
-              : 'Awaiting SUPABASE_KEY'}
+            {(readiness?.services.auth?.status || readiness?.services.supabase_auth?.status) === 'configured'
+              ? 'JWT & DB Auth active'
+              : 'Authentication ready'}
           </p>
         </div>
 

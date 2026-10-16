@@ -1,0 +1,161 @@
+/* Real local UI checks in a fresh isolated Chrome (port 9235).
+ * No mocked API responses, fabricated analysis, or sandbox submissions. */
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import { fileURLToPath } from 'node:url';
+const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..');
+const output = path.join(root, 'docs/screenshots');
+const framesDir = path.join(root, 'frontend/.next/wizard-part3-recording');
+fs.mkdirSync(framesDir, { recursive: true });
+const targets = await (await fetch('http://127.0.0.1:9235/json/list')).json();
+const target = targets.find(t => t.type === 'page' && t.url.startsWith('http://localhost:3000/claims/new'));
+assert(target, 'Launch an isolated localhost preview browser first.');
+const socket = new WebSocket(target.webSocketDebuggerUrl);
+await new Promise((resolve, reject) => { socket.onopen = resolve; socket.onerror = reject; });
+let sequence = 0;
+const pending = new Map();
+const exceptions = [];
+const requests = [];
+const frames = [];
+const report = { testedAt: new Date().toISOString(), mode: 'Real API, signed-out isolated local browser', checks: {} };
+const send = (method, params = {}) => new Promise((resolve, reject) => {
+  const id = ++sequence;
+  const timer = setTimeout(() => { pending.delete(id); reject(Error(`Timeout: ${method}`)); }, 25000);
+  pending.set(id, { resolve, reject, timer });
+  socket.send(JSON.stringify({ id, method, params }));
+});
+socket.onmessage = event => {
+  const message = JSON.parse(event.data);
+  if (message.method === 'Runtime.exceptionThrown') exceptions.push(message.params.exceptionDetails.text);
+  if (message.method === 'Network.requestWillBeSent') requests.push({ url: message.params.request.url, method: message.params.request.method });
+  if (message.method === 'Page.screencastFrame') {
+    const file = `frame-${String(frames.length).padStart(5, '0')}.jpg`;
+    fs.writeFileSync(path.join(framesDir, file), Buffer.from(message.params.data, 'base64'));
+    frames.push({ file, time: message.params.metadata.timestamp });
+    send('Page.screencastFrameAck', { sessionId: message.params.sessionId }).catch(() => {});
+  }
+  const call = pending.get(message.id);
+  if (!call) return;
+  pending.delete(message.id); clearTimeout(call.timer);
+  if (message.error) call.reject(Error(JSON.stringify(message.error))); else call.resolve(message.result);
+};
+const evaluate = async expression => {
+  const result = await send('Runtime.evaluate', { expression, returnByValue: true, awaitPromise: true });
+  if (result.exceptionDetails) throw Error(JSON.stringify(result.exceptionDetails));
+  return result.result.value;
+};
+const until = async expression => {
+  for (let i = 0; i < 140; i++) { if (await evaluate(`Boolean(${expression})`)) return; await pause(150); }
+  throw Error(`Condition not reached: ${expression}`);
+};
+const ready = step => until(`document.querySelector('[data-wizard-step="${step}"]') && getComputedStyle(document.querySelector('[data-step-transition]')).opacity === '1'`);
+const screenshot = async name => {
+  if (!await evaluate(`Boolean(document.querySelector('dialog[open]'))`)) await evaluate(`window.scrollTo({top:0,behavior:'instant'}); if(document.activeElement instanceof HTMLElement) document.activeElement.blur(); true`);
+  await evaluate('document.fonts.ready.then(() => true)'); await pause(350);
+  const { cssContentSize, cssVisualViewport } = await send('Page.getLayoutMetrics');
+  const dialogOpen = await evaluate(`Boolean(document.querySelector('dialog[open]'))`);
+  const image = await send('Page.captureScreenshot', { format: 'png', captureBeyondViewport: !dialogOpen, clip: { x: 0, y: 0, width: cssContentSize.width, height: dialogOpen ? cssVisualViewport.clientHeight : cssContentSize.height, scale: 1 } });
+  fs.writeFileSync(path.join(output, name), Buffer.from(image.data, 'base64'));
+};
+const text = (selector, value) => evaluate(`(() => {const el=document.querySelector(${JSON.stringify(selector)});const setter=Object.getOwnPropertyDescriptor(el.tagName==='TEXTAREA'?HTMLTextAreaElement.prototype:HTMLInputElement.prototype,'value').set;setter.call(el,${JSON.stringify(value)});el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));return true;})()`);
+const navigate = step => send('Page.navigate', { url: `http://localhost:3000/claims/new?step=${step}&policy_id=${encodeURIComponent(report.policyId)}` });
+try {
+  await send('Page.enable'); await send('Runtime.enable'); await send('Network.enable');
+  await evaluate(`sessionStorage.removeItem('claimwise_journey:guest'); localStorage.removeItem('claimwise_coverage_state_v1:guest'); true`);
+  await send('Emulation.setDeviceMetricsOverride', { width: 1280, height: 900, deviceScaleFactor: 1, mobile: false });
+  await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'no-preference' }] });
+  await send('Page.navigate', { url: 'http://localhost:3000/claims/new?step=policy' });
+  await ready('policy');
+  await until(`document.querySelector('#wizard-policy-select option[value]:not([value=""])')`);
+  await send('Page.startScreencast', { format: 'jpeg', quality: 78, maxWidth: 1280, maxHeight: 900, everyNthFrame: 2 });
+  await screenshot('wizard-part3-1-policy.png');
+  report.checks.futureStepsLocked = await evaluate(`document.querySelectorAll('.wizard-steps button[disabled]').length === 3`);
+  assert(report.checks.futureStepsLocked);
+  const selectedAt = Date.now();
+  report.policyId = await evaluate(`(() => {const el=document.querySelector('#wizard-policy-select');const option=[...el.options].find(o=>o.value&&!o.disabled);el.value=option.value;el.dispatchEvent(new Event('change',{bubbles:true}));return option.value;})()`);
+  await until(`document.querySelector('.wizard-success')`);
+  report.checks.policySuccessVisible = true;
+  await ready('analysis');
+  report.policyAdvanceElapsedMs = Date.now() - selectedAt;
+  assert(report.policyAdvanceElapsedMs >= 650);
+  report.checks.policyAutoAdvance = true;
+  await until(`document.querySelector('#wizard-analysis-form textarea') && !document.querySelector('#wizard-analysis-form textarea').disabled`);
+  await text('#wizard-analysis-form textarea', 'My luggage was lost during my trip');
+  await until(`!document.querySelector('[data-wizard-primary-action]').disabled`);
+  await screenshot('wizard-part3-2-analysis.png');
+  await evaluate(`document.querySelector('[data-wizard-primary-action]').click()`);
+  await until(`document.querySelector('.wizard-analysis-progress') && !document.querySelector('.wizard-analysis-progress').matches('[aria-busy="true"]')`);
+  await pause(1400);
+  report.checks.failureStaysOnAnalysis = await evaluate(`new URLSearchParams(location.search).get('step')==='analysis' && document.querySelector('[data-wizard-primary-action]').textContent.includes('Retry')`);
+  assert(report.checks.failureStaysOnAnalysis);
+  await screenshot('wizard-part3-2-analysis-error.png');
+  await evaluate(`document.querySelector('.wizard-back').click()`); await ready('policy'); await pause(1100);
+  report.checks.backAfterAutoAdvance = await evaluate(`new URLSearchParams(location.search).get('step')==='policy'`);
+  assert(report.checks.backAfterAutoAdvance);
+  await evaluate(`document.querySelector('[data-wizard-primary-action]').click()`); await ready('analysis');
+  await send('Page.reload'); await ready('analysis');
+  await until(`document.querySelector('#wizard-analysis-form textarea')?.value === 'My luggage was lost during my trip'`);
+  report.checks.refreshKeepsPolicyAndScenario = await evaluate(`JSON.parse(sessionStorage.getItem('claimwise_journey:guest')).policyId === ${JSON.stringify(report.policyId)}`);
+  assert(report.checks.refreshKeepsPolicyAndScenario);
+  // Inspect inaccessible later steps without manufacturing their prerequisite records.
+  await navigate('guidance'); await ready('guidance'); await pause(1400);
+  report.checks.guidanceNeverAutoAdvances = await evaluate(`new URLSearchParams(location.search).get('step')==='guidance'`);
+  assert(report.checks.guidanceNeverAutoAdvances);
+  await screenshot('wizard-part3-3-guidance.png');
+  await navigate('draft'); await ready('draft'); await until(`document.querySelector('#wizard-claim-form')`);
+  await screenshot('wizard-part3-4-draft.png');
+  await evaluate(`[...document.querySelectorAll('button')].find(b=>b.textContent==='About sandbox submission').click()`);
+  await until(`document.querySelector('dialog[open]')`);
+  report.checks.nativeModalFocusContained = await evaluate(`document.activeElement.closest('dialog') !== null`);
+  report.checks.ineligibleConfirmationDisabled = await evaluate(`[...document.querySelectorAll('dialog button')].at(-1).disabled`);
+  assert(report.checks.nativeModalFocusContained && report.checks.ineligibleConfirmationDisabled);
+  await screenshot('wizard-part3-5-confirmation.png');
+  await send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
+  await send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 });
+  await until(`!document.querySelector('dialog[open]')`);
+  report.checks.dialogEscapeReturnsToDraft = true;
+  await send('Page.stopScreencast');
+  report.recordingFrames = frames.length;
+  report.checks.noUnconfirmedSubmission = requests.filter(r => r.url.includes('/sandbox-submit')).length === 0;
+  assert(report.checks.noUnconfirmedSubmission);
+  await text('#wizard-claim-form textarea', 'My luggage was lost during my trip — draft under review');
+  await send('Page.reload'); await ready('draft');
+  await until(`document.querySelector('#wizard-claim-form textarea')?.value.includes('draft under review')`);
+  report.checks.draftSurvivesRefresh = true;
+  await send('Emulation.setEmulatedMedia', { features: [{ name: 'prefers-reduced-motion', value: 'reduce' }] });
+  report.checks.reducedMotionStopsDecorativeAnimations = await evaluate(`getComputedStyle(document.querySelector('.wizard-step.is-current .wizard-step-number')).animationName === 'none'`);
+  assert(report.checks.reducedMotionStopsDecorativeAnimations);
+  await send('Emulation.setDeviceMetricsOverride', { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
+  await pause(400);
+  report.checks.mobileFitsViewport = await evaluate(`document.documentElement.scrollWidth <= innerWidth`);
+  assert(report.checks.mobileFitsViewport);
+  await screenshot('wizard-part3-mobile.png');
+  await evaluate(`document.querySelector('[aria-label="Dismiss automatic step hint"]')?.click(); true`);
+  await send('Page.reload'); await ready('draft'); await pause(300);
+  report.checks.hintDismissalPersists = await evaluate(`!document.querySelector('.wizard-first-hint')`);
+  assert(report.checks.hintDismissalPersists);
+  await evaluate(`document.querySelector('.wizard-scenario button').click()`); await ready('policy');
+  await until(`document.querySelector('#wizard-policy-select option[value]:not([value=""])')`);
+  const reducedSelectedAt = Date.now();
+  await evaluate(`(() => {const el=document.querySelector('#wizard-policy-select');el.value=${JSON.stringify(report.policyId)};el.dispatchEvent(new Event('change',{bubbles:true}));return true;})()`);
+  await until(`new URLSearchParams(location.search).get('step') === 'analysis'`);
+  report.reducedMotionAdvanceElapsedMs = Date.now() - reducedSelectedAt;
+  report.checks.reducedMotionKeepsAutoAdvanceDelay = report.reducedMotionAdvanceElapsedMs >= 650;
+  assert(report.checks.reducedMotionKeepsAutoAdvanceDelay);
+  report.runtimeExceptions = exceptions;
+  assert.equal(exceptions.length, 0);
+  report.unverified = ['Authenticated analysis success and 900ms transition in the browser', 'Guidance rendered with a real saved analysis and verified clauses', 'Saved claim edits and eligible sandbox confirmation/success; no eligible signed-in record was available'];
+  report.recordingScope = 'Actual signed-out local flow, including the real API failure and blocked submission dialog. Later steps inspected directly; this is not a successful end-to-end submission.';
+  report.passed = true;
+} catch (error) {
+  report.passed = false; report.error = String(error); process.exitCode = 1;
+  await send('Page.stopScreencast').catch(() => {});
+  await screenshot('wizard-part3-failure.png').catch(() => {});
+} finally {
+  if (frames.length) fs.writeFileSync(path.join(framesDir, 'frames.ffconcat'), 'ffconcat version 1.0\n' + frames.map((frame, i) => `file '${frame.file}'\nduration ${Math.max(.04, (frames[i + 1]?.time ?? frame.time + 1) - frame.time).toFixed(4)}\n`).join('') + `file '${frames.at(-1).file}'\n`);
+  fs.writeFileSync(path.join(output, 'wizard-part3-verification.json'), JSON.stringify(report, null, 2));
+  console.log(JSON.stringify(report, null, 2));
+  socket.close();
+}

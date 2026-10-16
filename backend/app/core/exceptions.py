@@ -1,8 +1,19 @@
 """Custom exceptions and centralized error handling for ClaimWise."""
 
+import logging
+import uuid
 from typing import Any, Dict, Optional
 from fastapi import Request, status
 from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
+
+
+async def request_validation_exception_handler(_: Request, exc: RequestValidationError) -> JSONResponse:
+    """Preserve validation locations/messages without echoing passwords or documents."""
+    return JSONResponse(status_code=422, content={"detail": [
+        {"loc": list(error["loc"]), "msg": error["msg"], "type": error["type"]}
+        for error in exc.errors()
+    ]})
 
 
 class ClaimWiseException(Exception):
@@ -84,16 +95,23 @@ async def claimwise_exception_handler(_: Request, exc: ClaimWiseException) -> JS
     )
 
 
-async def global_exception_handler(_: Request, exc: Exception) -> JSONResponse:
-    """Format unexpected errors safely without leaking internal tracebacks."""
+async def global_exception_handler(request: Request, exc: Exception) -> JSONResponse:
+    """Log the server traceback and return a safe, traceable error reference."""
+    request_id = uuid.uuid4().hex[:12]
+    logging.getLogger("claimwise.errors").error(
+        "Unhandled request error reference=%s method=%s path=%s",
+        request_id, request.method, request.url.path,
+        exc_info=(type(exc), exc, exc.__traceback__),
+    )
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         content={
             "success": False,
             "error": {
                 "code": "INTERNAL_SERVER_ERROR",
-                "message": "An unexpected server error occurred. Please contact system support.",
-                "details": {"exception_type": type(exc).__name__},
+                "message": "Something went wrong while processing this request. Please retry.",
+                "request_id": request_id,
+                "details": {},
             },
         },
     )

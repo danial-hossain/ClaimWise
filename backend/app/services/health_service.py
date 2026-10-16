@@ -36,18 +36,18 @@ class HealthService:
             message="FastAPI core application server is running and accepting HTTP requests.",
         )
 
-        # 2. Database (Supabase PostgreSQL / pgvector)
+        # 2. Database (Neon PostgreSQL / pgvector)
         db_check = await db_manager.check_connection()
         if db_check.get("connected"):
             db_status = "healthy"
-            db_msg = "Connected to Supabase PostgreSQL database."
+            db_msg = "Connected to Neon PostgreSQL database."
             if db_check.get("pgvector_detected"):
                 db_msg += " pgvector extension detected."
             else:
                 db_msg += " Note: pgvector extension not yet enabled."
         elif not db_check.get("configured"):
             db_status = "unconfigured"
-            db_msg = db_check.get("message", "DATABASE_URL not configured. Running in decoupled mode.")
+            db_msg = db_check.get("message", "DATABASE_URL not configured.")
             unconfigured_optional.append("postgresql_database")
         else:
             db_status = "unreachable"
@@ -56,33 +56,20 @@ class HealthService:
         services["database"] = ServiceComponentStatus(
             status=db_status,
             configured=db_check.get("configured", False),
-            required=False,  # Startup permitted even when DB keys are not yet provided
+            required=True,
             message=db_msg,
             details={"pgvector_detected": str(db_check.get("pgvector_detected", False))},
         )
 
-        # 3. Supabase Auth
-        supabase_configured = bool(
-            settings.supabase_url
-            and "placeholder" not in settings.supabase_url
-            and settings.supabase_key
-            and "placeholder" not in settings.supabase_key
+        # 3. Authentication (PostgreSQL + JWT)
+        auth_status = ServiceComponentStatus(
+            status="configured",
+            configured=True,
+            required=False,
+            message="JWT token validation and PostgreSQL user registry active.",
         )
-        if supabase_configured:
-            services["supabase_auth"] = ServiceComponentStatus(
-                status="configured",
-                configured=True,
-                required=False,
-                message="Supabase authentication URL and client keys are configured.",
-            )
-        else:
-            services["supabase_auth"] = ServiceComponentStatus(
-                status="unconfigured",
-                configured=False,
-                required=False,
-                message="SUPABASE_URL or SUPABASE_KEY not configured. Auth endpoints will operate in sandbox mode.",
-            )
-            unconfigured_optional.append("supabase_auth")
+        services["auth"] = auth_status
+        services["supabase_auth"] = auth_status  # Backward-compatibility alias
 
         # 4. Gemini AI Engine (Milestone 2 component)
         gemini_configured = bool(

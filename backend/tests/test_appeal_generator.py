@@ -16,6 +16,7 @@ Tests:
 
 from datetime import date, datetime, timezone
 import pytest
+from app.core.security import create_access_token
 from starlette.testclient import TestClient
 
 from app.api.v1.endpoints.policies import _dev_policy_store
@@ -39,7 +40,11 @@ from app.services.retrieval.hybrid_service import hybrid_retrieval_service
 
 
 @pytest.fixture(autouse=True)
-def setup_appeal_test_fixtures():
+def setup_appeal_test_fixtures(request, monkeypatch):
+    if not request.node.get_closest_marker("database"):
+        request.getfixturevalue("memory_policy_store")
+        monkeypatch.setattr(claim_repo, "_dev_claims", {})
+        monkeypatch.setattr(claim_repo, "_dev_appeal_drafts", {})
     """Setup test policy and mock denied claim."""
     policy_id = "pol-appeal-test-01"
     doc_hash = "hash-appeal-policy-01"
@@ -76,6 +81,7 @@ def setup_appeal_test_fixtures():
         clauses=clauses,
         persistence_mode="development_preview",
         policy_id=policy_id,
+        user_id="user-appeal-01",
         uploaded_at=datetime.now(timezone.utc),
     )
     _dev_policy_store[policy_id] = policy_result
@@ -246,9 +252,10 @@ def test_export_appeal_package_formatting():
     assert draft.status == AppealStatus.EXPORTED
 
 
+@pytest.mark.database
 def test_appeal_api_endpoints():
     """Test FastAPI HTTP endpoints for generating, fetching, editing, and exporting appeal drafts."""
-    client = TestClient(app)
+    client = TestClient(app, headers={"Authorization": "Bearer " + create_access_token("user-appeal-01", "tests@example.test")})
     claim_id = "claim-appeal-test-01"
 
     # 1. POST /api/v1/claims/{id}/appeal-draft

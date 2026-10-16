@@ -1,7 +1,7 @@
 """Pydantic schemas for Policy entity contracts."""
 
 from datetime import date, datetime
-from typing import List, Optional
+from typing import Dict, List, Optional
 from pydantic import BaseModel, ConfigDict, Field
 from app.models.domain import PolicyStatus, PolicyType
 
@@ -46,6 +46,7 @@ class ExtractedClause(BaseModel):
     """Structured clause extraction result preserving verbatim text and page references."""
     clause_id: str = Field(..., description="Stable clause identifier within this policy version")
     page_number: int = Field(..., ge=1, description="One-based page number")
+    printed_page_label: Optional[str] = Field(None, description="PDF page label, when explicitly supplied by the source; distinct from PDF index")
     clause_heading: Optional[str] = Field(None, description="Detected or inferred clause heading")
     heading_confidence: str = Field(
         default="none",
@@ -55,8 +56,24 @@ class ExtractedClause(BaseModel):
     text: str = Field(..., description="Original extracted verbatim clause text")
     token_count: int = Field(default=0, ge=0, description="Approximate token count for the clause")
     document_hash: str = Field(..., description="SHA-256 hash of the parent document")
+    is_clause: bool = Field(default=True, description="True if text represents a genuine contractual clause/provision")
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class PolicyHeadingRewriteItem(BaseModel):
+    id: str = Field(..., min_length=1, max_length=80)
+    heading: str = Field(..., min_length=1, max_length=200)
+    context: str = Field(default="", max_length=2400)
+
+
+class PolicyHeadingRewriteRequest(BaseModel):
+    headings: List[PolicyHeadingRewriteItem] = Field(..., min_length=1, max_length=100)
+
+
+class PolicyHeadingRewriteResponse(BaseModel):
+    headings: Dict[str, str] = Field(default_factory=dict)
+    ai_used: bool = False
 
 
 class PageSummary(BaseModel):
@@ -86,6 +103,7 @@ class PolicyExtractionResult(BaseModel):
         description="Storage status: development_preview (in-memory demo) or persistent_db",
     )
     policy_id: Optional[str] = Field(None, description="Unique policy identifier if persisted")
+    user_id: Optional[str] = Field(None, description="Account user ID that uploaded this policy")
     uploaded_at: datetime = Field(..., description="UTC timestamp of ingestion")
 
     model_config = ConfigDict(from_attributes=True)

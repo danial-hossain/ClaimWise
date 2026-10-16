@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ClaimWise frontend
 
-## Getting Started
+Next.js App Router application. Run commands from this directory or use the repository-root wrappers.
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```powershell
+npm ci
+npm run dev            # Starts backend and frontend
+npm run dev:frontend   # Frontend only
+npm run dev:backend    # Backend only
+npm run typecheck
+npm run lint
+npm test
+npm run test:wizard
+npm run build
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Copy `.env.example` to `.env.local` only for a new checkout. The Next.js rewrite targets
+`CLAIMWISE_BACKEND_URL`, then `NEXT_PUBLIC_API_URL`, then `http://127.0.0.1:8000`.
+Browser requests stay on the frontend origin, including cookie and CSRF handling.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `src/app`: existing public routes and global stylesheet imports. Keep route filenames in place.
+- `src/components/features`: authentication, dashboard, homepage, and preparation wizard UI.
+- `src/components/ui`: genuinely reusable presentation components.
+- `src/context`, `src/lib`, `src/types`: session/scenario state, API/workflow helpers, and contracts.
+- `scripts`: launchers and shared interpreter discovery.
+- `tests/unit`: Node tests; no application server is required.
+- `tests/browser`: existing manual browser checks; these require an isolated Chrome debugging
+  session on port 9235 and a running local application. See each script before running it.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`npm run verify:wizard`, `npm run verify:wizard:basic`, and `npm run verify:surfaces` invoke the
+manual checks. Some create scenario or claim preparation records; they are not part of unit tests.
+Verification evidence remains in `../docs/screenshots/`.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See the [main README](../README.md), [setup guide](../docs/development/SETUP.md), and
+[refactor report](../docs/development/REPOSITORY_REFACTOR.md).

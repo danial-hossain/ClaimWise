@@ -2,7 +2,8 @@
 
 import json
 import pytest
-from app.schemas.qa import RetrievedClause
+from app.schemas.policy import ExtractedClause
+from app.schemas.qa import PolicyEvidenceStatus, RetrievedClause
 from app.services.qa_service import (
     CitationVerificationError,
     QAService,
@@ -183,6 +184,37 @@ def test_qa_service_successful_answer_with_mock_generator(evidence_clauses):
     assert "250 copayment" in response.answer
 
 
+def test_qa_service_marks_only_cited_explicit_exclusion_as_excluded(evidence_clauses):
+    """An exclusion state is accepted only when the citation text explicitly excludes it."""
+    qa = QAService()
+
+    def mock_llm_response(prompt: str) -> str:
+        return json.dumps({
+            "answer": "Cosmetic surgical procedures are excluded from all plan benefits.",
+            "evidence_sufficient": True,
+            "evidence_status": "explicitly_excluded",
+            "abstention_reason": None,
+            "clarification_question": None,
+            "citations": [{
+                "clause_id": "SEC-4.2",
+                "page_number": 3,
+                "exact_quote": "Cosmetic surgical procedures and non-FDA approved treatments are excluded from all plan benefits.",
+                "policy_id": "policy-xyz-001",
+            }],
+        })
+
+    response = qa.generate_grounded_answer(
+        question="Are cosmetic procedures covered?",
+        retrieved_clauses=evidence_clauses,
+        authorized_policy_ids=["policy-xyz-001"],
+        mock_generator=mock_llm_response,
+    )
+
+    assert response.evidence_sufficient is True
+    assert response.evidence_status == PolicyEvidenceStatus.EXPLICITLY_EXCLUDED
+    assert response.citations[0].clause_id == "SEC-4.2"
+
+
 def test_qa_service_honest_abstention_when_evidence_lacking(evidence_clauses):
     """Verify honest abstention when model indicates insufficient evidence."""
     qa = QAService()
@@ -207,6 +239,123 @@ def test_qa_service_honest_abstention_when_evidence_lacking(evidence_clauses):
     assert response.abstention_reason is not None
     assert response.clarification_question is not None
     assert len(response.citations) == 0
+
+
+def test_primary_care_clause_scan_recovers_and_cites_explicit_benefit():
+    """A full policy scan recovers an office-visit benefit missed by hybrid retrieval."""
+    qa = QAService()
+    clause = ExtractedClause(
+        clause_id="PC-2.4",
+        page_number=6,
+        clause_heading="Primary Care Office Visits",
+        text="Primary care office visits are covered subject to a $25 copayment per visit.",
+        document_hash="policy-hash",
+        is_clause=True,
+    )
+
+    def mock_llm_response(prompt: str) -> str:
+        assert "Primary care office visits are covered" in prompt
+        return json.dumps({
+            "answer": "Primary care office visits are covered with a $25 copayment per visit.",
+            "evidence_sufficient": True,
+            "evidence_status": "supported",
+            "abstention_reason": None,
+            "clarification_question": None,
+            "citations": [{
+                "clause_id": "PC-2.4",
+                "page_number": 6,
+                "exact_quote": clause.text,
+                "policy_id": "policy-xyz-001",
+            }],
+        })
+
+    response = qa.generate_grounded_answer(
+        question="What does routine primary care cost?",
+        retrieved_clauses=[],
+        authorized_policy_ids=["policy-xyz-001"],
+        policy_clauses=[clause],
+        extraction_status="success",
+        has_extractable_text=True,
+        mock_generator=mock_llm_response,
+    )
+
+    assert response.evidence_sufficient is True
+    assert response.evidence_status == PolicyEvidenceStatus.SUPPORTED
+    assert len(response.citations) == 1
+    assert response.citations[0].clause_id == "PC-2.4"
+    assert response.citations[0].page_number == 6
+    assert response.citations[0].exact_quote == clause.text
+    assert "25 copayment" in response.answer
+
+
+def test_complete_policy_without_primary_care_clause_is_not_specified():
+    """A complete unrelated policy abstains as not specified, never as excluded."""
+    qa = QAService()
+    unrelated_clause = ExtractedClause(
+        clause_id="AUTO-1.1",
+        page_number=2,
+        clause_heading="Accidental Damage",
+        text="The insurer will pay for accidental damage to the insured vehicle.",
+        document_hash="policy-hash",
+        is_clause=True,
+    )
+
+    response = qa.generate_grounded_answer(
+        question="Is routine primary care covered?",
+        retrieved_clauses=[],
+        authorized_policy_ids=["policy-xyz-001"],
+        policy_clauses=[unrelated_clause],
+        extraction_status="success",
+        has_extractable_text=True,
+    )
+
+    assert response.evidence_sufficient is False
+    assert response.evidence_status == PolicyEvidenceStatus.NOT_SPECIFIED
+    assert "does not specify" in response.answer
+    assert "not evidence that the benefit is excluded" in response.answer
+    assert response.citations == []
+
+
+def test_incomplete_policy_extraction_returns_evidence_unavailable():
+    """Incomplete extraction must not be presented as a complete-policy silence."""
+    response = QAService().generate_grounded_answer(
+        question="Is routine primary care covered?",
+        retrieved_clauses=[],
+        authorized_policy_ids=["policy-xyz-001"],
+        policy_clauses=[],
+        extraction_status="scanned_ocr_unavailable",
+        has_extractable_text=False,
+    )
+
+    assert response.evidence_sufficient is False
+    assert response.evidence_status == PolicyEvidenceStatus.EVIDENCE_UNAVAILABLE
+    assert response.citations == []
+
+
+def test_empty_general_retrieval_is_not_mislabeled_as_policy_silence():
+    """An empty non-topic-specific retrieval cannot prove that a policy is silent."""
+    qa = QAService()
+    unrelated_clause = ExtractedClause(
+        clause_id="AUTO-1.1",
+        page_number=2,
+        clause_heading="Accidental Damage",
+        text="The insurer will pay for accidental damage to the insured vehicle.",
+        document_hash="policy-hash",
+        is_clause=True,
+    )
+
+    response = qa.generate_grounded_answer(
+        question="What does the policy say about a rare named benefit?",
+        retrieved_clauses=[],
+        authorized_policy_ids=["policy-xyz-001"],
+        policy_clauses=[unrelated_clause],
+        extraction_status="success",
+        has_extractable_text=True,
+    )
+
+    assert response.evidence_sufficient is False
+    assert response.evidence_status == PolicyEvidenceStatus.EVIDENCE_UNAVAILABLE
+    assert response.citations == []
 
 
 def test_qa_service_forces_abstention_on_failed_verification(evidence_clauses):

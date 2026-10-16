@@ -1,0 +1,3 @@
+export default function Logo({ className = "h-10 w-10" }: { className?: string }) {
+  return (<svg className={`shrink-0 ${className}`} role="img" aria-label="ClaimWise" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none"><path d="M32 3 56 12v19c0 14-9 24-24 30C17 55 8 45 8 31V12L32 3Z" fill="#102B4C"/><path d="M32 3 8 12v19c0 14 9 24 24 30V3Z" fill="#087E8B"/><path d="M23 16h14l7 7v21a3 3 0 0 1-3 3H23a3 3 0 0 1-3-3V19a3 3 0 0 1 3-3Z" fill="#F7FCFB"/><path d="M37 16v6a2 2 0 0 0 2 2h5" fill="#BCE1DF"/><path d="M26 27h8M26 32h12" stroke="#84BDBD" strokeWidth="2.2" strokeLinecap="round"/><path d="m26 39 4 4 9-10" stroke="#087E8B" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/></svg>);
+}

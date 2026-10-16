@@ -65,9 +65,20 @@ class AuditService:
                 sanitized[key] = "[REDACTED]"
             elif isinstance(value, dict):
                 sanitized[key] = cls.sanitize_metadata(value)
-            elif isinstance(value, str) and len(value) > 2048:
-                # Truncate arbitrarily huge strings to avoid log bloat/PHI leakage
-                sanitized[key] = value[:256] + "... [TRUNCATED]"
+            elif isinstance(value, (list, tuple)):
+                sanitized[key] = [cls.sanitize_metadata({"value": item})["value"] for item in value]
+            elif isinstance(value, str):
+                try:
+                    from app.services.pii_service import pii_service
+                    val_str = pii_service.mask_text(value).masked_text
+                except Exception:
+                    val_str = "[REDACTED: sanitization unavailable]"
+                from app.core.logging_security import redact_log_text
+                val_str = redact_log_text(val_str)
+                if len(val_str) > 2048:
+                    sanitized[key] = val_str[:256] + "... [TRUNCATED]"
+                else:
+                    sanitized[key] = val_str
             else:
                 sanitized[key] = value
         return sanitized
@@ -103,6 +114,35 @@ class AuditService:
         }
         canonical_str = cls.canonical_serialize(canonical_dict)
         return hashlib.sha256(canonical_str.encode("utf-8")).hexdigest()
+
+    @classmethod
+    def calculate_hash(
+        cls,
+        sequence_number: int,
+        timestamp: Any,
+        user_id: Optional[str],
+        action: str,
+        resource_type: str,
+        resource_id: Optional[str],
+        outcome: str,
+        metadata: Dict[str, Any],
+        previous_hash: str,
+        schema_version: str = "1.0.0",
+    ) -> str:
+        """Compute SHA-256 canonical hash with automatic timestamp string conversion."""
+        ts = timestamp.isoformat() if hasattr(timestamp, "isoformat") else str(timestamp)
+        return cls.compute_event_hash(
+            sequence_number=sequence_number,
+            timestamp=ts,
+            user_id=user_id or "system",
+            action=action,
+            resource_type=resource_type,
+            resource_id=resource_id,
+            outcome=outcome,
+            sanitized_metadata=metadata,
+            previous_hash=previous_hash,
+            schema_version=schema_version,
+        )
 
     def build_event(
         self,

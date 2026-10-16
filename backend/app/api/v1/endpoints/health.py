@@ -24,7 +24,7 @@ async def get_health() -> HealthResponse:
     response_model=ReadinessResponse,
     status_code=status.HTTP_200_OK,
     summary="Readiness check",
-    description="Checks connectivity to Supabase/PostgreSQL and reports subsystem readiness.",
+    description="Checks connectivity to Neon PostgreSQL and reports subsystem readiness.",
 )
 async def get_readiness() -> ReadinessResponse:
     """Readiness probe checking database and optional service states."""

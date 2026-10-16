@@ -70,6 +70,7 @@ class BillExtractionResult(BaseModel):
     uploaded_at: datetime
     message: str
     persistence_mode: str = "development_preview"
+    user_id: Optional[str] = None
 
 
 # ==============================================================================
@@ -139,6 +140,56 @@ class ClaimCreateFromBillRequest(BaseModel):
     )
 
 
+class ClaimChecklistItem(BaseModel):
+    id: str
+    title: str
+    description: Optional[str] = None
+    mandatory: bool = False
+    completed: bool = False
+    source_clause_id: Optional[str] = None
+
+
+class ClaimTimelineEvent(BaseModel):
+    id: str
+    event_type: str
+    summary: str
+    source: str = "internal"
+    created_at: datetime
+
+
+class ClaimFileMeta(BaseModel):
+    id: str
+    file_name: str
+    file_size_bytes: int
+    mime_type: str
+    uploaded_at: datetime
+
+
+class ClaimIntakeCreateRequest(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+    analysis_id: Optional[str] = Field(default=None, max_length=100)
+    policy_id: str
+    claim_type: str = Field(..., min_length=2, max_length=100)
+    incident_description: str = Field(..., min_length=5, max_length=5000)
+    incident_date: date
+    incident_location: Optional[str] = Field(default=None, max_length=300)
+    estimated_loss_cents: Optional[int] = Field(default=None, ge=0)
+    claim_reference: Optional[str] = Field(default=None, max_length=100)
+    checklist: List[ClaimChecklistItem] = Field(default_factory=list)
+
+
+class ClaimIntakeUpdateRequest(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+    claim_description_draft: Optional[str] = Field(default=None, max_length=10000)
+    claim_type: Optional[str] = Field(default=None, min_length=2, max_length=100)
+    incident_description: Optional[str] = Field(default=None, min_length=5, max_length=5000)
+    incident_date: Optional[date] = None
+    incident_location: Optional[str] = Field(default=None, max_length=300)
+    estimated_loss_cents: Optional[int] = Field(default=None, ge=0)
+    claim_reference: Optional[str] = Field(default=None, max_length=100)
+    checklist: Optional[List[ClaimChecklistItem]] = None
+
+
 class ClaimAdjudicateRequest(BaseModel):
     """Request to run evidence-grounded adjudication on a claim."""
     member_coinsurance_percentage: Optional[float] = Field(
@@ -165,16 +216,26 @@ class ClaimRecord(BaseModel):
     user_id: str
     policy_id: str
     claim_reference: Optional[str] = None
-    bill_id: str
-    bill_document_name: str
-    bill_document_hash: str
+    bill_id: str = ""
+    bill_document_name: str = ""
+    bill_document_hash: str = ""
     incident_date: date
     total_billed_cents: int
     status: ClaimStatus
-    line_items: List[BillLineItem]
+    line_items: List[BillLineItem] = Field(default_factory=list)
     adjudicated_items: List[AdjudicatedLineItem] = Field(default_factory=list)
     eob: Optional[ExplanationOfBenefits] = None
     sandbox_submission: Optional[Dict[str, Any]] = None
+    claim_type: Optional[str] = None
+    incident_description: Optional[str] = None
+    incident_location: Optional[str] = None
+    estimated_loss_cents: Optional[int] = None
+    checklist: List[ClaimChecklistItem] = Field(default_factory=list)
+    timeline: List[ClaimTimelineEvent] = Field(default_factory=list)
+    analysis_id: Optional[str] = None
+    coverage_analysis: Optional[Dict[str, Any]] = None
+    claim_description_draft: Optional[str] = None
+    documents: List[ClaimFileMeta] = Field(default_factory=list)
     created_at: datetime
     updated_at: datetime
 

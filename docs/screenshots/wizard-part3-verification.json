@@ -1,0 +1,34 @@
+{
+  "testedAt": "2026-10-15T08:18:26.355Z",
+  "mode": "Real API, signed-out isolated local browser",
+  "checks": {
+    "futureStepsLocked": true,
+    "policySuccessVisible": true,
+    "policyAutoAdvance": true,
+    "failureStaysOnAnalysis": true,
+    "backAfterAutoAdvance": true,
+    "refreshKeepsPolicyAndScenario": true,
+    "guidanceNeverAutoAdvances": true,
+    "nativeModalFocusContained": true,
+    "ineligibleConfirmationDisabled": true,
+    "dialogEscapeReturnsToDraft": true,
+    "noUnconfirmedSubmission": true,
+    "draftSurvivesRefresh": true,
+    "reducedMotionStopsDecorativeAnimations": true,
+    "mobileFitsViewport": true,
+    "hintDismissalPersists": true,
+    "reducedMotionKeepsAutoAdvanceDelay": true
+  },
+  "policyId": "m6-test-policy",
+  "policyAdvanceElapsedMs": 2134,
+  "recordingFrames": 209,
+  "reducedMotionAdvanceElapsedMs": 995,
+  "runtimeExceptions": [],
+  "unverified": [
+    "Authenticated analysis success and 900ms transition in the browser",
+    "Guidance rendered with a real saved analysis and verified clauses",
+    "Saved claim edits and eligible sandbox confirmation/success; no eligible signed-in record was available"
+  ],
+  "recordingScope": "Actual signed-out local flow, including the real API failure and blocked submission dialog. Later steps inspected directly; this is not a successful end-to-end submission.",
+  "passed": true
+}

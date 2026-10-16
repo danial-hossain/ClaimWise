@@ -3,16 +3,25 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node scripts/dev.js",
+    "dev:frontend": "next dev",
+    "dev:backend": "node scripts/start-backend.js",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test:wizard": "node --experimental-strip-types --test tests/unit/wizard.test.mjs tests/unit/wizard-behavior.test.mjs",
+    "verify:wizard": "node tests/browser/verify-wizard-behavior.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test tests/unit/*.test.js tests/unit/*.test.mjs",
+    "verify:wizard:basic": "node tests/browser/verify-wizard.mjs",
+    "verify:surfaces": "node tests/browser/verify-surfaces.mjs"
   },
   "dependencies": {
+    "lucide-react": "^1.16.0",
+    "motion": "^14.2.0",
     "next": "16.4.0",
     "react": "19.3.0",
-    "react-dom": "19.3.0",
-    "lucide-react": "^1.16.0"
+    "react-dom": "19.3.0"
   },
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",

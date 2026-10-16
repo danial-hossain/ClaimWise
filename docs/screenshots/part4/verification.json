@@ -1,0 +1,150 @@
+{
+  "testedAt": "2026-10-15T08:55:04.832Z",
+  "scope": "Existing records only; actual backend responses; no response interception",
+  "checks": {
+    "footerOnEveryScreen": true,
+    "laptopNoHorizontalOverflow": true,
+    "characterCounterLive": true,
+    "inputIsLabelled": true,
+    "dragOverStateVisible": true,
+    "clauseSearchFiltersWithoutChangingEvidence": true,
+    "pageFilterWorks": true,
+    "filtersDoNotRequestAIHeadingsAgain": true,
+    "readerContainsKeyboardFocus": true,
+    "mobileReaderFitsViewport": true,
+    "readerClosesOnEscape": true,
+    "greetingUsesActualAccount": true,
+    "honestEmptyUploadPrompt": true,
+    "mobileNoHorizontalOverflow": true,
+    "keyboardFocusVisible": true,
+    "statusTextContrastAA": true,
+    "noNewBusinessRecords": true
+  },
+  "captures": [
+    {
+      "file": "overview-existing.png",
+      "state": "Actual available policy data; saved claim/analysis access may require sign-in",
+      "truncatedAfterPx": null
+    },
+    {
+      "file": "policies-existing.png",
+      "state": "Actual available policy data; saved claim/analysis access may require sign-in",
+      "truncatedAfterPx": 2100
+    },
+    {
+      "file": "coverage-existing.png",
+      "state": "Actual available policy data; saved claim/analysis access may require sign-in",
+      "truncatedAfterPx": null
+    },
+    {
+      "file": "ask-existing.png",
+      "state": "Actual available policy data; saved claim/analysis access may require sign-in",
+      "truncatedAfterPx": null
+    },
+    {
+      "file": "claims-existing.png",
+      "state": "Actual signed-out API error; no claim records available",
+      "truncatedAfterPx": null
+    },
+    {
+      "file": "policies-clause-viewer.png",
+      "state": "Actual existing policy clauses and available page choices",
+      "truncatedAfterPx": null
+    },
+    {
+      "file": "policies-clause-viewer-mobile.png",
+      "state": "Actual existing policy, filtered to its real last page; mobile reader",
+      "truncatedAfterPx": null
+    },
+    {
+      "file": "overview-demo.png",
+      "state": "Actual existing demo account: 0 policies, 0 claims; not queried: no policies",
+      "truncatedAfterPx": null
+    },
+    {
+      "file": "policies-demo.png",
+      "state": "Actual existing demo account: 0 policies, 0 claims; not queried: no policies",
+      "truncatedAfterPx": null
+    },
+    {
+      "file": "coverage-demo.png",
+      "state": "Actual existing demo account: 0 policies, 0 claims; not queried: no policies",
+      "truncatedAfterPx": null
+    },
+    {
+      "file": "ask-demo.png",
+      "state": "Actual existing demo account: 0 policies, 0 claims; not queried: no policies",
+      "truncatedAfterPx": null
+    },
+    {
+      "file": "claims-demo.png",
+      "state": "Actual existing demo account: 0 policies, 0 claims; not queried: no policies",
+      "truncatedAfterPx": null
+    },
+    {
+      "file": "overview-mobile.png",
+      "state": "Actual existing account; reduced motion enabled; 390px viewport",
+      "truncatedAfterPx": null
+    },
+    {
+      "file": "policies-mobile.png",
+      "state": "Actual existing account; reduced motion enabled; 390px viewport",
+      "truncatedAfterPx": null
+    },
+    {
+      "file": "coverage-mobile.png",
+      "state": "Actual existing account; reduced motion enabled; 390px viewport",
+      "truncatedAfterPx": null
+    },
+    {
+      "file": "ask-mobile.png",
+      "state": "Actual existing account; reduced motion enabled; 390px viewport",
+      "truncatedAfterPx": null
+    },
+    {
+      "file": "claims-mobile.png",
+      "state": "Actual existing account; reduced motion enabled; 390px viewport",
+      "truncatedAfterPx": null
+    }
+  ],
+  "existingPolicyCount": 29,
+  "pageFilterValue": "2",
+  "demo": {
+    "signedIn": true,
+    "policies": 0,
+    "claims": 0,
+    "analyses": null,
+    "analysisCheck": "not queried: no policies"
+  },
+  "statusContrastRatios": {
+    "covered": 6.78,
+    "conditional": 5.87,
+    "excluded": 6.04,
+    "unspecified": 6.92
+  },
+  "runtimeExceptions": [],
+  "consoleErrors": [],
+  "apiFailures": [
+    {
+      "url": "/api/v1/claims",
+      "status": 401
+    },
+    {
+      "url": "/api/v1/coverage/analyses",
+      "status": 401
+    },
+    {
+      "url": "/api/v1/claims",
+      "status": 401
+    },
+    {
+      "url": "/api/v1/coverage/analyses",
+      "status": 401
+    }
+  ],
+  "unverified": [
+    "Populated Coverage findings, chat answers/abstention, and claim detail screenshots require existing accessible records; none will be fabricated",
+    "Upload progress and new-card/count animation cannot be exercised without uploading a file, which the user declined"
+  ],
+  "passed": true
+}

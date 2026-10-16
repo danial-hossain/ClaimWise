@@ -1,0 +1,53 @@
+{
+  "desktop": {
+    "width": 1440,
+    "scrollWidth": 1440,
+    "font": "Inter, \"Inter Fallback\", Arial, sans-serif",
+    "transition": "0.3s, 0.3s, 0.3s, 0.16s",
+    "pillWidth": 96,
+    "activeWidth": 96,
+    "barPosition": "sticky",
+    "surfaces": [
+      {
+        "kind": "bar",
+        "background": "rgba(255, 255, 255, 0.6)",
+        "filter": "blur(20px) saturate(1.5)"
+      },
+      {
+        "kind": "card",
+        "background": "rgba(255, 255, 255, 0.55)",
+        "filter": "blur(20px) saturate(1.5)"
+      },
+      {
+        "kind": "panel",
+        "background": "rgba(255, 255, 255, 0.86)",
+        "filter": "blur(20px) saturate(1.5)"
+      },
+      {
+        "kind": "card",
+        "background": "rgba(255, 255, 255, 0.55)",
+        "filter": "blur(20px) saturate(1.5)"
+      }
+    ],
+    "nestedFilters": 0
+  },
+  "sharedIndicator": {
+    "sameElement": true,
+    "widthMatches": true,
+    "transform": "translate(105px, 5px)"
+  },
+  "mobile": {
+    "width": 390,
+    "scrollWidth": 390,
+    "buttonVisible": true,
+    "menuOpens": true,
+    "escapeCloses": true
+  },
+  "accessibility": {
+    "panelBackground": "rgba(255, 255, 255, 0.92)",
+    "panelBlur": "none",
+    "pillTransition": "0s"
+  },
+  "runtimeExceptions": [],
+  "authenticatedProfileMenu": "Not exercised: isolated preview is signed out; no account/profile data was fabricated."
+}

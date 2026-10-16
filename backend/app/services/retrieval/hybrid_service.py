@@ -7,6 +7,8 @@ and transparently reports degraded mode when dense retrieval is blocked.
 """
 
 import logging
+import hashlib
+import re
 from typing import Any, Dict, List, Optional
 
 from app.core.config import get_settings
@@ -33,6 +35,9 @@ class HybridRetrievalService:
         self._bm25 = lexical_engine or bm25_service
         self._dense = dense_engine or dense_service
         self._default_k = rrf_k or settings.retrieval_rrf_k
+        self._indexed_document_hashes: Dict[str, str] = {}
+        self._indexed_policy_results: Dict[str, Dict[str, Any]] = {}
+        self._source_clauses: Dict[str, List[ExtractedClause]] = {}
 
     def index_policy(
         self,
@@ -43,20 +48,31 @@ class HybridRetrievalService:
         """
         Index policy clauses into both lexical and dense engines.
         """
-        lexical_count = self._bm25.index_policy(policy_id, clauses, document_hash)
-        dense_count = self._dense.index_policy(policy_id, clauses)
+        fingerprint = hashlib.sha256("\n".join(c.model_dump_json() for c in clauses).encode()).hexdigest()
+        if self._indexed_document_hashes.get(policy_id) == fingerprint:
+            return self._indexed_policy_results[policy_id].copy()
 
-        return {
+        lexical_count = self._bm25.index_policy(policy_id, clauses, document_hash)
+        self._source_clauses[policy_id] = list(clauses)
+        dense_count = self._dense.index_policy(policy_id, clauses)
+        result = {
             "policy_id": policy_id,
             "lexical_clauses_indexed": lexical_count,
             "dense_clauses_indexed": dense_count,
             "dense_operational": self._dense.is_available(),
         }
+        if document_hash:
+            self._indexed_document_hashes[policy_id] = fingerprint
+            self._indexed_policy_results[policy_id] = result
+        return result
 
     def remove_policy(self, policy_id: str) -> None:
         """Remove policy clauses from both engines."""
         self._bm25.remove_policy(policy_id)
         self._dense.remove_policy(policy_id)
+        self._indexed_document_hashes.pop(policy_id, None)
+        self._indexed_policy_results.pop(policy_id, None)
+        self._source_clauses.pop(policy_id, None)
 
     def retrieve(
         self,
@@ -97,7 +113,7 @@ class HybridRetrievalService:
 
         # Accumulate BM25 rankings
         for match in lexical_matches:
-            key = f"{match.policy_id}:{match.clause_id}"
+            key = f"{match.policy_id}:{match.clause_id}:{match.page_number}"
             if key not in clause_map:
                 clause_map[key] = {
                     "clause_id": match.clause_id,
@@ -118,7 +134,7 @@ class HybridRetrievalService:
 
         # Accumulate Dense rankings
         for match in dense_matches:
-            key = f"{match.policy_id}:{match.clause_id}"
+            key = f"{match.policy_id}:{match.clause_id}:{match.page_number}"
             if key not in clause_map:
                 clause_map[key] = {
                     "clause_id": match.clause_id,
@@ -162,7 +178,47 @@ class HybridRetrievalService:
                 )
             )
 
-        return fused_results, mode
+        return self.expand_source_context(fused_results, policy_ids), mode
+
+    def expand_source_context(self, hits: List[RetrievedClause], policy_ids: List[str]) -> List[RetrievedClause]:
+        """Retain source fragments around unfinished blocks, each with its own page.
+
+        We do not concatenate cross-page wording under a single citation or
+        infer missing text. Both fragments remain available for verification.
+        """
+        results, seen = [], set()
+        for hit in hits:
+            if hit.policy_id not in policy_ids:
+                continue
+            source = self._source_clauses.get(hit.policy_id, [])
+            index = next((i for i, c in enumerate(source) if c.clause_id == hit.clause_id
+                          and c.page_number == hit.page_number), None)
+            additions = [hit]
+            if index is not None:
+                left = right = index
+                # Follow only contiguous unfinished source text; stop at new
+                # numbered provisions/headings, keeping the previous fragment too.
+                def unfinished(c):
+                    return not re.search(r'[.!?;:][\s\"\u201d\u2019)]*$', c.text.strip())
+                def boundary(c):
+                    return c.heading_confidence == "high" or bool(re.match(r'^\s*\(?(?:[ivxlcdm]+|[a-z]|\d+)[.)]\s', c.text, re.I))
+                while left > 0 and unfinished(source[left - 1]) and not boundary(source[left]):
+                    left -= 1
+                while right + 1 < len(source) and unfinished(source[right]) and not boundary(source[right + 1]):
+                    right += 1
+                additions = [RetrievedClause(
+                    clause_id=c.clause_id, page_number=c.page_number,
+                    printed_page_label=c.printed_page_label, policy_id=hit.policy_id,
+                    document_hash=c.document_hash, clause_heading=c.clause_heading,
+                    text=c.text, lexical_rank=hit.lexical_rank, dense_rank=hit.dense_rank,
+                    fused_rank=hit.fused_rank, rrf_score=hit.rrf_score,
+                ) for c in source[left:right + 1]]
+            for item in additions:
+                key = (item.policy_id, item.clause_id, item.page_number)
+                if key not in seen:
+                    seen.add(key)
+                    results.append(item)
+        return results
 
 
 hybrid_retrieval_service = HybridRetrievalService()

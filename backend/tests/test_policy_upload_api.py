@@ -2,6 +2,7 @@
 
 import io
 import pytest
+from app.core.security import create_access_token
 from httpx import ASGITransport, AsyncClient
 import pymupdf
 
@@ -19,12 +20,13 @@ def create_sample_pdf() -> bytes:
     return pdf_bytes
 
 
+@pytest.mark.database
 @pytest.mark.asyncio
 async def test_upload_valid_pdf():
     """Verify POST /api/v1/policies/upload with valid PDF."""
     pdf_data = create_sample_pdf()
     transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as client:
+    async with AsyncClient(transport=transport, base_url="http://test", headers={"Authorization": "Bearer " + create_access_token("dev-user-001", "test@example.test")}) as client:
         files = {"file": ("test_policy.pdf", io.BytesIO(pdf_data), "application/pdf")}
         response = await client.post("/api/v1/policies/upload", files=files)
 
@@ -35,15 +37,15 @@ async def test_upload_valid_pdf():
     assert data["total_pages"] == 1
     assert data["total_clauses"] >= 1
     assert len(data["document_hash"]) == 64
-    assert data["persistence_mode"] == "development_preview"
-    assert "Development Mode" in data["message"]
+    assert data["persistence_mode"] in ("persistent_db", "development_preview")
+    assert len(data["policy_id"]) > 0
 
 
 @pytest.mark.asyncio
 async def test_upload_non_pdf_extension():
     """Verify rejection of non-PDF extension."""
     transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as client:
+    async with AsyncClient(transport=transport, base_url="http://test", headers={"Authorization": "Bearer " + create_access_token("dev-user-001", "test@example.test")}) as client:
         files = {"file": ("notes.txt", io.BytesIO(b"Hello text file"), "text/plain")}
         response = await client.post("/api/v1/policies/upload", files=files)
 
@@ -55,7 +57,7 @@ async def test_upload_non_pdf_extension():
 async def test_upload_disguised_fake_pdf():
     """Verify rejection of non-PDF file disguised with .pdf extension."""
     transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as client:
+    async with AsyncClient(transport=transport, base_url="http://test", headers={"Authorization": "Bearer " + create_access_token("dev-user-001", "test@example.test")}) as client:
         # File named .pdf but containing plaintext bytes (no %PDF header)
         files = {"file": ("malicious.pdf", io.BytesIO(b"NOT_A_PDF_FILE_HEADER"), "application/pdf")}
         response = await client.post("/api/v1/policies/upload", files=files)
@@ -68,7 +70,7 @@ async def test_upload_disguised_fake_pdf():
 async def test_upload_empty_file():
     """Verify rejection of 0-byte uploaded file."""
     transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as client:
+    async with AsyncClient(transport=transport, base_url="http://test", headers={"Authorization": "Bearer " + create_access_token("dev-user-001", "test@example.test")}) as client:
         files = {"file": ("empty.pdf", io.BytesIO(b""), "application/pdf")}
         response = await client.post("/api/v1/policies/upload", files=files)
 
@@ -87,7 +89,7 @@ async def test_upload_oversized_file():
     try:
         pdf_data = create_sample_pdf()  # > 100 bytes
         transport = ASGITransport(app=app)
-        async with AsyncClient(transport=transport, base_url="http://test") as client:
+        async with AsyncClient(transport=transport, base_url="http://test", headers={"Authorization": "Bearer " + create_access_token("dev-user-001", "test@example.test")}) as client:
             files = {"file": ("large.pdf", io.BytesIO(pdf_data), "application/pdf")}
             response = await client.post("/api/v1/policies/upload", files=files)
 
@@ -97,12 +99,13 @@ async def test_upload_oversized_file():
         settings.max_upload_size_bytes = orig_max
 
 
+@pytest.mark.database
 @pytest.mark.asyncio
 async def test_list_and_get_policy_endpoints():
     """Verify GET /api/v1/policies and GET /api/v1/policies/{id}."""
     pdf_data = create_sample_pdf()
     transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as client:
+    async with AsyncClient(transport=transport, base_url="http://test", headers={"Authorization": "Bearer " + create_access_token("dev-user-001", "test@example.test")}) as client:
         files = {"file": ("my_policy.pdf", io.BytesIO(pdf_data), "application/pdf")}
         upload_res = await client.post("/api/v1/policies/upload", files=files)
         assert upload_res.status_code == 201
@@ -122,7 +125,7 @@ async def test_list_and_get_policy_endpoints():
 async def test_rules_calculate_endpoint():
     """Verify POST /api/v1/rules/calculate with valid payload."""
     transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as client:
+    async with AsyncClient(transport=transport, base_url="http://test", headers={"Authorization": "Bearer " + create_access_token("dev-user-001", "test@example.test")}) as client:
         payload = {
             "eligible_expense_cents": 100000,
             "remaining_deductible_cents": 50000,
@@ -144,7 +147,7 @@ async def test_rules_calculate_endpoint():
 async def test_rules_calculate_validation_error():
     """Verify POST /api/v1/rules/calculate rejects negative amounts."""
     transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as client:
+    async with AsyncClient(transport=transport, base_url="http://test", headers={"Authorization": "Bearer " + create_access_token("dev-user-001", "test@example.test")}) as client:
         payload = {
             "eligible_expense_cents": -500,
             "remaining_deductible_cents": 50000,

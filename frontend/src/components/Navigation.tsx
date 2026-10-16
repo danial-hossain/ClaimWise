@@ -11,22 +11,20 @@ import {
   GitCompare,
   Settings as SettingsIcon,
   Activity,
+  History,
 } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { href: '/', label: 'Dashboard', icon: Activity },
+  { href: '/dashboard', label: 'Dashboard', icon: Activity },
   { href: '/workspace', label: 'AI Workspace', icon: Bot },
   { href: '/policies', label: 'My Policies', icon: FileText },
   { href: '/claims', label: 'My Claims', icon: ClipboardList },
+  { href: '/activity', label: 'Activity Log', icon: History },
   { href: '/compare', label: 'Compare & Choose', icon: GitCompare },
   { href: '/settings', label: 'Settings & Security', icon: SettingsIcon },
 ];
 
-interface NavigationProps {
-  apiStatus?: 'online' | 'offline' | 'checking' | 'partial';
-}
-
-export default function Navigation({ apiStatus = 'checking' }: NavigationProps) {
+export default function Navigation() {
   const pathname = usePathname();
 
   return (
@@ -76,25 +74,8 @@ export default function Navigation({ apiStatus = 'checking' }: NavigationProps) 
           })}
         </nav>
 
-        {/* Backend Status Indicator & Mode */}
+        {/* Product version */}
         <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-1 dark:border-slate-800 dark:bg-slate-800/50">
-            <span
-              className={`h-2 w-2 rounded-full ${
-                apiStatus === 'online'
-                  ? 'bg-emerald-500 ring-4 ring-emerald-500/20 animate-pulse'
-                  : apiStatus === 'partial'
-                  ? 'bg-amber-500 ring-4 ring-amber-500/20'
-                  : apiStatus === 'offline'
-                  ? 'bg-rose-500 ring-4 ring-rose-500/20'
-                  : 'bg-slate-400 ring-4 ring-slate-400/20 animate-pulse'
-              }`}
-            />
-            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 capitalize">
-              API: {apiStatus}
-            </span>
-          </div>
-
           <div className="flex items-center">
             <span className="text-xs text-slate-600 dark:text-slate-400 font-mono bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">
               v0.1.0-M1

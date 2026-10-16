@@ -44,6 +44,7 @@ export interface ExtractedClause {
   text: string;
   token_count: number;
   document_hash: string;
+  is_clause?: boolean;
 }
 
 export interface PageSummary {
@@ -68,6 +69,7 @@ export interface PolicyExtractionResult {
   clauses: ExtractedClause[];
   persistence_mode: string;
   policy_id: string | null;
+  user_id?: string | null;
   uploaded_at: string;
 }
 
@@ -125,12 +127,15 @@ export interface QARequest {
   policy_id?: string | null;
   policy_ids?: string[] | null;
   top_k?: number;
+  history?: { role: 'user' | 'assistant'; content: string }[];
 }
 
 export interface QAResponse {
+  evidence_limitations?: string[];
   question: string;
   answer: string;
   evidence_sufficient: boolean;
+  evidence_status: PolicyEvidenceStatus;
   abstention_reason: string | null;
   clarification_question: string | null;
   citations: VerifiedCitation[];
@@ -240,13 +245,16 @@ export interface ExplanationOfBenefits {
 }
 
 export interface ClaimRecord {
+  analysis_id?: string | null;
+  coverage_analysis?: CoverageGapAnalysisResult | null;
+  claim_description_draft?: string | null;
   id: string;
   user_id: string;
   policy_id: string;
   claim_reference?: string | null;
-  bill_id: string;
-  bill_document_name: string;
-  bill_document_hash: string;
+  bill_id?: string;
+  bill_document_name?: string;
+  bill_document_hash?: string;
   incident_date: string;
   total_billed_cents: number;
   status: string;
@@ -254,8 +262,52 @@ export interface ClaimRecord {
   adjudicated_items: AdjudicatedLineItem[];
   eob?: ExplanationOfBenefits | null;
   sandbox_submission?: Record<string, unknown> | null;
+  claim_type?: string | null;
+  incident_description?: string | null;
+  incident_location?: string | null;
+  estimated_loss_cents?: number | null;
+  checklist?: ClaimChecklistItem[];
+  timeline?: ClaimTimelineEvent[];
+  documents?: ClaimDocumentMeta[];
   created_at: string;
   updated_at: string;
+}
+
+export interface ClaimChecklistItem {
+  id: string;
+  title: string;
+  description?: string | null;
+  mandatory: boolean;
+  completed: boolean;
+  source_clause_id?: string | null;
+}
+
+export interface ClaimTimelineEvent {
+  id: string;
+  event_type: string;
+  summary: string;
+  source: 'internal' | 'insurer' | 'simulation' | string;
+  created_at: string;
+}
+
+export interface ClaimDocumentMeta {
+  id: string;
+  file_name: string;
+  file_size_bytes: number;
+  mime_type: string;
+  uploaded_at: string;
+}
+
+export interface ClaimIntakePayload {
+  analysis_id?: string;
+  policy_id: string;
+  claim_type: string;
+  incident_description: string;
+  incident_date: string;
+  incident_location?: string;
+  estimated_loss_cents?: number | null;
+  claim_reference?: string;
+  checklist?: ClaimChecklistItem[];
 }
 
 export interface SandboxPayerOutcome {
@@ -280,6 +332,13 @@ export interface SandboxPayerOutcome {
 
 export type AttributeStatus = 'verified' | 'unknown' | 'conflicting' | 'not_applicable';
 
+export interface PriorAuthServiceItem {
+  service: string;
+  clause_id: string;
+  page: number;
+  quote: string;
+}
+
 export interface PolicyAttributeEvidence {
   attribute_name: string;
   display_name: string;
@@ -288,6 +347,8 @@ export interface PolicyAttributeEvidence {
   status: AttributeStatus;
   citations: VerifiedCitation[];
   notes?: string | null;
+  required_services?: PriorAuthServiceItem[];
+  not_specified_services?: string[];
 }
 
 export interface PolicyComparisonCard {
@@ -436,5 +497,407 @@ export interface AuditVerificationResult {
   verified_at: string;
 }
 
+export interface QuestionEvaluationResult {
+  question_id: number;
+  category: string;
+  policy_id: string;
+  policy_name: string;
+  question: string;
+  is_answerable: boolean;
+  evidence_sufficient: boolean;
+  decision_correct: boolean;
+  groundedness_pass: boolean;
+  citation_accuracy_pass: boolean;
+  abstention_pass: boolean;
+  adversarial_defense_pass: boolean;
+  hallucination_detected: boolean;
+  retrieval_top_1_hit: boolean;
+  retrieval_top_k_hit: boolean;
+  retrieved_clause_count: number;
+  top_retrieved_clause_id?: string | null;
+  top_retrieved_rrf_score: number;
+  citations_count: number;
+  cited_clause_ids: string[];
+  answer_preview: string;
+  abstention_reason?: string | null;
+  clarification_question?: string | null;
+  latency_ms: number;
+}
 
+export interface BenchmarkRunSummary {
+  total_questions: number;
+  answerable_count: number;
+  unanswerable_count: number;
+  decision_accuracy_pct: number;
+  groundedness_pct: number;
+  citation_accuracy_pct: number;
+  honest_abstention_pct: number;
+  hallucination_rate_pct: number;
+  adversarial_defense_pct: number;
+  retrieval_top_1_hit_pct: number;
+  retrieval_top_k_recall_pct: number;
+  avg_latency_ms: number;
+  min_latency_ms: number;
+  max_latency_ms: number;
+  execution_mode: 'live_gemini' | 'deterministic_mock' | string;
+  model_evaluated: string;
+  evaluated_at: string;
+  all_passed: boolean;
+}
 
+export interface BenchmarkExecutionReport {
+  summary: BenchmarkRunSummary;
+  results: QuestionEvaluationResult[];
+}
+
+export type CoverageVerdictType = 'covered' | 'conditional' | 'excluded' | 'uncertain';
+
+export interface PresetScenarioItem {
+  id: string;
+  category: string;
+  situation: string;
+  description: string;
+  keywords: string[];
+}
+
+export interface CoverageScenarioRequest {
+  policy_id: string;
+  situation: string;
+  category?: string | null;
+  description?: string | null;
+}
+
+export interface CoverageGapAnalysisResult {
+  guidance?: { text: string; citations: VerifiedCitation[] }[];
+  evidence_limitations?: string[];
+  id: string;
+  policy_id: string;
+  category: string;
+  situation: string;
+  description: string;
+  verdict: CoverageVerdictType;
+  evidence_status: PolicyEvidenceStatus;
+  explanation: string;
+  conditions_summary?: string | null;
+  cost_sharing_summary?: string | null;
+  prior_auth_required: boolean;
+  clauses: VerifiedCitation[];
+  insurer_questions: string[];
+  confidence_score: number;
+  analyzed_at: string;
+}
+
+export type PolicyEvidenceStatus =
+  | 'supported'
+  | 'explicitly_excluded'
+  | 'not_specified'
+  | 'evidence_unavailable';
+
+export interface CoverageGapReportResponse {
+  policy_id: string;
+  policy_name: string;
+  document_hash: string;
+  total_scenarios_evaluated: number;
+  covered_count: number;
+  conditional_count: number;
+  excluded_count: number;
+  uncertain_count: number;
+  coverage_score_pct: number;
+  scenarios: CoverageGapAnalysisResult[];
+  evaluated_at: string;
+}
+
+export type IncidentCategoryType =
+  | 'emergency_room'
+  | 'inpatient_hospital'
+  | 'outpatient_surgery'
+  | 'diagnostic_imaging'
+  | 'specialist_consult'
+  | 'physical_therapy'
+  | 'prescription_drug'
+  | 'accident_injury'
+  | 'routine_preventative'
+  | 'other';
+
+export type NetworkStatusType = 'in_network' | 'out_of_network' | 'emergency_out_of_network' | 'unsure';
+export type PriorAuthStatusType = 'obtained' | 'not_obtained' | 'emergency_waived' | 'not_applicable' | 'unsure';
+export type ReferralStatusType = 'yes_referred' | 'no_self_referral' | 'not_required';
+export type LiabilityTypeOption =
+  | 'none_standard'
+  | 'motor_vehicle'
+  | 'workplace_injury'
+  | 'third_party_liability'
+  | 'secondary_insurance';
+
+export type GuidanceRiskLevelType = 'low_risk' | 'medium_risk' | 'high_risk';
+export type DocumentItemStatusType = 'provided' | 'missing' | 'recommended';
+
+export interface QuestionnaireOption {
+  id: string;
+  label: string;
+  description?: string;
+  risk_implication?: string;
+}
+
+export interface QuestionnaireField {
+  id: string;
+  title: string;
+  description: string;
+  field_type: string;
+  required: boolean;
+  options?: QuestionnaireOption[];
+  help_text?: string;
+}
+
+export interface IncidentPresetTemplate {
+  id: string;
+  title: string;
+  description: string;
+  category: IncidentCategoryType;
+  default_answers: Record<string, unknown>;
+}
+
+export interface IncidentQuestionnaireSchema {
+  version: string;
+  title: string;
+  description: string;
+  fields: QuestionnaireField[];
+  presets: IncidentPresetTemplate[];
+}
+
+export interface IncidentQuestionnaireRequest {
+  policy_id: string;
+  incident_date?: string | null;
+  deadline_reference_date?: string | null;
+  estimated_loss_cents?: number | null;
+  incident_category: IncidentCategoryType;
+  network_status: NetworkStatusType;
+  prior_auth_status: PriorAuthStatusType;
+  referral_status?: ReferralStatusType;
+  liability_type?: LiabilityTypeOption;
+  has_itemized_bill?: boolean;
+  has_medical_records?: boolean;
+  has_prior_auth_letter?: boolean;
+  has_referral_letter?: boolean;
+  has_accident_report?: boolean;
+  has_receipt_of_payment?: boolean;
+  provided_document_titles?: string[];
+  user_notes?: string | null;
+}
+
+export interface TimelyFilingAnalysis {
+  incident_date: string;
+  evaluation_date: string;
+  days_elapsed: number;
+  timely_filing_limit_days?: number | null;
+  days_remaining?: number | null;
+  is_timely?: boolean | null;
+  filing_deadline_date?: string | null;
+  warning_message?: string | null;
+  deadline_anchor?: string | null;
+  citation?: VerifiedCitation | null;
+}
+
+export interface DocumentChecklistItem {
+  item_id: string;
+  title: string;
+  description: string;
+  is_mandatory: boolean;
+  status: DocumentItemStatusType;
+  why_needed: string;
+  policy_citation?: VerifiedCitation | null;
+}
+
+export interface IdentifiedObstacle {
+  id: string;
+  title: string;
+  severity: 'critical' | 'warning' | 'advisory';
+  description: string;
+  mitigation_strategy: string;
+  citation?: VerifiedCitation | null;
+}
+
+export interface ProviderInquiry {
+  target: string;
+  question: string;
+  rationale: string;
+}
+
+export interface IncidentGuidanceResult {
+  guidance_id: string;
+  policy_id: string;
+  policy_name: string;
+  readiness_score_pct: number;
+  risk_level: GuidanceRiskLevelType;
+  readiness_summary: string;
+  incident_category: IncidentCategoryType;
+  timely_filing: TimelyFilingAnalysis;
+  document_checklist: DocumentChecklistItem[];
+  obstacles: IdentifiedObstacle[];
+  action_plan_steps: string[];
+  provider_inquiries: ProviderInquiry[];
+  claimability_status: 'potentially_claimable' | 'not_supported' | 'cannot_determine' | string;
+  claimability_reason: string;
+  claimability_citations: VerifiedCitation[];
+  claim_amount_cents?: number | null;
+  potential_claim_clauses: VerifiedCitation[];
+  verified_citations: VerifiedCitation[];
+  disclaimer: string;
+  evaluated_at: string;
+}
+
+// ============================================================================
+// F4: Aggregate Portfolio Management & COB Optimizer Types
+// ============================================================================
+
+export type PolicyRoleType = 'primary' | 'secondary' | 'supplemental' | 'unspecified';
+
+export type OverlapRedundancyDegreeType =
+  | 'full_duplicate'
+  | 'partial_complementary'
+  | 'differential_cost_sharing'
+  | 'prior_auth_asymmetry';
+
+export type AggregateGapSeverityType = 'critical' | 'moderate' | 'advisory';
+
+export type COBRuleType =
+  | 'subscriber_employee_rule'
+  | 'birthday_rule'
+  | 'active_vs_inactive_rule'
+  | 'longer_vs_shorter_rule'
+  | 'default_order';
+
+export type SubscriberRelationshipType =
+  | 'policyholder'
+  | 'dependent_spouse'
+  | 'dependent_child'
+  | 'other_dependent';
+
+export type EmploymentStatusType = 'active' | 'retired' | 'cobra' | 'other';
+
+export interface SubscriberProfile {
+  policy_id: string;
+  policy_name?: string | null;
+  subscriber_name?: string | null;
+  relationship: SubscriberRelationshipType;
+  employment_status: EmploymentStatusType;
+  birthday_month_day?: string | null;
+  effective_date?: string | null;
+}
+
+export interface PolicyBenefitSnapshot {
+  policy_id: string;
+  policy_name: string;
+  covered: boolean;
+  cost_sharing_summary: string;
+  prior_auth_required: boolean;
+  citations: VerifiedCitation[];
+}
+
+export interface CoverageOverlapItem {
+  category: string;
+  service_name: string;
+  redundancy_degree: OverlapRedundancyDegreeType;
+  policies: PolicyBenefitSnapshot[];
+  coordination_strategy: string;
+  notes: string;
+}
+
+export interface AggregateGapItem {
+  category: string;
+  service_name: string;
+  severity: AggregateGapSeverityType;
+  status_summary: string;
+  policies: PolicyBenefitSnapshot[];
+  exposure_analysis: string;
+  recommended_mitigation: string;
+  silence_or_exclusion_proof: VerifiedCitation[];
+}
+
+export interface COBDetermination {
+  primary_policy_id: string;
+  primary_policy_name: string;
+  secondary_policy_id?: string | null;
+  secondary_policy_name?: string | null;
+  rule_applied: COBRuleType;
+  determination_reason: string;
+  step_by_step_filing_guide: string[];
+  non_duplication_clause_alert: string;
+  financial_benefit_estimate: string;
+}
+
+export interface PortfolioScorecard {
+  protection_score_percent: number;
+  redundancy_index_percent: number;
+  total_policies: number;
+  total_overlaps_detected: number;
+  total_aggregate_gaps_detected: number;
+  aggregate_in_network_deductible_cents?: number | null;
+  aggregate_in_network_oop_max_cents?: number | null;
+}
+
+export interface PortfolioAnalysisRequest {
+  policy_ids: string[];
+  subscribers?: SubscriberProfile[] | null;
+  patient_relationship?: string | null;
+}
+
+export interface PortfolioAnalysisResult {
+  id: string;
+  created_at: string;
+  analyzed_policies: Array<{
+    policy_id: string;
+    policy_name: string;
+    insurer_name: string;
+    document_hash: string;
+    clause_count: number;
+  }>;
+  scorecard: PortfolioScorecard;
+  cob_guidance: COBDetermination;
+  overlaps: CoverageOverlapItem[];
+  aggregate_gaps: AggregateGapItem[];
+  key_takeaways: string[];
+  non_guarantee_disclaimer: string;
+}
+
+export interface AuthUser {
+  id: string;
+  email: string;
+  full_name: string;
+  role: string;
+  phone_number?: string | null;
+  country?: string | null;
+  occupation_status?: 'student' | 'employee' | 'self_employed' | 'other' | string | null;
+  organization?: string | null;
+  address?: string | null;
+  tier: 0 | 1 | 2 | 3 | 4;
+  created_at?: string;
+}
+
+export interface AuthResponse {
+  access_token: string;
+  token_type: string;
+  user: AuthUser;
+  message: string;
+  csrf_token?: string | null;
+}
+
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface SignUpPayload {
+  email: string;
+  password: string;
+  full_name: string;
+  role?: string;
+  phone_number?: string;
+  country?: string;
+  occupation_status?: 'student' | 'employee' | 'self_employed' | 'other' | string;
+  organization?: string;
+}
+
+export interface DemoLoginPayload {
+  role: 'policyholder' | 'broker' | 'advocate';
+}

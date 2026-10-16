@@ -68,7 +68,7 @@ class BillParserService:
             doc = pymupdf.open(stream=file_bytes, filetype="pdf")
         except Exception as exc:
             raise DocumentProcessingError(
-                f"Failed to parse bill PDF: {str(exc)}",
+                "Failed to parse bill PDF. Upload a valid, readable PDF.",
                 status_code="corrupted",
             )
 

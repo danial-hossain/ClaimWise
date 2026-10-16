@@ -12,7 +12,6 @@ import re
 from typing import Any, Dict, List, Optional, Tuple
 import uuid
 
-from app.api.v1.endpoints.policies import _dev_policy_store
 from app.schemas.comparison import (
     AttributeStatus,
     ComparisonCostSimulation,
@@ -22,6 +21,7 @@ from app.schemas.comparison import (
     PolicyAttributeEvidence,
     PolicyComparisonCard,
     PolicyCostEstimate,
+    PriorAuthServiceItem,
 )
 from app.schemas.policy import ExtractedClause, PolicyExtractionResult
 from app.schemas.qa import VerifiedCitation
@@ -64,8 +64,11 @@ class ComparisonService:
         if len(unique_ids) > 4:
             raise ValueError("A multi-policy comparison supports a maximum of 4 policies.")
 
-        store = authorized_policy_store if authorized_policy_store is not None else _dev_policy_store
-
+        if authorized_policy_store is not None:
+            store = authorized_policy_store
+        else:
+            from app.api.v1.endpoints.policies import _dev_policy_store
+            store = _dev_policy_store
         # 1. Authorize and load all requested policies
         loaded_policies: List[Tuple[str, PolicyExtractionResult]] = []
         for pid in unique_ids:
@@ -537,28 +540,153 @@ class ComparisonService:
         clauses: List[ExtractedClause],
         doc_hash: str,
     ) -> PolicyAttributeEvidence:
-        """Extract prior authorization requirements."""
+        """
+        Extract prior authorization requirements from actual policy clauses.
+
+        Strict Evidence Guarantee:
+        - Extracts the exact list of services that explicitly require prior authorization,
+          each with clause_id, page number, and quote.
+        - Identifies a separate list of services where prior authorization is explicitly 'not specified'.
+        - Never infers a general requirement (e.g. 'all non-emergency services') from narrow clauses.
+        """
+        required_services: Dict[str, PriorAuthServiceItem] = {}
+        not_specified_services: List[str] = []
+        citations: List[VerifiedCitation] = []
+
         for c in clauses:
-            text = c.text
-            if "prior authorization" in text.lower() or "precertification" in text.lower() or "prior approval" in text.lower():
-                quote = self._find_exact_quote(c.text, "prior")
-                cit = VerifiedCitation(
-                    clause_id=c.clause_id,
-                    page_number=c.page_number,
-                    exact_quote=quote,
-                    policy_id=policy_id,
-                    clause_heading=c.clause_heading,
-                    verified=True,
+            t_clean = re.sub(r"\s+", " ", c.text).strip()
+            t_lower = t_clean.lower()
+
+            if not ("prior authorization" in t_lower or "precertification" in t_lower or "prior approval" in t_lower):
+                continue
+
+            # 1. Explicit 'not specified' statements regarding prior authorization
+            m_not_spec = re.search(r"whether prior authorization applies to\s+([^:.]+):\s*not specified", t_clean, re.IGNORECASE)
+            if m_not_spec:
+                srv = m_not_spec.group(1).strip().lower()
+                if srv not in not_specified_services:
+                    not_specified_services.append(srv)
+                    quote = self._find_exact_quote(c.text, srv)
+                    citations.append(
+                        VerifiedCitation(
+                            clause_id=c.clause_id,
+                            page_number=c.page_number,
+                            exact_quote=quote,
+                            policy_id=policy_id,
+                            clause_heading=c.clause_heading,
+                            verified=True,
+                        )
+                    )
+
+            m_other = re.search(r"requirements for\s+(any other service|other services):\s*not specified", t_clean, re.IGNORECASE)
+            if m_other:
+                srv = m_other.group(1).strip().lower()
+                if srv not in not_specified_services:
+                    not_specified_services.append(srv)
+
+            m_sec = re.search(r"([A-Za-z\s]+?)\s+and prior authorization\.?\s*not specified", t_clean, re.IGNORECASE)
+            if m_sec:
+                srv = re.sub(r"^(cl-[a-z0-9.-]+\s+)?", "", m_sec.group(1)).strip().lower()
+                if srv and srv not in not_specified_services:
+                    not_specified_services.append(srv)
+
+            # 2. Prior authorization list enumeration, e.g. "(a) service 1 and (b) service 2"
+            m_list = re.search(r"prior authorization(?: from the [^.]+)? is required before(?: the following [^:]+:)?\s*(.*?)(?:\.|$)", t_clean, re.IGNORECASE)
+            if m_list:
+                items_str = m_list.group(1)
+                parts = re.split(r"\([a-z0-9]+\)\s*", items_str)
+                for p in parts:
+                    cleaned = re.sub(r"\s+(?:and|or)$", "", p.strip(" ;,."))
+                    cleaned = re.sub(r"^(?:and|or)\s+", "", cleaned).strip()
+                    if cleaned:
+                        norm = cleaned.lower()
+                        if "elective inpatient admission" in norm:
+                            norm = "elective inpatient admissions"
+                        elif "elective surgery" in norm:
+                            norm = "elective surgery"
+                        elif "specialty" in norm and "drug" in norm:
+                            norm = "specialty drugs"
+                        elif "advanced imaging" in norm:
+                            norm = "outpatient advanced imaging"
+
+                        quote = self._find_exact_quote(c.text, cleaned)
+                        required_services[norm] = PriorAuthServiceItem(
+                            service=norm,
+                            clause_id=c.clause_id,
+                            page=c.page_number,
+                            quote=quote,
+                        )
+
+            # 3. Standalone requirements, e.g. "<Service> require(s) prior authorization"
+            for m_single in re.finditer(r"([A-Za-z\s]+?)\s+require(?:s)?\s+prior\s+authorization", t_clean, re.IGNORECASE):
+                cand_raw = m_single.group(1).strip()
+                candidate = re.sub(r"^(?:CL-[A-Z0-9.-]+\s+)?(?:[A-Z0-9.-]+\s+)?", "", cand_raw).strip()
+                cand_lower = candidate.lower()
+
+                norm = None
+                if "elective inpatient admission" in cand_lower:
+                    norm = "elective inpatient admissions"
+                elif "specialty drug" in cand_lower:
+                    norm = "specialty drugs"
+                elif "elective surgery" in cand_lower:
+                    norm = "elective surgery"
+                elif "advanced imaging" in cand_lower and "not specified" not in t_lower:
+                    norm = "outpatient advanced imaging"
+                elif cand_lower and cand_lower not in ["which", "that", "and", "may", "who"]:
+                    norm = cand_lower
+
+                if norm and norm not in required_services:
+                    quote = self._find_exact_quote(c.text, candidate)
+                    required_services[norm] = PriorAuthServiceItem(
+                        service=norm,
+                        clause_id=c.clause_id,
+                        page=c.page_number,
+                        quote=quote,
+                    )
+
+        req_list = list(required_services.values())
+        if req_list:
+            for item in req_list:
+                citations.append(
+                    VerifiedCitation(
+                        clause_id=item.clause_id,
+                        page_number=item.page,
+                        exact_quote=item.quote,
+                        policy_id=policy_id,
+                        verified=True,
+                    )
                 )
-                return PolicyAttributeEvidence(
-                    attribute_name="prior_authorization",
-                    display_name="Prior Authorization",
-                    raw_value="Required for Non-Emergency / Advanced Services",
-                    numeric_value_cents=None,
-                    status=AttributeStatus.VERIFIED,
-                    citations=[cit],
-                    notes="Prior authorization mandate documented in source clauses.",
-                )
+
+            srv_names = [s.service.title() for s in req_list]
+            raw_val = f"Required: {', '.join(srv_names)}"
+            not_spec_str = f" Not specified: {', '.join(s.title() for s in not_specified_services)}." if not_specified_services else ""
+            notes = f"Services explicitly requiring prior authorization: {', '.join(srv_names)}.{not_spec_str} Never infer general requirement from narrow clauses."
+
+            return PolicyAttributeEvidence(
+                attribute_name="prior_authorization",
+                display_name="Prior Authorization",
+                raw_value=raw_val,
+                numeric_value_cents=None,
+                status=AttributeStatus.VERIFIED,
+                citations=citations,
+                notes=notes,
+                required_services=req_list,
+                not_specified_services=not_specified_services,
+            )
+
+        if not_specified_services:
+            srv_not_spec = [s.title() for s in not_specified_services]
+            return PolicyAttributeEvidence(
+                attribute_name="prior_authorization",
+                display_name="Prior Authorization",
+                raw_value="Not specified in policy",
+                numeric_value_cents=None,
+                status=AttributeStatus.UNKNOWN,
+                citations=citations,
+                notes=f"Prior authorization terms are explicitly not specified for: {', '.join(srv_not_spec)}.",
+                required_services=[],
+                not_specified_services=not_specified_services,
+            )
 
         return PolicyAttributeEvidence(
             attribute_name="prior_authorization",
@@ -568,6 +696,8 @@ class ComparisonService:
             status=AttributeStatus.UNKNOWN,
             citations=[],
             notes="Prior authorization rules not located in extracted policy document.",
+            required_services=[],
+            not_specified_services=[],
         )
 
     def _extract_waiting_period(

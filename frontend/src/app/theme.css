@@ -1,0 +1,168 @@
+/* Part 1: theme tokens and shared surfaces. Business/evidence rules live elsewhere. */
+:root {
+  --cw-page-start: #f4fbfa;
+  --cw-page-middle: #e8f6f5;
+  --cw-page-end: #eaf2fb;
+  --cw-page-background:
+    radial-gradient(ellipse 680px 580px at 6% 8%, rgba(13,148,136,.12), transparent 75%),
+    radial-gradient(ellipse 760px 620px at 96% 34%, rgba(37,99,235,.10), transparent 76%),
+    radial-gradient(ellipse 720px 600px at 30% 94%, rgba(13,148,136,.08), transparent 75%),
+    linear-gradient(140deg, var(--cw-page-start), var(--cw-page-middle) 48%, var(--cw-page-end));
+  --cw-primary: #0f766e;
+  --cw-primary-bright: #0d9488;
+  --cw-blue: #2563eb;
+  --cw-action: #0b2b2a;
+  --cw-action-hover: #12433f;
+  --cw-ink: #0f172a;
+  --cw-muted: #475569;
+  --cw-line: rgba(15, 118, 110, .16);
+  --cw-glass-card: rgba(255, 255, 255, .55);
+  --cw-glass-panel: rgba(255, 255, 255, .86);
+  --cw-glass-bar: rgba(255, 255, 255, .60);
+  --cw-glass-solid: rgba(255, 255, 255, .92);
+  --cw-glass: var(--cw-glass-panel);
+  --cw-border: rgba(255, 255, 255, .70);
+  --cw-shadow: 0 8px 32px rgba(15, 118, 110, .10);
+  --cw-radius: 24px;
+  --cw-blur: 20px;
+  --cw-covered-bg: #edf7f1;
+  --cw-covered-ink: #236044;
+  --cw-covered-border: #c7e0d1;
+  --cw-conditional-bg: #fdf6e7;
+  --cw-conditional-ink: #805814;
+  --cw-conditional-border: #ead9b2;
+  --cw-excluded-bg: #fcf0f0;
+  --cw-excluded-ink: #9b3c44;
+  --cw-excluded-border: #e8cbd0;
+  --cw-unspecified-bg: #f1f5f9;
+  --cw-unspecified-ink: #475569;
+  --cw-unspecified-border: #cbd5e1;
+  /* Keep existing typography utilities working while using one font family. */
+  --font-geist-sans: var(--font-inter), Arial, sans-serif;
+  --font-geist-mono: var(--font-inter), Arial, sans-serif;
+  --font-sans: var(--font-inter), Arial, sans-serif;
+  --font-mono: var(--font-inter), Arial, sans-serif;
+}
+
+body { font-family: var(--font-sans); color: var(--cw-muted); background: var(--cw-page-start); }
+.app-canvas, .home-page, .auth-page {
+  background: var(--cw-page-background);
+  color: var(--cw-muted);
+}
+.app-canvas :is(h1, h2, h3, h4) { color: var(--cw-ink); }
+.app-canvas :is(.app-page, .overview-shell) :is(h1, h2, h3, h4),
+.home-page :is(h1, h2, h3), .auth-page :is(h1, h2, h3) {
+  font-family: var(--font-sans);
+  letter-spacing: -.035em;
+}
+.app-canvas .app-page h1, .app-canvas :is(.policy-hero, .coverage-page-header) h1 { font-family: var(--font-sans); font-weight: 600; }
+.app-canvas .app-page:not(.claims-page) .uppercase, .journey-rail .uppercase,
+.home-page .uppercase, .auth-page .uppercase { text-transform: none; letter-spacing: normal; }
+.app-canvas :is(.policy-page-kicker, .policy-upload-kicker, .policy-fact-label), .home-eyebrow { letter-spacing: normal; text-transform: none; }
+
+.glass-card, .glass-panel, .glass-bar {
+  border: 1px solid var(--cw-border);
+  border-radius: var(--cw-radius);
+  background: var(--cw-glass-card);
+  box-shadow: var(--cw-shadow);
+  -webkit-backdrop-filter: blur(var(--cw-blur)) saturate(150%);
+  backdrop-filter: blur(var(--cw-blur)) saturate(150%);
+}
+.glass-panel { background: var(--cw-glass-panel); }
+.glass-bar { position: sticky; top: 0; z-index: 40; border-radius: 0; background: var(--cw-glass-bar); }
+/* The new primitives take precedence over older page-specific frost rules. */
+[data-glass].glass-card, [data-glass].glass-panel, [data-glass].glass-bar {
+  -webkit-backdrop-filter: blur(var(--cw-blur)) saturate(150%);
+  backdrop-filter: blur(var(--cw-blur)) saturate(150%);
+}
+/* Existing evidence/form cards default to the readable surface during migration. */
+.app-canvas .cw-glass, .auth-page .cw-glass, .auth-panel,
+.app-canvas :is(.policy-upload-panel, .policy-analysis-panel, .coverage-empty-state) {
+  background: var(--cw-glass-panel);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
+}
+.app-canvas :is(table, blockquote),
+.app-canvas .app-page:not(.claims-page) :is(textarea, select, input:not([type="checkbox"]):not([type="radio"]):not([type="file"])),
+.overview-shell .scenario-launcher :is(textarea, select) { background-color: rgba(255,255,255,.90); color: var(--cw-ink); }
+.app-canvas :is(input, textarea)::placeholder, .auth-page :is(input, textarea)::placeholder { color: #64748b; opacity: 1; }
+.home-page .home-chat.glass-surface { background: var(--cw-glass-panel) !important; }
+:is([data-glass], .cw-glass, .policy-hero, .coverage-page-header, .journey-rail-inner, .auth-panel, .glass-surface, .policy-upload-panel, .policy-analysis-panel, .policy-detail-panel, .policy-library-card)
+  :is([data-glass], .cw-glass, .cw-popover, .glass-surface, .auth-panel, .coverage-empty-state, .policy-hero-upload, .policy-upload-panel, .policy-analysis-panel, .policy-detail-panel, .coverage-policy-toolbar, [role="alert"], [class*="backdrop-blur"]) {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+.glass-panel .glass-card { background: rgba(255,255,255,.75); }
+.app-canvas .overview-shell .scenario-launcher { background: var(--cw-glass-panel); box-shadow: var(--cw-shadow); border-color: var(--cw-border); }
+.overview-side-card.glass-card { background: var(--cw-glass-card); }
+
+/* The single primary task action is dark teal; supporting navigation stays quiet. */
+.cw-primary-button, .overview-shell .scenario-launcher button[type="submit"] {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: var(--cw-action);
+  color: #fff;
+  box-shadow: 0 5px 16px rgba(11,43,42,.12);
+}
+.cw-primary-button:hover:not(:disabled), .overview-shell .scenario-launcher button[type="submit"]:hover:not(:disabled) { background: var(--cw-action-hover); }
+.overview-shell .scenario-launcher button[type="submit"]:disabled { opacity: .45; box-shadow: none; }
+.app-canvas :is(a, button, select, textarea, input):focus-visible { outline: 2px solid var(--cw-primary); outline-offset: 3px; }
+
+/* The nav uses one shared DOM pill, preserving its position across route changes. */
+.cw-header.glass-bar { background: var(--cw-glass-bar); border: 0; border-bottom: 1px solid var(--cw-border); box-shadow: var(--cw-shadow); }
+.cw-nav { position: relative; isolation: isolate; border-radius: 999px; padding: 5px; background: rgba(255,255,255,.32); }
+.cw-nav-indicator { position: absolute; top: 0; left: 0; z-index: -1; opacity: 0; pointer-events: none; border: 1px solid #fff; border-radius: 999px; background: rgba(255,255,255,.90); box-shadow: 0 3px 12px rgba(15,118,110,.09); transition: transform 300ms var(--cw-ease), width 300ms var(--cw-ease), height 300ms var(--cw-ease), opacity 160ms ease; }
+.cw-nav-link { position: relative; min-height: 40px; border-radius: 999px; color: var(--cw-muted); }
+.cw-nav-link.is-current { color: var(--cw-primary); background: transparent; box-shadow: none; }
+.cw-nav-link.is-current svg { color: var(--cw-primary); }
+.cw-nav-link:hover { background: rgba(255,255,255,.40); }
+.cw-nav-link.is-current:hover { background: transparent; }
+.cw-popover { background: rgba(255,255,255,.96); border-color: var(--cw-border); box-shadow: var(--cw-shadow); }
+.cw-avatar { color: var(--cw-primary); background: #e1f2ee; }
+.cw-menu-link { color: var(--cw-muted); }
+.cw-menu-link:hover, .cw-menu-link.is-current { color: var(--cw-primary); background: #edf7f5; }
+
+/* Preserve the illustrated hero, now integrated with the light teal canvas. */
+.overview-hero.home-art { background: var(--cw-glass-card); box-shadow: var(--cw-shadow); }
+.overview-hero.home-art::after { background: linear-gradient(120deg, transparent 50%, rgba(13,148,136,.04)); }
+.overview-hero .dashboard-hero-copy { padding-top: 36px; padding-bottom: 36px; }
+.overview-hero .dashboard-hero-eyebrow { color: var(--cw-primary); font-size: 12px; letter-spacing: 0; font-weight: 600; }
+.overview-hero h1 { font-family: var(--font-sans); color: var(--cw-ink); font-size: clamp(32px, 3.6vw, 48px); font-weight: 600; line-height: 1.12; letter-spacing: -.045em; }
+.overview-hero h1 em { color: var(--cw-primary); font-style: normal; }
+.overview-hero .dashboard-hero-copy > p { color: var(--cw-muted); font-size: 14px; line-height: 1.8; }
+.overview-hero .dashboard-hero-cta { border: 0; border-radius: 0; padding: 0; color: var(--cw-primary); font-size: 13px; }
+.overview-hero .dashboard-hero-cta:hover { background: transparent; text-decoration: underline; text-underline-offset: 4px; }
+.overview-hero .dashboard-art-sun { opacity: .28; animation: none; }
+.overview-hero .dashboard-document-title { font-family: var(--font-sans); }
+.overview-hero :is(.dashboard-document-top, .dashboard-document-foot, .dashboard-document-highlight b) { letter-spacing: 0; }
+.overview-hero .dashboard-document { background: rgba(255,255,255,.88); box-shadow: 0 18px 40px rgba(15,118,110,.13); }
+.overview-hero .dashboard-evidence-tag { background: rgba(255,255,255,.90); box-shadow: var(--cw-shadow); }
+.overview-shell .scenario-launcher h2 { font-size: 22px; letter-spacing: -.03em; }
+.overview-shell .scenario-launcher a.cw-primary-button { background: var(--cw-action); border-radius: 999px; }
+.cw-label { color: var(--cw-primary); font-size: 12px; font-weight: 600; letter-spacing: 0; }
+.cw-status { border-color: var(--status-border); background: var(--status-bg); color: var(--status-ink); box-shadow: none; }
+.cw-status[data-status="covered"] { --status-bg: var(--cw-covered-bg); --status-ink: var(--cw-covered-ink); --status-border: var(--cw-covered-border); }
+.cw-status[data-status="conditional"] { --status-bg: var(--cw-conditional-bg); --status-ink: var(--cw-conditional-ink); --status-border: var(--cw-conditional-border); }
+.cw-status[data-status="excluded"] { --status-bg: var(--cw-excluded-bg); --status-ink: var(--cw-excluded-ink); --status-border: var(--cw-excluded-border); }
+.cw-status[data-status="not_specified"] { --status-bg: var(--cw-unspecified-bg); --status-ink: var(--cw-unspecified-ink); --status-border: var(--cw-unspecified-border); }
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :is(.glass-card, .glass-panel, .glass-bar, .cw-glass, .cw-header, .cw-popover, .auth-panel, .glass-surface, .home-nav),
+  .app-canvas :is(.policy-hero, .coverage-page-header, .policy-hero-upload, .policy-upload-panel, .policy-analysis-panel, .coverage-empty-state, .overview-side-card, .scenario-launcher, .journey-rail-inner), .overview-hero.home-art {
+    background: var(--cw-glass-solid) !important;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  :is(.glass-card, .glass-panel, .glass-bar, .cw-glass, .cw-header, .cw-popover, .auth-panel, .glass-surface, .home-nav),
+  .app-canvas :is(.policy-hero, .coverage-page-header, .policy-hero-upload, .policy-upload-panel, .policy-analysis-panel, .coverage-empty-state, .overview-side-card, .scenario-launcher, .journey-rail-inner), .overview-hero.home-art {
+    background: var(--cw-glass-solid) !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .app-canvas :is(.policy-hero, .coverage-page-header)::before, .app-canvas .coverage-page-header::after { opacity: .12; }
+}
+@media (prefers-reduced-motion: reduce) { .cw-nav-indicator { transition: none; } }
+@media (max-width: 767px) {
+  .overview-hero .dashboard-hero-copy { padding: 28px 24px 16px; }
+  .overview-hero .dashboard-hero-art { min-height: 240px; }
+}

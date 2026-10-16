@@ -22,7 +22,7 @@ def create_test_bill_pdf() -> bytes:
 
 
 @pytest.fixture(autouse=True)
-def index_clauses_for_api_tests():
+def index_clauses_for_api_tests(request, verified_test_database):
     """Seed hybrid retrieval with clauses for api tests."""
     policy_id = "dev-policy-claims-test"
     clauses = [
@@ -38,8 +38,34 @@ def index_clauses_for_api_tests():
         )
     ]
     hybrid_retrieval_service.index_policy(policy_id, clauses, "doc-hash-test")
+    if request.node.get_closest_marker("database"):
+        assert verified_test_database
+        from datetime import datetime, timezone
+        from app.api.v1.endpoints.policies import _dev_policy_store
+        from app.schemas.policy import PolicyExtractionResult
+        _dev_policy_store[policy_id] = PolicyExtractionResult(
+            policy_id=policy_id, user_id="dev-user-001", document_name="Synthetic claims policy",
+            document_hash="doc-hash-test", file_size_bytes=0, total_pages=1,
+            total_clauses=len(clauses), status="success", message="Synthetic test fixture",
+            clauses=clauses, uploaded_at=datetime.now(timezone.utc),
+        )
 
 
+@pytest.fixture(autouse=True)
+def override_test_auth():
+    """Authenticate test client as dev-user-001 for claims sandbox tests."""
+    from app.core.security import AuthenticatedUser, require_authenticated_user
+    app.dependency_overrides[require_authenticated_user] = lambda: AuthenticatedUser(
+        id="dev-user-001",
+        email="developer@claimwise.local",
+        role="authenticated",
+        tier=1,
+    )
+    yield
+    app.dependency_overrides.pop(require_authenticated_user, None)
+
+
+@pytest.mark.database
 @pytest.mark.asyncio
 async def test_claims_end_to_end_workflow():
     """Verify complete bill upload -> claim creation -> adjudication -> sandbox submission."""
@@ -148,6 +174,7 @@ async def test_claims_upload_bill_rejections():
         assert res2.status_code == 400
 
 
+@pytest.mark.database
 @pytest.mark.asyncio
 async def test_sandbox_scenarios_deterministic():
     """Verify each deterministic sandbox scenario returns the expected mock status."""
@@ -202,6 +229,7 @@ async def test_sandbox_scenarios_deterministic():
         assert err_res.json()["outcome_status"] == "SIMULATED_TRANSMISSION_ERROR"
 
 
+@pytest.mark.database
 @pytest.mark.asyncio
 async def test_claim_create_with_edited_line_items():
     """Verify user can provide reviewed/corrected line items during claim creation."""
@@ -239,6 +267,7 @@ async def test_claim_create_with_edited_line_items():
         assert data["line_items"][0]["description"] == "Corrected ED Visit Description"
 
 
+@pytest.mark.database
 @pytest.mark.asyncio
 async def test_claim_not_found_errors():
     """Verify 404 returned for nonexistent claim references."""

@@ -15,6 +15,7 @@ Tests:
 
 from datetime import datetime, timezone
 import pytest
+from app.core.security import create_access_token
 from starlette.testclient import TestClient
 
 from app.api.v1.endpoints.policies import _dev_policy_store
@@ -81,6 +82,7 @@ def _create_mock_policy(
         clauses=clauses,
         persistence_mode="development_preview",
         policy_id=policy_id,
+        user_id="dev-user-001",
         uploaded_at=datetime.now(timezone.utc),
     )
     # Index in hybrid retrieval
@@ -90,7 +92,9 @@ def _create_mock_policy(
 
 
 @pytest.fixture(autouse=True)
-def setup_mock_policies():
+def setup_mock_policies(request):
+    if not request.node.get_closest_marker("database"):
+        request.getfixturevalue("memory_policy_store")
     """Populate sample policies in dev store for comparison tests."""
     p1 = _create_mock_policy(
         policy_id="test-pol-alpha",
@@ -340,9 +344,10 @@ def test_unknown_allowed_amount_marked_incomplete():
         assert any("allowed amount is unknown" in c.lower() for c in est.caveats_and_assumptions)
 
 
+@pytest.mark.database
 def test_comparison_api_endpoints():
     """Test FastAPI HTTP endpoints for comparison creation, retrieval, and cost recalculation."""
-    client = TestClient(app)
+    client = TestClient(app, headers={"Authorization": "Bearer " + create_access_token("dev-user-001", "tests@example.test")})
 
     # 1. POST /api/v1/comparisons
     payload = {
@@ -389,3 +394,103 @@ def test_comparison_api_endpoints():
     # 5. Error test: Non-existent policy
     missing_resp = client.post("/api/v1/comparisons", json={"policy_ids": ["test-pol-alpha", "nonexistent-99"]})
     assert missing_resp.status_code == 404
+
+
+def test_policy_b_prior_authorization_evidence_regression():
+    """
+    Regression Test for Item 7.1: Prior Authorization Evidence Accuracy.
+    
+    Verifies that for Policy B:
+    - Required services: 'elective inpatient admissions', 'elective surgery', 'specialty drugs'
+    - 'advanced imaging' is explicitly marked as NOT SPECIFIED (never inferred as required)
+    - Each required service includes authentic clause_id, page, and verbatim quote
+    - Broad 'Non-Emergency / Advanced Services' placeholder is eliminated
+    """
+    import os
+    from app.services.document_service import document_service
+
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    path_b = os.path.join(base_dir, "test_pdfs", "Sample_Health_Insurance_Policy_B.pdf")
+    path_a = os.path.join(base_dir, "test_pdfs", "Sample_Health_Insurance_Policy_A.pdf")
+
+    assert os.path.exists(path_b), f"Test PDF not found at {path_b}"
+    assert os.path.exists(path_a), f"Test PDF not found at {path_a}"
+
+    with open(path_b, "rb") as f:
+        res_b = document_service.process_pdf(f.read(), "Sample_Health_Insurance_Policy_B.pdf", policy_id="regr-pol-b")
+    with open(path_a, "rb") as f:
+        res_a = document_service.process_pdf(f.read(), "Sample_Health_Insurance_Policy_A.pdf", policy_id="regr-pol-a")
+
+    _dev_policy_store["regr-pol-b"] = res_b
+    _dev_policy_store["regr-pol-a"] = res_a
+
+    req = ComparisonCreateRequest(policy_ids=["regr-pol-a", "regr-pol-b"], title="Regression Test Comparison")
+    cmp_res = comparison_service.create_comparison(req)
+
+    card_b = next(p for p in cmp_res.policies if p.policy_id == "regr-pol-b")
+    attr_b = card_b.attributes["prior_authorization"]
+
+    # 1. Evidence status must be verified
+    assert attr_b.status == AttributeStatus.VERIFIED
+
+    # 2. Required services must be extracted from actual clauses
+    req_names = [s.service.lower() for s in attr_b.required_services]
+    assert "elective inpatient admissions" in req_names
+    assert "elective surgery" in req_names
+    assert "specialty drugs" in req_names
+
+    # 3. Narrow clauses must NEVER lead to general inference
+    assert "advanced imaging" not in req_names
+    assert "outpatient advanced imaging" not in req_names
+    assert "Non-Emergency / Advanced Services" not in (attr_b.raw_value or "")
+
+    # 4. Advanced imaging must be in not_specified_services
+    not_spec = [s.lower() for s in attr_b.not_specified_services]
+    assert any("advanced imaging" in s for s in not_spec)
+
+    # 5. Each required service must include authentic clause_id, page, and quote
+    for s in attr_b.required_services:
+        assert s.clause_id, f"Service {s.service} missing clause_id"
+        assert s.page > 0, f"Service {s.service} missing page number"
+        assert s.quote, f"Service {s.service} missing quote"
+        assert len(s.quote.strip()) > 0
+
+    # 6. Citations must be populated and verified
+    assert len(attr_b.citations) >= 3
+    for cit in attr_b.citations:
+        assert cit.verified is True
+        assert cit.clause_id
+
+
+def test_never_infer_general_prior_auth_from_narrow_clause():
+    """Verify that a narrow clause does not trigger general non-emergency prior auth."""
+    narrow_policy = _create_mock_policy(
+        policy_id="test-pol-narrow",
+        name="Narrow Prior Auth Plan",
+        deductible_text="Deductible is $1,000.",
+        coinsurance_text="Coinsurance is 20%.",
+        oop_text="OOP max is $4,000.",
+        extra_clauses=[
+            ExtractedClause(
+                clause_id="SEC-PA-1",
+                page_number=2,
+                clause_heading="Prior Approval",
+                text="Elective surgery requires prior authorization from the Medical Director.",
+                token_count=15,
+                document_hash="hash-narrow",
+            )
+        ],
+    )
+
+    req = ComparisonCreateRequest(policy_ids=["test-pol-alpha", "test-pol-narrow"])
+    cmp_res = comparison_service.create_comparison(req)
+
+    card = next(p for p in cmp_res.policies if p.policy_id == "test-pol-narrow")
+    pa = card.attributes["prior_authorization"]
+
+    assert pa.status == AttributeStatus.VERIFIED
+    req_names = [s.service.lower() for s in pa.required_services]
+    assert "elective surgery" in req_names
+    assert "elective inpatient admissions" not in req_names
+    assert "advanced imaging" not in req_names
+    assert "Non-Emergency / Advanced Services" not in (pa.raw_value or "")

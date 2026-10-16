@@ -1,14 +1,24 @@
 """Pydantic schemas for Hybrid Retrieval and Evidence-Grounded Q&A."""
 
 from datetime import datetime
+from enum import Enum
 from typing import List, Optional
 from pydantic import BaseModel, ConfigDict, Field
+
+
+class PolicyEvidenceStatus(str, Enum):
+    """How policy evidence supports or limits a coverage answer."""
+    SUPPORTED = "supported"
+    EXPLICITLY_EXCLUDED = "explicitly_excluded"
+    NOT_SPECIFIED = "not_specified"
+    EVIDENCE_UNAVAILABLE = "evidence_unavailable"
 
 
 class RetrievedClause(BaseModel):
     """Granular clause retrieved by hybrid or lexical search."""
     clause_id: str = Field(..., description="Clause identifier, e.g. SEC-1.1 or P1-C2")
     page_number: int = Field(..., ge=1, description="One-based document page number")
+    printed_page_label: Optional[str] = None
     policy_id: str = Field(..., description="Unique ID of source policy")
     document_hash: str = Field(..., description="SHA-256 hash of original PDF document")
     clause_heading: Optional[str] = Field(None, description="Heading or title if detected")
@@ -25,10 +35,19 @@ class VerifiedCitation(BaseModel):
     """Citation verified deterministically against source document clauses."""
     clause_id: str = Field(..., description="Cited clause identifier")
     page_number: int = Field(..., ge=1, description="Cited one-based page number")
+    printed_page_label: Optional[str] = None
     exact_quote: str = Field(..., description="Verbatim quoted excerpt from source text")
     policy_id: str = Field(..., description="Source policy ID")
     clause_heading: Optional[str] = Field(None, description="Clause section heading")
     verified: bool = Field(default=True, description="Whether citation passed post-generation verification")
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class ChatHistoryMessage(BaseModel):
+    """A prior conversation turn for contextual follow-up questions."""
+    role: str = Field(..., description="'user' or 'assistant'")
+    content: str = Field(..., description="Message text content")
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -41,7 +60,13 @@ class QARequest(BaseModel):
         max_length=1000,
         description="Insurance coverage or policy inquiry question",
     )
-    policy_id: str = Field(..., description="ID of the policy document to query")
+    policy_id: Optional[str] = Field(None, description="Optional ID of one policy document to query")
+    policy_ids: Optional[List[str]] = Field(None, description="Optional IDs of several saved policies to search together")
+    top_k: Optional[int] = Field(None, ge=1, le=50, description="Maximum number of policy clauses to retrieve")
+    history: Optional[List[ChatHistoryMessage]] = Field(
+        default_factory=list,
+        description="Recent conversation history for follow-up questions and conversational continuity",
+    )
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -49,10 +74,15 @@ class QARequest(BaseModel):
 class QAResponse(BaseModel):
     """Response containing grounded answer and verified citations."""
     question: str
+    evidence_limitations: List[str] = Field(default_factory=list)
     answer: str
     evidence_sufficient: bool = Field(
         ...,
         description="True if policy evidence definitively answered the question; False if abstained",
+    )
+    evidence_status: PolicyEvidenceStatus = Field(
+        ...,
+        description="Whether evidence supports, excludes, does not specify, or is unavailable due to extraction/retrieval limitations",
     )
     abstention_reason: Optional[str] = Field(
         None,

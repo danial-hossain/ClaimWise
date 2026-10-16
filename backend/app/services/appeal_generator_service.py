@@ -212,6 +212,9 @@ class DenialAppealService:
         clean_code = re.sub(r"[^a-zA-Z0-9\s]", " ", denial_code)
         query = f"covered benefit medical necessity exception appeal {clean_code} emergency"
 
+        # Build the selected policy's index on first use after a restart.
+        hybrid_retrieval_service.index_policy(claim.policy_id, policy.clauses, policy.document_hash)
+
         # Use hybrid retrieval across this authorized policy
         retrieved_clauses, _ = hybrid_retrieval_service.retrieve(
             query=query,

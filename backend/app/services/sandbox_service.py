@@ -42,7 +42,7 @@ class MockInsurerSandboxService:
 
     def __init__(self):
         # Cache for idempotency keys: idempotency_key -> SandboxPayerOutcome
-        self._idempotency_cache: Dict[str, SandboxPayerOutcome] = {}
+        self._idempotency_cache: Dict[tuple[str, str, str], SandboxPayerOutcome] = {}
 
     def simulate_submission(
         self,
@@ -56,9 +56,10 @@ class MockInsurerSandboxService:
             raise ValueError("Explicit user confirmation is mandatory before executing a sandbox simulation.")
 
         # Idempotency check: if key was already submitted, return the cached outcome
-        if request.idempotency_key in self._idempotency_cache:
-            logger.info("Returning cached mock outcome for idempotency key '%s'.", request.idempotency_key)
-            return self._idempotency_cache[request.idempotency_key]
+        cache_key = (claim.user_id, claim.id, request.idempotency_key)
+        if cache_key in self._idempotency_cache:
+            logger.info("Returning cached mock outcome for this authorized claim.")
+            return self._idempotency_cache[cache_key]
 
         submission_id = f"sub-{uuid.uuid4().hex[:12]}"
         simulated_claim_ref = f"SIM-APEX-2026-{uuid.uuid4().hex[:6].upper()}"
@@ -81,7 +82,7 @@ class MockInsurerSandboxService:
             outcome = self._auto_detect_scenario(submission_id, claim, simulated_claim_ref, simulated_batch_id)
 
         # Store in idempotency cache
-        self._idempotency_cache[request.idempotency_key] = outcome
+        self._idempotency_cache[cache_key] = outcome
         return outcome
 
     def _auto_detect_scenario(

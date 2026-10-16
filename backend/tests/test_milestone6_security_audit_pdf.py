@@ -47,6 +47,8 @@ def create_signed_token(
         "email": f"{user_id}@example.com",
         "aud": aud,
         "exp": int(time.time()) + expires_in,
+        "iat": int(time.time()),
+        "iss": get_settings().jwt_issuer,
     }
     h_b64 = base64.urlsafe_b64encode(json.dumps(header).encode()).rstrip(b"=").decode()
     p_b64 = base64.urlsafe_b64encode(json.dumps(payload).encode()).rstrip(b"=").decode()
@@ -69,7 +71,7 @@ def create_synthetic_bill_pdf() -> bytes:
     return pdf_bytes
 
 
-def _create_mock_policy_record(policy_id: str, name: str) -> PolicyExtractionResult:
+def _create_mock_policy_record(policy_id: str, name: str, owner: str = "dev-user-001") -> PolicyExtractionResult:
     """Helper to register and index a mock policy for comparison & claims testing."""
     clauses = [
         ExtractedClause(
@@ -91,7 +93,7 @@ def _create_mock_policy_record(policy_id: str, name: str) -> PolicyExtractionRes
     ]
     pol = PolicyExtractionResult(
         policy_id=policy_id,
-        user_id="dev-user-001",
+        user_id=owner,
         document_name=f"{name}.pdf",
         document_hash=f"hash-{policy_id}",
         file_size_bytes=10240,
@@ -111,16 +113,24 @@ def _create_mock_policy_record(policy_id: str, name: str) -> PolicyExtractionRes
 
 
 @pytest.fixture(autouse=True)
-def setup_m6_test_environment(monkeypatch):
+def setup_m6_test_environment(monkeypatch, request):
+    if not request.node.get_closest_marker("database"):
+        request.getfixturevalue("memory_policy_store")
     """Configure settings and seed policies for Milestone 6 test execution."""
     settings = get_settings()
     monkeypatch.setattr(settings, "supabase_jwt_secret", TEST_JWT_SECRET)
     monkeypatch.setattr(settings, "environment", "development")
 
     # Seed policies
-    _create_mock_policy_record("m6-test-policy", "Standard Policy")
-    _create_mock_policy_record("m6-test-policy-1", "Gold Shield Plan")
-    _create_mock_policy_record("m6-test-policy-2", "Silver Care Plan")
+    owner = {
+        "test_tenant_isolation_cross_user_access_rejected": "user-alice-001",
+        "test_eob_pdf_export_success": "user-pdf-tester",
+        "test_appeal_pdf_reviewed_status_enforcement": "user-appeal-pdf-tester",
+        "test_comparison_pdf_export_success": "user-compare-pdf-tester",
+    }.get(request.node.name, "dev-user-001")
+    _create_mock_policy_record("m6-test-policy", "Standard Policy", owner)
+    _create_mock_policy_record("m6-test-policy-1", "Gold Shield Plan", owner)
+    _create_mock_policy_record("m6-test-policy-2", "Silver Care Plan", owner)
 
 
 # ==============================================================================
@@ -177,6 +187,7 @@ async def test_production_mode_fails_closed_without_token(monkeypatch):
         assert "authentication required" in res.json().get("detail", "").lower()
 
 
+@pytest.mark.database
 @pytest.mark.asyncio
 async def test_production_mode_accepts_valid_token(monkeypatch):
     """Verify that in production mode, a valid JWT is accepted."""
@@ -197,6 +208,7 @@ async def test_production_mode_accepts_valid_token(monkeypatch):
 # 2. TENANT ISOLATION / HORIZONTAL PRIVILEGE ESCALATION TESTS
 # ==============================================================================
 
+@pytest.mark.database
 @pytest.mark.asyncio
 async def test_tenant_isolation_cross_user_access_rejected():
     """
@@ -275,6 +287,7 @@ async def test_tenant_isolation_cross_user_access_rejected():
 # 3. SERVER-SIDE PDF EXPORT TESTS
 # ==============================================================================
 
+@pytest.mark.database
 @pytest.mark.asyncio
 async def test_eob_pdf_export_success():
     """Verify that an adjudicated claim generates a valid, styled EOB PDF."""
@@ -327,6 +340,7 @@ async def test_eob_pdf_export_success():
         doc.close()
 
 
+@pytest.mark.database
 @pytest.mark.asyncio
 async def test_appeal_pdf_reviewed_status_enforcement():
     """
@@ -410,6 +424,7 @@ async def test_appeal_pdf_reviewed_status_enforcement():
         doc.close()
 
 
+@pytest.mark.database
 @pytest.mark.asyncio
 async def test_comparison_pdf_export_success():
     """Verify that a policy comparison report generates a valid PDF."""
@@ -455,6 +470,7 @@ async def test_comparison_pdf_export_success():
 # 4. CRYPTOGRAPHIC AUDIT TRAIL & TAMPER-EVIDENT HASH CHAIN TESTS
 # ==============================================================================
 
+@pytest.mark.database
 @pytest.mark.asyncio
 async def test_audit_hash_chain_sequential_integrity():
     """
@@ -584,6 +600,7 @@ def test_audit_sensitive_data_redaction():
     assert redacted["allowed_charge"] == 5000
 
 
+@pytest.mark.database
 @pytest.mark.asyncio
 async def test_audit_api_verification_endpoint():
     """Verify the POST /api/v1/audit/verify endpoint via HTTP API."""

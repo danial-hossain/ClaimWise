@@ -1,0 +1,34 @@
+{
+  "futureStepsLocked": true,
+  "policyId": "m6-test-policy",
+  "forwardTransition": {
+    "exitLeft": true,
+    "enterRight": true,
+    "onePanelAtATime": true,
+    "staticChrome": true
+  },
+  "refreshRestoresScenario": true,
+  "browserBack": true,
+  "footerBack": true,
+  "backwardTransition": {
+    "exitRight": true,
+    "enterLeft": true
+  },
+  "refreshRestoresQuestion": true,
+  "guidanceRequiresAnalysis": true,
+  "draftNativeValidation": true,
+  "refreshRestoresDraft": true,
+  "resumeFromMyClaims": true,
+  "desktopNoOverflow": true,
+  "mobile": {
+    "noOverflow": true,
+    "collapsed": true,
+    "counter": "Step 4 of 4 Claim draft",
+    "sticky": "sticky"
+  },
+  "reducedMotion": true,
+  "newScenarioResets": true,
+  "runtimeExceptions": [],
+  "backendWrites": "None: no analysis generation, question submission, claim save, or insurer submission was triggered.",
+  "unverified": "Authenticated saved-analysis restoration and claim saving require a signed-in session. Guidance/draft screenshots show real empty/authorization states."
+}

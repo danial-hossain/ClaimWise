@@ -21,6 +21,28 @@ class AttributeStatus(str, Enum):
     NOT_APPLICABLE = "not_applicable"  # Demonstrably not applicable to this policy
 
 
+class PriorAuthServiceItem(BaseModel):
+    """Specific service requiring or exempt from prior authorization with exact clause citations."""
+    service: str = Field(..., description="Service name requiring prior authorization")
+    clause_id: str = Field(..., description="Clause ID establishing requirement")
+    page: int = Field(..., description="Page number where requirement appears")
+    quote: str = Field(..., description="Exact verbatim quotation from policy clause")
+
+    @property
+    def page_number(self) -> int:
+        return self.page
+
+    @property
+    def exact_quote(self) -> str:
+        return self.quote
+
+    @property
+    def service_name(self) -> str:
+        return self.service
+
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
+
+
 class PolicyAttributeEvidence(BaseModel):
     """Individual attribute evaluation with transparent status and source citations."""
     attribute_name: str = Field(..., description="Machine identifier of attribute, e.g. deductible_individual")
@@ -42,6 +64,14 @@ class PolicyAttributeEvidence(BaseModel):
     notes: Optional[str] = Field(
         None,
         description="Transparent notes on missing evidence, conflicting clauses, or assumptions",
+    )
+    required_services: List[PriorAuthServiceItem] = Field(
+        default_factory=list,
+        description="List of services that explicitly require prior authorization with clause_id, page, and quote",
+    )
+    not_specified_services: List[str] = Field(
+        default_factory=list,
+        description="List of services where prior authorization status is explicitly not specified or unknown",
     )
 
     model_config = ConfigDict(from_attributes=True)

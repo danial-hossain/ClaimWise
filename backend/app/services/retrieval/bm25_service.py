@@ -21,11 +21,31 @@ logger = logging.getLogger("claimwise.retrieval.bm25")
 # hyphenated terms ('in-network', 'out-of-pocket'), and standard words.
 TOKEN_PATTERN = re.compile(r"[a-z0-9]+(?:[\.\-][a-z0-9]+)*")
 
+STOP_WORDS = {
+    "a", "an", "the", "and", "or", "of", "to", "in", "for", "with",
+    "on", "at", "by", "from", "up", "about", "into", "over", "after",
+    "is", "are", "was", "were", "be", "been", "being", "have", "has",
+    "had", "do", "does", "did", "what", "which", "who", "whom", "this",
+    "that", "these", "those", "am", "it", "its", "under", "how", "much"
+}
+
 
 def tokenize_text(text: str) -> List[str]:
     """Tokenize text preserving clause markers, terms, and numbers."""
     cleaned = text.lower()
-    return TOKEN_PATTERN.findall(cleaned)
+    tokens = TOKEN_PATTERN.findall(cleaned)
+    # Symmetric vocabulary normalization improves lexical recall when optional
+    # embeddings are unavailable. It changes search terms, never source evidence.
+    equivalents = (
+        {"vehicle", "car", "automobile"},
+        {"workshop", "garage", "repairer", "trader"},
+        {"repair", "repairs", "repairing", "repaired"},
+        {"unattended", "abandoned"},
+        {"unroadworthy", "roadworthiness", "unsafe"},
+        {"maintenance", "maintained", "maintain"},
+    )
+    canonical = {word: f"synonym{idx}" for idx, group in enumerate(equivalents) for word in group}
+    return tokens + [canonical[token] for token in tokens if token in canonical]
 
 
 class LuceneBM25Index:
@@ -97,6 +117,24 @@ class LexicalMatch:
     score: float
 
 
+# General insurance domain synonyms bridging consumer natural language with policy terms
+INSURANCE_SYNONYMS: Dict[str, List[str]] = {
+    "car": ["vehicle", "motor"],
+    "auto": ["vehicle", "motor", "car"],
+    "automobile": ["vehicle", "motor", "car"],
+    "cover": ["indemnify", "indemnity", "coverage", "covered", "scope"],
+    "covered": ["indemnify", "indemnity", "cover", "coverage", "scope"],
+    "coverage": ["cover", "covered", "indemnify", "benefit"],
+    "damage": ["loss", "repair", "collision"],
+    "crash": ["collision", "accident"],
+    "theft": ["stolen", "burglary"],
+    "stolen": ["theft", "burglary"],
+    "lost": ["loss", "missing"],
+    "doctor": ["physician", "practitioner"],
+    "hospital": ["inpatient", "facility"],
+}
+
+
 class BM25RetrievalService:
     """
     Lexical retrieval index managing extracted clauses partitioned by policy.
@@ -166,9 +204,23 @@ class BM25RetrievalService:
         Execute BM25 search filtered strictly by the authorized policy_ids.
         Guarantees cross-user document isolation.
         """
-        query_tokens = tokenize_text(query_text)
-        if not query_tokens:
+        raw_tokens = tokenize_text(query_text)
+        if not raw_tokens:
             return []
+
+        # Discount generic conversational stop words
+        filtered = [t for t in raw_tokens if t not in STOP_WORDS]
+        base_tokens = filtered if filtered else raw_tokens
+
+        # General domain synonym expansion to bridge user phrasing with policy terms
+        expanded_tokens = list(base_tokens)
+        seen_tokens = set(base_tokens)
+        for token in base_tokens:
+            for syn in INSURANCE_SYNONYMS.get(token, []):
+                if syn not in seen_tokens:
+                    seen_tokens.add(syn)
+                    expanded_tokens.append(syn)
+        query_tokens = expanded_tokens
 
         all_scored_matches: List[tuple[float, IndexedClause]] = []
 
