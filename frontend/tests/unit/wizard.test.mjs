@@ -30,3 +30,8 @@ test('invalid or missing step parameters fall back to policy', () => {
   assert.equal(wizardStep('submission'), 'policy');
   assert.equal(wizardStep(null), 'policy');
 });
+test('guided flow labels follow the primary navigation pages', async () => {
+  const { WIZARD_STEPS } = await import('../../src/lib/wizard.ts');
+  assert.deepEqual(WIZARD_STEPS.map(step => step.label), ['My policies', 'Coverage', 'Ask ClaimWise', 'My claims']);
+  assert.deepEqual(WIZARD_STEPS.map(step => step.page), ['/policies', '/coverage', '/workspace', '/claims']);
+});

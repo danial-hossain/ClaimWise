@@ -593,12 +593,11 @@
 .workspace-chat-scope select { min-width:0; flex:1; max-width:550px; border:1px solid #d3e3df; border-radius:10px; padding:9px 12px; background:white; color:#173b45; }
 .workspace-chat-modal .cw-chat-panel { height:min(650px,65dvh); flex:0 1 auto; }
 @media(max-width:640px) { .workspace-chat-scope { padding:10px 16px; } .workspace-chat-modal .glass-modal-body { padding:0; } }
-.workspace-chat-launcher { position:fixed; right:24px; bottom:24px; z-index:50; min-height:50px; margin:0 !important; padding-inline:20px; box-shadow:0 8px 28px rgba(11,43,42,.22); }
-.workspace-page { padding-bottom:100px; }
+.workspace-chat-launcher-wrap { display:flex; justify-content:flex-end; }
+.workspace-chat-launcher { position:static; min-height:50px; margin:0 !important; padding-inline:20px; box-shadow:0 8px 28px rgba(11,43,42,.22); }
 .workspace-context-actions { display:flex; flex-wrap:wrap; align-items:center; gap:12px; }
 .workspace-context-actions a { display:inline-flex; align-items:center; min-height:40px; padding:9px 15px; border:1px solid #c9dfda; border-radius:999px; background:#f8fcfb; font-size:12px; font-weight:600; color:#196d66; }
 .workspace-context-actions a:hover { background:#e7f4ef; border-color:#8bbdb0; }
-@media(max-width:767px) { .workspace-chat-launcher { right:16px; bottom:16px; } }
 .claimwise-brand { display:inline-flex; align-items:center; gap:9px; white-space:nowrap; }
 .claimwise-wordmark { color:#102b4c; font-family:var(--font-sans),Arial,sans-serif; font-size:23px; font-weight:750; line-height:1; letter-spacing:-.045em; }
 .claimwise-wordmark > span { color:#087e8b; }

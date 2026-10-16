@@ -116,6 +116,7 @@ export interface RetrievedEvidenceClause {
 export interface VerifiedCitation {
   clause_id: string;
   page_number: number;
+  printed_page_label?: string | null;
   exact_quote: string;
   policy_id: string;
   clause_heading?: string | null;
@@ -550,7 +551,26 @@ export interface BenchmarkExecutionReport {
   results: QuestionEvaluationResult[];
 }
 
-export type CoverageVerdictType = 'covered' | 'conditional' | 'excluded' | 'uncertain';
+export type CoverageVerdictType = 'covered' | 'conditional' | 'partially_covered' | 'excluded' | 'uncertain';
+export type CoverageAssessmentType = 'potentially_covered' | 'partially_covered' | 'conditional_or_limited' | 'potentially_excluded' | 'insufficient_evidence';
+export type CoverageComponentKind = 'insured_loss' | 'policy_requirement' | 'supporting_document' | 'unresolved_fact';
+export type CoverageFactStatus = 'satisfied' | 'not_satisfied' | 'unknown' | 'not_applicable';
+
+export interface CoverageComponentFinding {
+  part: string;
+  kind?: CoverageComponentKind;
+  verdict?: CoverageVerdictType | null;
+  fact_status?: CoverageFactStatus | null;
+  explanation: string;
+  coverage_provision?: string | null;
+  restrictions: string[];
+  conditions_and_limits: string[];
+  missing_facts: string[];
+  payable_amount?: string | null;
+  calculation?: string | null;
+  dropped_material?: string[];
+  citations: VerifiedCitation[];
+}
 
 export interface PresetScenarioItem {
   id: string;
@@ -570,8 +590,12 @@ export interface CoverageScenarioRequest {
 export interface CoverageGapAnalysisResult {
   guidance?: { text: string; citations: VerifiedCitation[] }[];
   evidence_limitations?: string[];
+  dropped_material?: string[];
+  overall_assessment?: CoverageAssessmentType | null;
+  components?: CoverageComponentFinding[];
   id: string;
   policy_id: string;
+  policy_name?: string | null;
   category: string;
   situation: string;
   description: string;

@@ -22,7 +22,6 @@ import {
   Home,
   Plane,
   Sparkles,
-  CheckCircle2,
   X,
 } from 'lucide-react';
 import {
@@ -47,7 +46,7 @@ import { GlassPanel } from '@/components/ui/Glass';
 import HeroSection from '@/components/ui/HeroSection';
 import HeroIllustration from '@/components/ui/HeroIllustration';
 import { Skeleton, StaggerGroup, StaggerItem } from '@/components/ui/Motion';
-import { coverageNeedName } from '@/lib/coverage-presentation';
+import { coverageNeedName, coverageOutcomeCounts } from '@/lib/coverage-presentation';
 
 const MAX_NEED_INPUT_LENGTH = 2000;
 const COVERAGE_STATE_PREFIX = 'claimwise_coverage_state_v1';
@@ -118,146 +117,6 @@ export const FOUR_CATEGORY_QUICK_QUESTIONS: QuickCategoryQuestion[] = [
   },
 ];
 
-export interface QuickOption {
-  label: string;
-  value: string;
-}
-
-export function getQuestionQuickOptions(question: string): QuickOption[] {
-  const q = question.toLowerCase();
-
-  // 1. Rental Car / Vehicle Accident
-  if (q.includes('hired rental car') || q.includes('rental car') || q.includes('private vehicle')) {
-    return [
-      { label: 'Hired Rental Car (Licensed Agency)', value: 'Hired rental car from a licensed commercial rental agency' },
-      { label: 'Private / Owned Vehicle', value: 'Private personally owned motor vehicle' },
-    ];
-  }
-  if (q.includes('nominated driver') || q.includes('comprehensive')) {
-    return [
-      { label: 'Yes: Nominated Driver with Comprehensive Insurance', value: 'Listed as nominated driver on rental agreement with comprehensive hire insurance' },
-      { label: 'No: Not Nominated or No Comprehensive Cover', value: 'Not listed as nominated driver or lacking comprehensive hire insurance' },
-    ];
-  }
-  if (q.includes('unsealed') || q.includes('violation')) {
-    return [
-      { label: 'Sealed Public Roads (Full Compliance)', value: 'Driven strictly on paved sealed public roads in full compliance with rental terms' },
-      { label: 'Unsealed Road or Agreement Breach', value: 'Driven on unsealed road or operated in violation of rental agreement terms' },
-    ];
-  }
-  if (q.includes('third parties') || q.includes('third party') || q.includes('property damage') || q.includes('bodily injury')) {
-    return [
-      { label: 'No Third-Party Damage or Injury', value: 'No property damage or bodily injury caused to third parties' },
-      { label: 'Involved Third-Party Property/Injury', value: 'Caused property damage or bodily injury to third parties' },
-    ];
-  }
-  if (q.includes('towing') || q.includes('mechanical repair')) {
-    return [
-      { label: 'No Towing or Private Repairs', value: 'No roadside towing or mechanical repair expenses claimed' },
-      { label: 'Incurred Roadside Towing & Repairs', value: 'Incurred roadside towing and mechanical repair expenses' },
-    ];
-  }
-  if (q.includes('disrupt') || q.includes('accommodation') || q.includes('replacement transport')) {
-    return [
-      { label: 'Journey Disrupted (Extra Room & Transport)', value: 'Collision disrupted journey requiring additional accommodation and replacement transport' },
-      { label: 'No Disruption Expenses', value: 'No extra accommodation or travel disruption expenses incurred' },
-    ];
-  }
-  if (q.includes('other policies') || q.includes('policies included') || q.includes('cdw')) {
-    return [
-      { label: 'No Other Insurance Held', value: 'No separate motor vehicle, CDW, or credit card insurance held' },
-      { label: 'Additional Policies Held (Auto / CDW / Card)', value: 'Additional policies held under domestic auto insurance, rental agency CDW, or credit card coverage' },
-    ];
-  }
-
-  // 2. Luggage / Theft / Loss / Damage
-  if (q.includes('police') || q.includes('pir') || q.includes('24 hours') || q.includes('written report')) {
-    return [
-      { label: 'Reported within 24h with Police/PIR Report', value: 'Reported to police or transport carrier within 24 hours with written PIR report' },
-      { label: 'Not Reported or No Written Report', value: 'Not reported within 24 hours or lacking written official report' },
-    ];
-  }
-  if (q.includes('unattended') || q.includes('public area') || q.includes('unlocked')) {
-    return [
-      { label: 'Kept Supervised / Locked in Hotel Safe', value: 'Kept securely attended or locked inside a locked hotel safe' },
-      { label: 'Left Unattended in Public / Vehicle', value: 'Left unattended in a public area or unattended motor vehicle' },
-    ];
-  }
-  if (q.includes('receipt') || q.includes('proof of ownership') || q.includes('valuation')) {
-    return [
-      { label: 'Original Purchase Receipts Available', value: 'Original purchase receipts and proof of ownership are available' },
-      { label: 'No Purchase Receipts / Proof Available', value: 'No original purchase receipts or proof of ownership available' },
-    ];
-  }
-  if (q.includes('high-value') || q.includes('laptop') || q.includes('jewelry') || q.includes('cameras') || q.includes('cash')) {
-    return [
-      { label: 'Includes Laptop / Camera / Valuables', value: 'Claim includes high-value laptop, electronics, or valuables' },
-      { label: 'Standard Luggage & Clothes Only', value: 'Only standard clothing and personal luggage items claimed' },
-    ];
-  }
-
-  // 3. Medical / Hospitalization / Surgery
-  if (q.includes('emergency') || q.includes('elective') || q.includes('scheduled')) {
-    return [
-      { label: 'Emergency Hospital Admission', value: 'Emergency hospital admission for acute life-threatening medical need' },
-      { label: 'Scheduled / Elective Procedure', value: 'Scheduled elective non-emergency procedure' },
-    ];
-  }
-  if (q.includes('in-network') || q.includes('network') || q.includes('participating')) {
-    return [
-      { label: 'In-Network Hospital & Doctor', value: 'Treated strictly at an in-network hospital with participating physicians' },
-      { label: 'Out-of-Network Facility or Provider', value: 'Treated at an out-of-network facility or by non-participating providers' },
-    ];
-  }
-  if (q.includes('prior auth') || q.includes('precertification') || q.includes('prior approval')) {
-    return [
-      { label: 'Prior Authorization Approved in Advance', value: 'Prior authorization obtained and approved in advance of treatment' },
-      { label: 'No Prior Authorization Obtained', value: 'No prior authorization or precertification obtained before care' },
-    ];
-  }
-  if (q.includes('pre-existing') || q.includes('prior to your policy') || q.includes('prior date')) {
-    return [
-      { label: 'New Acute Condition (No Prior History)', value: 'New acute medical illness with no prior diagnosis or symptoms' },
-      { label: 'Related to Pre-Existing Condition', value: 'Related to an existing medical condition diagnosed or treated previously' },
-    ];
-  }
-
-  // 4. Trip Delay / Cancellation
-  if (q.includes('cause of the delay') || q.includes('cause of cancellation') || q.includes('severe weather') || q.includes('strike')) {
-    return [
-      { label: 'Carrier Breakdown / Severe Weather / Sickness', value: 'Cancelled due to verified carrier mechanical failure, severe weather, or unforeseen sickness' },
-      { label: 'Voluntary / Personal Schedule Change', value: 'Cancelled due to personal decision, work conflict, or voluntary change of mind' },
-    ];
-  }
-  if (q.includes('written confirmation') || q.includes('delay duration') || q.includes('carrier provide')) {
-    return [
-      { label: 'Written Delay Certificate Provided by Airline', value: 'Written certificate from transport carrier confirming delay and reason' },
-      { label: 'No Written Carrier Confirmation', value: 'No written delay or cancellation verification provided by carrier' },
-    ];
-  }
-
-  // 5. Dental
-  if (q.includes('sound natural teeth') || q.includes('accidental physical injury') || q.includes('relief of pain')) {
-    return [
-      { label: 'Accidental Injury to Sound Natural Teeth', value: 'Emergency treatment for sudden accidental injury to sound natural teeth' },
-      { label: 'Routine Cleaning, Crown, or Cosmetic Care', value: 'Routine dental checkup, cosmetic work, or preventative treatment' },
-    ];
-  }
-
-  // 6. Pharmacy / Medication
-  if (q.includes('formulary') || q.includes('tier') || q.includes('preferred retail')) {
-    return [
-      { label: 'Tier 1 / Generic Formulary Medication', value: 'Tier 1 generic medication listed on plan prescription formulary' },
-      { label: 'Non-Formulary / Specialty Brand Drug', value: 'Non-formulary brand or specialty medication' },
-    ];
-  }
-
-  return [
-    { label: 'Yes / Confirmed', value: 'Yes, this condition applies' },
-    { label: 'No / Does Not Apply', value: 'No, this condition does not apply' },
-  ];
-}
-
 function parseNeedInput(input: string): { needs: string[]; context: string; error?: string } {
   const text = input.trim();
   if (!text) return { needs: [], context: '', error: 'Enter a scenario to evaluate.' };
@@ -296,6 +155,7 @@ export default function CoverageAnalysisPage() {
   const [activeClarifyId, setActiveClarifyId] = useState<string | null>(null);
   const [showInsurerQuestionsModal, setShowInsurerQuestionsModal] = useState(false);
   const [clarificationAnswers, setClarificationAnswers] = useState<Record<string, string>>({});
+  const [clarificationChoices, setClarificationChoices] = useState<Record<string, 'Yes' | 'No'>>({});
   const [isClarifying, setIsClarifying] = useState(false);
   const [hasRestoredState, setHasRestoredState] = useState(false);
 
@@ -427,6 +287,7 @@ export default function CoverageAnalysisPage() {
       setUserScenarios(isWizard ? saved.filter(item => newPolicyId === journey.policyId && item.id === journey.analysisId) : saved);
     } catch (error) { if (!mounted.current || !requests.current.isCurrent(scopeTicket)) return; setErrorMessage(error instanceof Error ? error.message : 'Could not load saved analyses.'); }
     setActiveClarifyId(null);
+    setClarificationChoices({});
     setClarificationAnswers({});
     setReport(null);
     if (!isWizard) setCustomNeedText('');
@@ -453,7 +314,7 @@ export default function CoverageAnalysisPage() {
     if (isWizard && activePolicy) remember({ policyId: activePolicy.policy_id || undefined, policyReady: Boolean(activePolicy.status === 'success' && activePolicy.has_extractable_text && activePolicy.clauses.length) });
   }, [isWizard, activePolicy, remember]);
   const currentAnalysis = userScenarios.find(item => item.id === (focusedAnalysisId || (analysisPhase === 'idle' ? journey.analysisId : undefined)));
-  const reviewedAnalysis = analysisPhase !== 'error' && !isEvaluating && currentAnalysis && (!customNeedText.trim() || customNeedText.trim() === currentAnalysis.situation.trim() || (lastSuccessfulSubmission?.id === currentAnalysis.id && lastSuccessfulSubmission.input === customNeedText.trim())) ? currentAnalysis : undefined;
+  const reviewedAnalysis = analysisPhase !== 'error' && !isEvaluating && currentAnalysis && (!customNeedText.trim() || customNeedText.trim() === currentAnalysis.situation.trim() || (lastSuccessfulSubmission?.id === currentAnalysis.id && (lastSuccessfulSubmission.input === customNeedText.trim() || lastSuccessfulSubmission.input.startsWith(`${customNeedText.trim()} [Clarified details:`)))) ? currentAnalysis : undefined;
   useWizardAction({
     label: analysisPhase === 'error' ? 'Retry analysis' : reviewedAnalysis ? 'Continue to Ask ClaimWise' : 'Analyze scenario',
     disabled: isLoadingPolicies || isLoadingReport || !selectedPolicyId || (!reviewedAnalysis && !customNeedText.trim()),
@@ -464,7 +325,7 @@ export default function CoverageAnalysisPage() {
   });
 
   // Evaluate situation (from preset chips or free-text input)
-  const handleEvaluateSituation = async (situationText: string, categoryOverride?: string, openFollowUpQuestions = true) => {
+  const handleEvaluateSituation = async (situationText: string, categoryOverride?: string, replaceAnalysisId?: string) => {
     const trimmed = situationText.trim();
     if (!trimmed || !selectedPolicyId || isEvaluating) return;
 
@@ -502,18 +363,10 @@ export default function CoverageAnalysisPage() {
         remember({ policyId: selectedPolicyId, analysisId: successfulResults[0].id, analysisReady: true, title: successfulResults[0].situation });
         setUserScenarios((prev) => {
           const newNeedNames = new Set(successfulResults.map((scenario) => scenario.situation.toLowerCase()));
-          const withoutDupes = prev.filter((scenario) => !newNeedNames.has(String(scenario.situation || '').toLowerCase()));
+          const withoutDupes = prev.filter((scenario) => scenario.id !== replaceAnalysisId && !newNeedNames.has(String(scenario.situation || '').toLowerCase()));
           return [...successfulResults, ...withoutDupes];
         });
-        const withQuestions = openFollowUpQuestions && failedNeeds.length > 0
-          ? successfulResults.find((r) => r.insurer_questions && r.insurer_questions.length > 0)
-          : null;
-        if (withQuestions) {
-          setActiveClarifyId(withQuestions.id);
-          setClarificationAnswers({});
-        } else {
-          setActiveClarifyId(null);
-        }
+        setActiveClarifyId(null);
       }
       if (failedNeeds.length) {
         setAnalysisPhase('error');
@@ -526,6 +379,7 @@ export default function CoverageAnalysisPage() {
       setAnalysisPhase('error');
       const message = err instanceof Error ? err.message : 'Unexpected error while evaluating this scenario.';
       setErrorMessage(`Could not evaluate situation: ${message}`);
+      if (replaceAnalysisId) setActiveClarifyId(replaceAnalysisId);
     } finally {
       if (mounted.current && requests.current.isCurrent(ticket)) {
         requests.current.finish(ticket);
@@ -565,20 +419,26 @@ export default function CoverageAnalysisPage() {
   const handleApplyClarifications = async () => {
     if (!clarifyingScenario || !selectedPolicyId || isEvaluating) return;
 
-    const answersList = Object.entries(clarificationAnswers)
-      .filter(([, ans]) => Boolean(ans && ans.trim()))
-      .map(([q, ans]) => `${q.replace(/\s*\(.*?\)$/, '')}: ${ans}`);
+    const answersList = clarifyingScenario.insurer_questions
+      .map((question) => {
+        const answer = clarificationChoices[question];
+        const details = clarificationAnswers[question]?.trim();
+        if (!answer && !details) return null;
+        return `${question.replace(/\s*\(.*?\)$/, '')}: ${[answer, details].filter(Boolean).join(' - ')}`;
+      })
+      .filter((answer): answer is string => Boolean(answer));
 
     if (answersList.length === 0) return;
 
     const refinedSituation = `${clarifyingScenario.situation} [Clarified details: ${answersList.join('; ')}]`;
     setIsClarifying(true);
     setActiveClarifyId(null);
-    await handleEvaluateSituation(refinedSituation, clarifyingScenario.category, false);
+    await handleEvaluateSituation(refinedSituation, clarifyingScenario.category, clarifyingScenario.id);
     setIsClarifying(false);
   };
 
   const visibleScenarios = userScenarios;
+  const outcomeCounts = coverageOutcomeCounts(userScenarios);
 
   // Filtered scenarios for table view
   const filteredScenarios = useMemo(() => {
@@ -719,14 +579,14 @@ export default function CoverageAnalysisPage() {
         <>
           {/* KPI Summary Banner - Shown when user has evaluated scenarios */}
           {userScenarios.length > 0 && (
-            <section className="coverage-summary-grid grid grid-cols-1 sm:grid-cols-4 gap-3.5">
+            <section className="coverage-summary-grid grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-3.5">
               <div className="rounded-2xl border border-teal-200 bg-teal-50/50 p-4 shadow-2xs">
                 <div className="flex items-center justify-between">
                   <span className="text-[11px] font-semibold text-teal-800">Evaluated Scenarios</span>
                   <Clock className="h-4 w-4 text-teal-600" />
                 </div>
                 <div className="text-2xl font-bold text-teal-950 font-mono mt-1">
-                  {userScenarios.length}
+                  {outcomeCounts.total}
                 </div>
                 <p className="text-[11px] text-teal-700/90 mt-0.5">
                   Care needs evaluated against policy
@@ -738,7 +598,7 @@ export default function CoverageAnalysisPage() {
                   <ShieldCheck className="h-4 w-4 text-emerald-600" />
                 </div>
                 <div className="text-2xl font-bold text-emerald-950 font-mono mt-1">
-                  {userScenarios.filter((s) => s.verdict === 'covered').length}
+                  {outcomeCounts.covered}
                 </div>
                 <p className="text-[11px] text-emerald-700/90 mt-0.5">
                   Confirmed benefit coverage
@@ -746,26 +606,38 @@ export default function CoverageAnalysisPage() {
               </div>
               <div className="rounded-2xl border border-amber-200 bg-amber-50/50 p-4 shadow-2xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-semibold text-amber-800">Conditional / Review</span>
+                  <span className="text-[11px] font-semibold text-amber-800">Partially Covered</span>
                   <AlertTriangle className="h-4 w-4 text-amber-600" />
                 </div>
                 <div className="text-2xl font-bold text-amber-950 font-mono mt-1">
-                  {userScenarios.filter((s) => s.verdict === 'conditional').length}
+                  {outcomeCounts.partiallyCovered}
                 </div>
                 <p className="text-[11px] text-amber-700/90 mt-0.5">
-                  Prior auth or limits apply
+                  Conditional or limited coverage
+                </p>
+              </div>
+              <div className="rounded-2xl border border-rose-200 bg-rose-50/60 p-4 shadow-2xs">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-semibold text-rose-800">Not Covered</span>
+                  <Info className="h-4 w-4 text-rose-600" />
+                </div>
+                <div className="text-2xl font-bold text-rose-950 font-mono mt-1">
+                  {outcomeCounts.notCovered}
+                </div>
+                <p className="text-[11px] text-rose-700/90 mt-0.5">
+                  Explicit policy exclusion
                 </p>
               </div>
               <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-4 shadow-2xs">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-semibold text-slate-700">Excluded / Uncertain</span>
+                  <span className="text-[11px] font-semibold text-slate-700">Uncertain</span>
                   <Info className="h-4 w-4 text-slate-500" />
                 </div>
                 <div className="text-2xl font-bold text-slate-900 font-mono mt-1">
-                  {userScenarios.filter((s) => s.verdict === 'excluded' || s.verdict === 'uncertain').length}
+                  {outcomeCounts.uncertain}
                 </div>
                 <p className="text-[11px] text-slate-500 mt-0.5">
-                  Not covered or not specified
+                  Policy evidence is insufficient
                 </p>
               </div>
             </section>
@@ -790,7 +662,7 @@ export default function CoverageAnalysisPage() {
             </div>
 
             {/* Quick Questions (4 Real-Life Categories) */}
-            <div data-wizard-decorative className="space-y-2 pt-1">
+            <div className="space-y-2 pt-1">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider block">
                   Quick Questions (4 Real-Life Categories):
@@ -943,8 +815,8 @@ export default function CoverageAnalysisPage() {
               {/* Questions with Interactive Quick Answer Pills */}
               <div className="space-y-3 pt-1">
                 {clarifyingScenario.insurer_questions.map((question, qIdx) => {
-                  const quickOptions = getQuestionQuickOptions(question);
                   const currentAnswer = clarificationAnswers[question] || '';
+                  const currentChoice = clarificationChoices[question];
 
                   return (
                     <div
@@ -960,38 +832,28 @@ export default function CoverageAnalysisPage() {
                         </p>
                       </div>
 
-                      {/* Quick Answer Options */}
-                      <div className="pl-7 flex flex-wrap gap-2 pt-0.5">
-                        {quickOptions.map((opt, optIdx) => {
-                          const isSelected = currentAnswer === opt.value;
-                          return (
+                      <div className="pl-7 pt-2">
+                        <div className="flex gap-2" role="group" aria-label={`Answer: ${question}`}>
+                          {(['Yes', 'No'] as const).map((choice) => (
                             <button
-                              key={optIdx}
+                              key={choice}
                               type="button"
-                              onClick={() => {
-                                setClarificationAnswers((prev) => ({
-                                  ...prev,
-                                  [question]: isSelected ? '' : opt.value,
-                                }));
-                              }}
-                              className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-all cursor-pointer ${
-                                isSelected
-                                  ? 'border-teal-700 bg-teal-700 text-white shadow-2xs'
-                                  : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-teal-400 hover:bg-teal-50/50'
+                              aria-pressed={currentChoice === choice}
+                              onClick={() => setClarificationChoices((prev) => ({ ...prev, [question]: choice }))}
+                              className={`min-w-20 rounded-lg border px-4 py-2 text-xs font-semibold transition-colors ${
+                                currentChoice === choice
+                                  ? 'border-teal-700 bg-teal-700 text-white'
+                                  : 'border-slate-200 bg-white text-slate-700 hover:border-teal-400 hover:bg-teal-50'
                               }`}
                             >
-                              {isSelected && <CheckCircle2 className="h-3 w-3" />}
-                              <span>{opt.label}</span>
+                              {choice}
                             </button>
-                          );
-                        })}
-                      </div>
-
-                      {/* Custom Detail Input */}
-                      <div className="pl-7 pt-2">
+                          ))}
+                        </div>
                         <input
                           type="text"
-                          placeholder="Or type custom details for this question..."
+                          aria-label={`Additional details for: ${question}`}
+                          placeholder="Optional: add details"
                           value={currentAnswer}
                           onChange={(e) => {
                             const val = e.target.value;
@@ -1011,12 +873,12 @@ export default function CoverageAnalysisPage() {
               {/* Action Bar */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-teal-100">
                 <div className="text-[11px] text-slate-500">
-                  {Object.values(clarificationAnswers).filter(Boolean).length} of{' '}
+                  {clarifyingScenario.insurer_questions.filter((question) => Boolean(clarificationChoices[question] || clarificationAnswers[question]?.trim())).length} of{' '}
                   {clarifyingScenario.insurer_questions.length} questions answered
                 </div>
                 <button
                   type="button"
-                  disabled={Object.values(clarificationAnswers).filter(Boolean).length === 0 || isEvaluating || isClarifying}
+                  disabled={!clarifyingScenario.insurer_questions.some((question) => clarificationChoices[question] || clarificationAnswers[question]?.trim()) || isEvaluating || isClarifying}
                   onClick={handleApplyClarifications}
                   className="inline-flex items-center justify-center gap-2 rounded-xl bg-teal-700 hover:bg-teal-800 px-5 py-2.5 text-xs font-semibold text-white shadow-xs disabled:opacity-50 transition-all cursor-pointer"
                 >
@@ -1091,7 +953,7 @@ export default function CoverageAnalysisPage() {
                   </p>
                 )}
                 <StaggerGroup className="cw-need-list" role="list" aria-label="Coverage findings by need">
-                  {filteredScenarios.map((sc, index) => <StaggerItem key={sc.id} role="listitem"><CoverageNeedRow analysis={sc} index={index} isUserCustom={userScenarios.some(item => item.id === sc.id)} onClarify={() => { setActiveClarifyId(sc.id); }} /></StaggerItem>)}
+                  {filteredScenarios.map((sc, index) => <StaggerItem key={sc.id} role="listitem"><CoverageNeedRow analysis={sc} index={index} isUserCustom={userScenarios.some(item => item.id === sc.id)} autoOpen={sc.id === focusedAnalysisId} onClarify={() => { setClarificationAnswers({}); setClarificationChoices({}); setActiveClarifyId(sc.id); }} /></StaggerItem>)}
                 </StaggerGroup>
               </div>
             )}

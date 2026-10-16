@@ -87,7 +87,7 @@ const statusLabels: Record<string, string> = {
   rejected: 'Rejected',
   insurer_rejected: 'Rejected (simulation)',
   in_dispute: 'In Dispute (internal)',
-  analyzed: 'Preparing Documents',
+  analyzed: 'Analyzed',
   sandbox_submitted: 'Submitted (simulation)',
   closed: 'Closed',
 };
@@ -597,12 +597,14 @@ export default function ClaimsPage() {
   ));
   const canSubmitSandbox = Boolean(selectedClaim && sandboxEligibility(String(selectedClaim.status)) && !hasPendingReviewChanges);
   const sandboxDescription = !selectedClaim
-    ? 'Save a claim draft before sandbox submission can be reviewed. No information will be sent to an insurer. The current backend accepts only previously analyzed claims in its local simulation.'
+    ? 'Save a claim draft before sandbox submission can be reviewed. No information will be sent to an insurer.'
     : !sandboxEligibility(String(selectedClaim.status))
-      ? `Claim ${selectedClaim.id} is saved with status “${statusLabel(selectedClaim)}”. The sandbox requires an analyzed claim. This draft has not met that backend requirement, so submission is unavailable. No information is sent to an insurer.`
+      ? `Claim ${selectedClaim.id} has status “${statusLabel(selectedClaim)}” and cannot be submitted to the local sandbox. No information is sent to an insurer.`
       : hasPendingReviewChanges
-        ? 'Save the edited incident details and draft statement first. The backend will recheck preparation status after saving; sandbox eligibility may change. Nothing has been submitted.'
-        : `Confirm simulated submission of claim ${selectedClaim.id}? This uses the local sandbox only. It does not send a claim to your insurer, and its response is not a real coverage or approval decision.`;
+        ? 'Save the edited incident details and draft statement first. Nothing has been submitted.'
+        : !selectedClaim.eob && !selectedClaim.adjudicated_items?.length
+          ? `Claim ${selectedClaim.id} is saved as “${statusLabel(selectedClaim)}” but has not been adjudicated. Confirming will run a local sandbox simulation that may request more information; it will not approve or deny coverage. Nothing is sent to an insurer.`
+          : `Confirm simulated submission of claim ${selectedClaim.id}? This uses the local sandbox only. It does not send a claim to your insurer, and its response is not a real coverage or approval decision.`;
 
   return (
     <main data-wizard-creating={isWizard && showCreateForm || undefined} className="app-page claims-page mx-auto max-w-7xl space-y-7 px-4 py-7 sm:px-7 sm:py-9 lg:px-10">

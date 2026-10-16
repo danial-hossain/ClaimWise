@@ -32,11 +32,11 @@ export default function StatusBadge({
       icon: CheckCircle2,
       defaultLabel: normStatus === 'potentially_covered' ? 'Potentially covered' : 'Covered',
     };
-  } else if (normStatus === 'conditional' || normStatus === 'conditionally_covered' || normStatus === 'requires_review') {
+  } else if (normStatus === 'conditional' || normStatus === 'conditionally_covered' || normStatus === 'requires_review' || normStatus === 'conditional_or_limited' || normStatus === 'partially_covered') {
     config = {
       tone: 'conditional',
       icon: AlertTriangle,
-      defaultLabel: 'Conditionally covered',
+      defaultLabel: normStatus === 'partially_covered' ? 'Partially covered' : normStatus === 'conditional_or_limited' ? 'Conditional or limited' : 'Conditionally covered',
     };
   } else if (normStatus === 'excluded' || normStatus === 'potentially_excluded' || normStatus === 'conflicting') {
     config = {
@@ -48,7 +48,7 @@ export default function StatusBadge({
     config = {
       tone: 'not_specified',
       icon: HelpCircle,
-      defaultLabel: 'Not specified',
+      defaultLabel: normStatus === 'insufficient_evidence' ? 'Insufficient evidence' : 'Not specified',
     };
   }
 

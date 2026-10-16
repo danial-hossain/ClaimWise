@@ -1,0 +1,190 @@
+[
+  {
+    "id": "global-exclusion",
+    "scenario": "My instrument was damaged by wear.",
+    "sections": [
+      [
+        "Section 1: Instruments",
+        "Accidental damage to instruments is covered."
+      ],
+      [
+        "Section 2: General exclusions",
+        "Wear is excluded from all sections of this policy."
+      ]
+    ],
+    "expected_status": "excluded",
+    "expected_amount": "0.00",
+    "required_quotes": [
+      "Wear is excluded from all sections of this policy."
+    ],
+    "model_output": {
+      "verdict": "excluded",
+      "payable_inputs": {}
+    }
+  },
+  {
+    "id": "optional-condition",
+    "scenario": "My selected optional instrument cover has an unpaid additional premium.",
+    "sections": [
+      [
+        "Section 1: Optional instruments",
+        "Optional instrument cover applies only if selected and the additional premium is paid."
+      ]
+    ],
+    "expected_status": "conditional",
+    "expected_amount": "needs more information: claimed_amount, item_age, limit, depreciation_rate, excess",
+    "required_quotes": [
+      "Optional instrument cover applies only if selected and the additional premium is paid."
+    ],
+    "model_output": {
+      "verdict": "conditional",
+      "payable_inputs": {}
+    }
+  },
+  {
+    "id": "limit-and-depreciation",
+    "scenario": "My instrument costing 2000 was damaged at age 1 year.",
+    "sections": [
+      [
+        "Section 1: Instruments",
+        "Accidental damage to instruments is covered with a limit of 1500, annual depreciation of 10% and excess of 100."
+      ]
+    ],
+    "expected_status": "covered",
+    "expected_amount": "1400.00",
+    "required_quotes": [
+      "Accidental damage to instruments is covered with a limit of 1500, annual depreciation of 10% and excess of 100."
+    ],
+    "model_output": {
+      "verdict": "covered",
+      "payable_inputs": {
+        "claimed_amount": 2000,
+        "item_age": 1,
+        "limit": 1500,
+        "depreciation_rate": 0.1,
+        "excess": 100
+      }
+    }
+  },
+  {
+    "id": "section-scoped-condition",
+    "scenario": "My hotel room was damaged.",
+    "sections": [
+      [
+        "Section 1: Hotel",
+        "Accidental damage to a hotel room is covered without a reporting deadline."
+      ],
+      [
+        "Section 2: Instruments",
+        "Instrument claims require a police report within 24 hours."
+      ]
+    ],
+    "expected_status": "covered",
+    "expected_amount": "needs more information: claimed_amount, item_age, limit, depreciation_rate, excess",
+    "required_quotes": [
+      "Accidental damage to a hotel room is covered without a reporting deadline."
+    ],
+    "model_output": {
+      "verdict": "covered",
+      "payable_inputs": {}
+    }
+  },
+  {
+    "id": "cross-reference",
+    "scenario": "My instrument was damaged.",
+    "sections": [
+      [
+        "Section 1: Instruments",
+        "Accidental damage to instruments is covered. See Section 2 for the applicable excess."
+      ],
+      [
+        "Section 2: Excess",
+        "The instrument claim excess is 100."
+      ]
+    ],
+    "expected_status": "covered",
+    "expected_amount": "needs more information: claimed_amount, item_age, limit, depreciation_rate",
+    "required_quotes": [
+      "Accidental damage to instruments is covered.",
+      "The instrument claim excess is 100."
+    ],
+    "model_output": {
+      "verdict": "covered",
+      "payable_inputs": {
+        "excess": 100
+      }
+    }
+  },
+  {
+    "id": "table-detector-miss",
+    "scenario": "My camera costing 2000 was damaged at age 1 year.",
+    "table_detector_miss": true,
+    "expected_status": "covered",
+    "expected_amount": "1400.00",
+    "required_quotes": [
+      "Camera",
+      "$1,500",
+      "10% depreciation per year"
+    ],
+    "model_output": {
+      "verdict": "covered",
+      "payable_inputs": {
+        "claimed_amount": 2000,
+        "item_age": 1,
+        "limit": 1500,
+        "depreciation_rate": 0.1,
+        "excess": 100
+      }
+    }
+  },
+  {
+    "id": "flat-age-band-depreciation",
+    "scenario": "My three-year-old instrument costing 2000 was damaged.",
+    "sections": [
+      [
+        "Section 1: Instruments",
+        "Accidental damage to instruments is covered. For items aged 25 to 36 months deduct 60% depreciation once, subject to a limit of 1500 and excess of 100."
+      ]
+    ],
+    "expected_status": "covered",
+    "expected_amount": "700.00",
+    "required_quotes": [
+      "For items aged 25 to 36 months deduct 60% depreciation once, subject to a limit of 1500 and excess of 100."
+    ],
+    "model_output": {
+      "verdict": "covered",
+      "payable_inputs": {
+        "depreciation_method": "flat",
+        "claimed_amount": 2000,
+        "item_age": 3,
+        "limit": 1500,
+        "depreciation_rate": 0.6,
+        "excess": 100
+      }
+    }
+  },
+  {
+    "id": "expense-without-property-age",
+    "scenario": "I paid 800 for alternative public transport to attend an event.",
+    "sections": [
+      [
+        "Section 1: Event expenses",
+        "Reasonable additional public transport expenses to attend a pre-booked event are covered up to 5000 with no excess."
+      ]
+    ],
+    "expected_status": "covered",
+    "expected_amount": "800.00",
+    "required_quotes": [
+      "Reasonable additional public transport expenses to attend a pre-booked event are covered up to 5000 with no excess."
+    ],
+    "model_output": {
+      "verdict": "covered",
+      "payable_inputs": {
+        "depreciation_method": "not_applicable",
+        "claimed_amount": 800,
+        "limit": 5000,
+        "excess": 0
+      }
+    }
+  }
+]

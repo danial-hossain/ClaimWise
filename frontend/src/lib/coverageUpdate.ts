@@ -10,9 +10,24 @@ export async function evaluateNeeds(analyze: Analyze, policyId: string, needs: s
       const response = await analyze({ policy_id: policyId, situation: need, category, description: context || undefined });
       if (response.error || !response.data) return { need, error: response.error || 'The service returned no result.' };
       const result = response.data;
+      const componentsValid = result.components === undefined || (Array.isArray(result.components) && result.components.length <= 8 && result.components.every(component => {
+        if (!component || typeof component.part !== 'string' || !component.part.trim()
+          || typeof component.explanation !== 'string' || !component.explanation.trim()
+          || !Array.isArray(component.citations)
+          || component.citations.some(citation => !citation || citation.policy_id !== policyId || citation.verified !== true
+            || typeof citation.clause_id !== 'string' || !citation.clause_id
+            || typeof citation.exact_quote !== 'string' || !citation.exact_quote.trim()
+            || !Number.isInteger(citation.page_number) || citation.page_number < 1)) return false;
+        const kind = component.kind || 'insured_loss';
+        if (kind === 'insured_loss') return ['covered', 'conditional', 'partially_covered', 'excluded', 'uncertain'].includes(component.verdict || '');
+        return ['policy_requirement', 'supporting_document', 'unresolved_fact'].includes(kind)
+          && component.verdict == null
+          && ['satisfied', 'not_satisfied', 'unknown', 'not_applicable'].includes(component.fact_status || '');
+      }));
       if (typeof result.id !== 'string' || !result.id || result.policy_id !== policyId || result.situation?.trim() !== need.trim()
         || typeof result.explanation !== 'string' || !result.explanation.trim()
-        || !['covered', 'conditional', 'excluded', 'uncertain'].includes(result.verdict)
+        || !['covered', 'conditional', 'partially_covered', 'excluded', 'uncertain'].includes(result.verdict)
+        || !componentsValid
         || !Array.isArray(result.clauses) || result.clauses.some(c => !c || c.policy_id !== policyId
           || c.verified !== true || typeof c.clause_id !== 'string' || typeof c.exact_quote !== 'string'
           || !Number.isInteger(c.page_number) || c.page_number < 1)

@@ -39,8 +39,13 @@ def test_valid_single_page_pdf_extraction():
     assert result.clauses[0].page_number == 1
     assert result.clauses[0].clause_id == "SEC-1.1"
     assert result.clauses[0].heading_confidence == "high"
+    assert result.clauses[0].validation["verbatim_pass"] is True
+    assert result.clauses[0].clause_type == "benefit"
+    assert result.clauses[0].section_path
     assert result.clauses[1].page_number == 1
     assert result.clauses[1].clause_id == "SEC-2.1"
+    assert result.extraction_validation.verbatim_pass_rate == 1.0
+    assert result.pages[0].extraction_coverage_ratio > 0
 
 
 def test_multiple_page_pdf_page_numbering():
@@ -88,6 +93,58 @@ def test_clause_metadata_and_heuristic_headings():
     assert c2.clause_heading is None
     assert c2.heading_confidence == "none"
     assert c2.clause_id.startswith("P1-C")
+
+
+def test_hierarchy_scope_type_and_cross_reference_are_derived_from_source_structure():
+    pdf_bytes = create_synthetic_pdf([[
+        "Section 1: Property Cover",
+        "1.1 Accidental Damage",
+        "The insurer will pay for accidental damage to insured property subject to the applicable schedule.",
+        "Section 2: General Terms",
+        "This exclusion applies to all sections of the policy. See section 1.1 for the covered property definition.",
+    ]])
+
+    result = document_service.process_pdf(pdf_bytes, filename="hierarchy.pdf")
+    benefit = next(clause for clause in result.clauses if "accidental damage to insured property" in clause.text.lower())
+    global_clause = next(clause for clause in result.clauses if "applies to all sections" in clause.text.lower())
+
+    assert "1 Property Cover" in benefit.section_path
+    assert benefit.sub_heading == "1.1 Accidental Damage"
+    assert benefit.clause_type in {"benefit", "condition"}
+    assert global_clause.scope == "document_wide"
+    assert global_clause.related_clause_ids
+    assert benefit.clause_id in global_clause.related_clause_ids
+
+
+def test_pdf_table_is_preserved_as_one_complete_clause_unit():
+    doc = pymupdf.open()
+    page = doc.new_page()
+    page.insert_text((50, 45), "Section 4: Benefit Limits")
+    x_edges = [50, 260, 440]
+    y_edges = [70, 100, 130, 160]
+    for x in x_edges:
+        page.draw_line((x, y_edges[0]), (x, y_edges[-1]))
+    for y in y_edges:
+        page.draw_line((x_edges[0], y), (x_edges[-1], y))
+    cells = [
+        ["Item", "Maximum benefit"],
+        ["Camera", "$1,500"],
+        ["Other property", "$500"],
+    ]
+    for row_index, row in enumerate(cells):
+        y = y_edges[row_index] + 20
+        page.insert_text((x_edges[0] + 6, y), row[0])
+        page.insert_text((x_edges[1] + 6, y), row[1])
+    pdf_bytes = doc.tobytes()
+    doc.close()
+
+    result = document_service.process_pdf(pdf_bytes, filename="table.pdf")
+    table_clause = next(clause for clause in result.clauses if clause.clause_type == "table")
+
+    assert table_clause.table_rows[0] == ["Item", "Maximum benefit"]
+    assert table_clause.table_rows[1] == ["Camera", "$1,500"]
+    assert table_clause.page_number == 1
+    assert table_clause.validation["verbatim_pass"] is True
 
 
 def test_scanned_pdf_behavior():

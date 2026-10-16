@@ -10,7 +10,8 @@ determining deterministic and grounded verdicts:
 
 from datetime import datetime, timezone
 from enum import Enum
-from typing import List, Optional
+from decimal import Decimal
+from typing import List, Optional, Literal
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from app.schemas.qa import PolicyEvidenceStatus, VerifiedCitation
@@ -22,6 +23,28 @@ class CoverageVerdict(str, Enum):
     CONDITIONAL = "conditional"
     EXCLUDED = "excluded"
     UNCERTAIN = "uncertain"
+    PARTIALLY_COVERED = "partially_covered"
+
+class CoverageAssessment(str, Enum):
+    POTENTIALLY_COVERED = "potentially_covered"
+    PARTIALLY_COVERED = "partially_covered"
+    CONDITIONAL_OR_LIMITED = "conditional_or_limited"
+    POTENTIALLY_EXCLUDED = "potentially_excluded"
+    INSUFFICIENT_EVIDENCE = "insufficient_evidence"
+
+
+class CoverageComponentKind(str, Enum):
+    INSURED_LOSS = "insured_loss"
+    POLICY_REQUIREMENT = "policy_requirement"
+    SUPPORTING_DOCUMENT = "supporting_document"
+    UNRESOLVED_FACT = "unresolved_fact"
+
+
+class CoverageFactStatus(str, Enum):
+    SATISFIED = "satisfied"
+    NOT_SATISFIED = "not_satisfied"
+    UNKNOWN = "unknown"
+    NOT_APPLICABLE = "not_applicable"
 
 
 class PresetScenarioItem(BaseModel):
@@ -63,13 +86,59 @@ class GuidanceAction(BaseModel):
     text: str = Field(..., min_length=1)
     citations: List[VerifiedCitation] = Field(default_factory=list)
 
+class PayableInputs(BaseModel):
+    """Amounts share a currency; rate is an annual fraction, age is in years.
+
+    Zero must be stated explicitly for a deduction that does not apply.
+    """
+    depreciation_method: Literal["annual", "flat", "not_applicable"] = "annual"
+    claimed_amount: Optional[Decimal] = Field(None, ge=0, allow_inf_nan=False)
+    item_age: Optional[Decimal] = Field(None, ge=0, allow_inf_nan=False)
+    limit: Optional[Decimal] = Field(None, ge=0, allow_inf_nan=False)
+    depreciation_rate: Optional[Decimal] = Field(None, ge=0, le=1, allow_inf_nan=False)
+    excess: Optional[Decimal] = Field(None, ge=0, allow_inf_nan=False)
+    model_config = ConfigDict(extra="forbid")
+
+
+class CoverageComponentFinding(BaseModel):
+    """A separately assessed material part of a user's scenario."""
+    part: str = Field(..., min_length=1, max_length=500)
+    kind: CoverageComponentKind = CoverageComponentKind.INSURED_LOSS
+    verdict: Optional[CoverageVerdict] = None
+    fact_status: Optional[CoverageFactStatus] = None
+    explanation: str = Field(..., min_length=1, max_length=4000)
+    coverage_provision: Optional[str] = Field(None, max_length=2000)
+    restrictions: List[str] = Field(default_factory=list, max_length=12)
+    conditions_and_limits: List[str] = Field(default_factory=list, max_length=12)
+    missing_facts: List[str] = Field(default_factory=list, max_length=12)
+    payable_amount: Optional[str] = Field(None, max_length=2000, description="Evidence-stated payable amount, limit, excess, copay, or rate")
+    payable_inputs: Optional[PayableInputs] = None
+    calculation: Optional[str] = Field(None, max_length=4000, description="Step-by-step payable amount calculation or deduction explanation")
+    dropped_material: List[str] = Field(default_factory=list, description="Explicit diagnostics on related policy clauses or section bundles omitted from context")
+    citations: List[VerifiedCitation] = Field(default_factory=list, max_length=12)
+
+    @model_validator(mode="after")
+    def validate_component_kind(self):
+        if self.kind == CoverageComponentKind.INSURED_LOSS and self.verdict is None:
+            raise ValueError("Insured-loss components require a coverage verdict")
+        if self.kind != CoverageComponentKind.INSURED_LOSS and self.verdict is not None:
+            raise ValueError("Requirements and facts must not receive a loss coverage verdict")
+        if self.kind != CoverageComponentKind.INSURED_LOSS and self.fact_status is None:
+            raise ValueError("Requirements and facts require a factual status")
+        return self
+
+    model_config = ConfigDict(from_attributes=True)
+
 
 class CoverageGapAnalysisResult(BaseModel):
     """Detailed evaluation result for a medical situation against policy terms."""
     id: str = Field(..., description="Unique result identifier")
     evidence_limitations: List[str] = Field(default_factory=list)
+    dropped_material: List[str] = Field(default_factory=list, description="Explicit diagnostics on omitted section bundles or clauses")
+    selection_diagnostics: dict = Field(default_factory=dict)
     guidance: List[GuidanceAction] = Field(default_factory=list)
     policy_id: str = Field(..., description="ID of the analyzed policy")
+    policy_name: Optional[str] = Field(None, description="Original title of the selected policy document")
     category: str = Field(..., description="Healthcare category")
     situation: str = Field(..., description="Evaluated situation title")
     description: str = Field(..., description="Context of the evaluated scenario")
@@ -111,6 +180,8 @@ class CoverageGapAnalysisResult(BaseModel):
         le=1.0,
         description="Confidence score of the evidence grounding",
     )
+    overall_assessment: Optional[CoverageAssessment] = None
+    components: List[CoverageComponentFinding] = Field(default_factory=list)
     analyzed_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc),
         description="Timestamp of evaluation",

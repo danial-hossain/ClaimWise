@@ -21,6 +21,7 @@ function compile(code, scope) {
 const parseNeedInput = compile(find(n => ts.isFunctionDeclaration(n) && n.name?.text === 'parseNeedInput').getText(ast)
   + '\nreturn parseNeedInput;', { MAX_NEED_INPUT_LENGTH: 2000 });
 const handlerSource = find(n => ts.isVariableDeclaration(n) && n.name.getText(ast) === 'handleEvaluateSituation').initializer.getText(ast);
+const clarificationHandlerSource = find(n => ts.isVariableDeclaration(n) && n.name.getText(ast) === 'handleApplyClarifications').initializer.getText(ast);
 const old = { id: 'old', policy_id: 'owned', situation: 'Previous scenario', explanation: 'Old findings', clauses: [], insurer_questions: [], verdict: 'uncertain' };
 const proof = { clause_id: 'SEC-2', policy_id: 'owned', page_number: 5, exact_quote: 'Coverage is subject to the Schedule.', verified: true };
 function response(situation, id = 'new') { return { ...old, id, situation, explanation: 'New findings for ' + situation, clauses: [proof], evidence_status: 'evidence_unavailable' }; }
@@ -42,7 +43,7 @@ function harness(api, input = 'Updated incident details') {
     wizardHref: () => '/claims/new?step=guidance',
   };
   const submit = compile('const handler = ' + handlerSource + ';\nreturn handler;', scope);
-  return { state, requests, mounted, submit: () => submit(state.input) };
+  return { state, requests, mounted, submit: (input = state.input, category, replaceAnalysisId) => submit(input, category, replaceAnalysisId) };
 }
 const deferred = () => { let resolve; const promise = new Promise(r => { resolve = r; }); return { promise, resolve }; };
 
@@ -58,6 +59,67 @@ test('actual update handler submits revised values, then focuses the returned an
   assert.deepEqual(h.state.navigations, []);
   assert.ok(!h.state.remembered.some(item => item.analysisAdvancePending));
   assert.equal(h.state.input, 'Updated incident details');
+});
+
+test('successful analysis focuses the result first and preserves its clarification questions', async () => {
+  const h = harness(async payload => ({
+    data: { ...response(payload.situation), insurer_questions: ['Was the item locked in the vehicle?'] },
+    error: null,
+  }));
+  await h.submit();
+  assert.equal(h.state.phase, 'complete');
+  assert.equal(h.state.focused, 'new');
+  assert.equal(h.state.clarify, null);
+  assert.deepEqual(h.state.results[0].insurer_questions, ['Was the item locked in the vehicle?']);
+  assert.ok(page.includes('autoOpen={sc.id === focusedAnalysisId}'));
+});
+
+test('requirement facts are accepted separately and foreign component citations are rejected', async () => {
+  const requirement = { part: 'I filed a police report', kind: 'policy_requirement', verdict: null,
+    fact_status: 'satisfied', explanation: 'The user states the requirement is satisfied.',
+    restrictions: [], conditions_and_limits: [], missing_facts: [], citations: [proof] };
+  const accepted = harness(async payload => ({ data: { ...response(payload.situation), components: [requirement] }, error: null }));
+  await accepted.submit();
+  assert.equal(accepted.state.phase, 'complete');
+  assert.equal(accepted.state.results[0].components[0].kind, 'policy_requirement');
+
+  const rejected = harness(async payload => ({ data: { ...response(payload.situation), components: [{
+    ...requirement, citations: [{ ...proof, policy_id: 'another-policy' }],
+  }] }, error: null }));
+  await rejected.submit();
+  assert.equal(rejected.state.phase, 'error');
+  assert.equal(rejected.state.results[0].id, 'old');
+});
+
+test('answering all three theft questions re-evaluates the original loss with each answer', async () => {
+  const calls = [];
+  const questions = ['Was a police report filed?', 'Was the room secured?', 'Do you have proof of ownership?'];
+  const submitClarifications = compile('const handler = ' + clarificationHandlerSource + '; return handler;', {
+    clarifyingScenario: { id: 'theft-analysis', situation: 'My camera was stolen from my hotel room', category: 'Personal belongings', insurer_questions: questions },
+    selectedPolicyId: 'selected-policy', isEvaluating: false,
+    clarificationAnswers: { 'Was a police report filed?': 'The report was filed that evening.' },
+    clarificationChoices: {
+      'Was a police report filed?': 'Yes',
+      'Was the room secured?': 'No',
+      'Do you have proof of ownership?': 'Yes',
+    },
+    setIsClarifying() {}, setActiveClarifyId() {},
+    handleEvaluateSituation: async (...args) => calls.push(args),
+  });
+  await submitClarifications();
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0][1], 'Personal belongings');
+  assert.equal(calls[0][2], 'theft-analysis');
+  for (const answer of ['Was a police report filed?: Yes - The report was filed that evening.', 'Was the room secured?: No', 'Do you have proof of ownership?: Yes']) assert.ok(calls[0][0].includes(answer));
+});
+
+test('failed clarified evaluation restores the clarification dialog without clearing answers', async () => {
+  const h = harness(async () => ({ data: null, error: 'Coverage analysis could not be verified. Please retry.' }));
+  h.state.clarify = 'theft-analysis';
+  await h.submit('Theft [Clarified details: report filed]', 'Personal belongings', 'theft-analysis');
+  assert.equal(h.state.phase, 'error');
+  assert.equal(h.state.clarify, 'theft-analysis');
+  assert.match(h.state.error, /Please retry/);
 });
 
 test('loading starts immediately and a duplicate click cannot submit twice', async () => {
@@ -115,6 +177,7 @@ test('both fresh and persisted analysis receipts never arm automatic guidance na
 
 test('page keeps a same-page result, hides stale output on failure, and preserves explicit manual guidance', () => {
   assert.ok(page.includes('<AnalysisProgress phase={analysisPhase}'));
+  assert.ok(!page.includes('data-wizard-decorative'));
   assert.ok(page.includes("analysisPhase !== 'error'"));
   assert.ok(page.includes("hidden={isEvaluating || (analysisPhase === 'error' && !currentAnalysis)}"));
   assert.ok(!page.includes('<AutoAdvance '));

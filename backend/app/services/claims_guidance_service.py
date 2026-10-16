@@ -393,7 +393,8 @@ class ClaimsGuidanceService:
         deadline_anchor = "policy reference date"
         for clause in filing_clauses:
             match = re.search(r"\b(?:within|no later than|not later than|before the end of)\s+(\d{1,4})\s+(?:calendar\s+)?(days?|weeks?|months?|years?)\b", clause.text, re.I)
-            if match:
+            sentence_start = clause.text.rfind(".", 0, match.start()) + 1 if match else 0
+            if match and filing_terms.search(clause.text[sentence_start:match.start()]):
                 deadline_clause = clause
                 deadline_match = match
                 clause_lower = clause.text.lower()

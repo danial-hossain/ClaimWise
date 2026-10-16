@@ -1,6 +1,10 @@
 """Comprehensive test suite for Interactive Incident Questioning & Claims Guidance (F3)."""
 
 from datetime import date, timedelta
+from pathlib import Path
+import json
+
+GUIDANCE_SOURCES = json.loads((Path(__file__).parent / "fixtures/guidance_sources.json").read_text())
 import pytest
 from starlette.testclient import TestClient
 
@@ -114,7 +118,8 @@ def test_guidance_inpatient_missing_prior_auth(client):
 
     # Verify citation links to Inpatient pre-auth clause
     clause_ids = [c["clause_id"] for c in res["verified_citations"]]
-    assert any(cid in ["4.1", "P2-C2", "P3-C11", "P3-C14", "7.1", "7.4"] for cid in clause_ids)
+    assert any(cid in GUIDANCE_SOURCES["inpatient_prior_auth"] for cid in clause_ids)
+    assert any("prior authorization" in c["exact_quote"].lower() for c in res["verified_citations"])
 
 
 def test_guidance_workplace_injury_exclusion(client):
@@ -139,7 +144,8 @@ def test_guidance_workplace_injury_exclusion(client):
 
     # Check for Workers' comp exclusion citation
     clause_ids = [c["clause_id"] for c in res["verified_citations"]]
-    assert any(cid in ["8.2", "P3-C19"] for cid in clause_ids)
+    assert any(cid in GUIDANCE_SOURCES["workplace_exclusion"] for cid in clause_ids)
+    assert any("compensation" in c["exact_quote"].lower() for c in res["verified_citations"])
 
 
 def test_guidance_timely_filing_expired(client):

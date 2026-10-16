@@ -1,0 +1,30 @@
+{
+  "partial": {
+    "candidates": [
+      {
+        "finishReason": "MAX_TOKENS",
+        "content": {
+          "parts": [
+            {
+              "text": "{\"unfinished\":"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "complete": {
+    "candidates": [
+      {
+        "finishReason": "STOP",
+        "content": {
+          "parts": [
+            {
+              "text": "{\"ok\":true}"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

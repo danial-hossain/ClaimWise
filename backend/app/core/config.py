@@ -152,6 +152,17 @@ class Settings(BaseSettings):
         default=6,
         description="Number of top retrieved clauses passed as evidence context",
     )
+    coverage_evidence_char_budget: int = Field(
+        default=120000,
+        gt=1000,
+        description="Maximum source characters supplied to one coverage assessment",
+    )
+    coverage_document_wide_budget_share: float = Field(
+        default=0.25,
+        ge=0.0,
+        le=1.0,
+        description="Reserved share of coverage context for document-wide clauses",
+    )
     dense_embedding_dim: int = Field(
         default=1024,
         description="Dense vector dimension (1024 for BGE-M3)",

@@ -2,7 +2,7 @@
 
 from datetime import datetime
 from enum import Enum
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, ConfigDict, Field
 
 
@@ -27,6 +27,15 @@ class RetrievedClause(BaseModel):
     dense_rank: Optional[int] = Field(None, description="1-based dense vector rank if matched")
     fused_rank: int = Field(..., description="1-based Reciprocal Rank Fusion rank")
     rrf_score: float = Field(..., description="Calculated RRF score")
+    section_number: Optional[str] = None
+    section_path: List[str] = Field(default_factory=list)
+    sub_heading: Optional[str] = None
+    clause_type: str = "unknown"
+    scope: str = "unknown"
+    cross_references: List[str] = Field(default_factory=list)
+    related_clause_ids: List[str] = Field(default_factory=list)
+    table_rows: List[List[str]] = Field(default_factory=list)
+    validation: Optional[Dict[str, Any]] = None
 
     model_config = ConfigDict(from_attributes=True)
 

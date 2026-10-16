@@ -13,12 +13,15 @@ from typing import Any, Dict, List, Optional, Tuple
 import pymupdf
 
 from app.schemas.policy import (
+    DocumentExtractionValidation,
     ExtractedClause,
     PageSummary,
     PolicyExtractionResult,
 )
+from app.services.policy_extraction_validation import validate_page_clauses
 
 logger = logging.getLogger("claimwise.document_service")
+EXTRACTION_VERSION = 2
 
 # Regex patterns for heading and section detection
 SECTION_PATTERNS = [
@@ -164,23 +167,85 @@ class DocumentService:
             re.IGNORECASE,
         ))
 
-    @staticmethod
-    def _is_exclusion_section_heading(text: str) -> bool:
-        """Recognize short exclusion headings that PDF layout may separate from their list."""
-        heading = re.sub(r"\s+", " ", (text or "")).strip(" :.-").casefold()
-        return bool(re.fullmatch(
-            r"(?:(?:services?|treatments?|benefits?)\s+(?:that\s+are\s+)?not\s+covered(?:\s+under\s+(?:your|the)\s+policy)?|general\s+exclusions?|exclusions?)",
-            heading,
-        ))
+    @classmethod
+    def _looks_like_list_context_heading(cls, text: str) -> bool:
+        """Identify a short structural heading that may govern following list items."""
+        normalized = re.sub(r"\s+", " ", (text or "")).strip()
+        _, _, confidence = cls._detect_heading(normalized)
+        return confidence in {"high", "heuristic"} or (
+            len(normalized.split()) <= 14
+            and len(normalized) <= 180
+            and not normalized.endswith((".", ";", "?", "!"))
+        )
 
     @staticmethod
-    def _is_coverage_amount_block(text: str) -> bool:
-        """Detect table cells that state the benefit payable for the prior service row."""
-        return bool(re.match(
-            r"^\s*(?:we\s+(?:will\s+)?cover|benefits?\s+(?:are|will\s+be)\s+payable)\b",
-            text or "",
-            re.IGNORECASE,
+    def _classify_clause_metadata(text: str, heading: Optional[str], section_path: List[str], is_table: bool = False) -> Tuple[str, str]:
+        """Classify operative wording and scope from generic policy language."""
+        source = f"{heading or ''} {text or ''}"
+        normalized = re.sub(r"\s+", " ", source).casefold()
+        if is_table:
+            clause_type = "table"
+        elif re.search(r"\b(?:exclusion|excluded|not covered|will not pay|we will not cover|not payable)\b", normalized):
+            clause_type = "exclusion"
+        elif re.search(r"\b(?:maximum|maximum benefit|limit|sub-?limit|cap|excess|deductible|depreciat(?:e|ion)|percentage payable)\b", normalized):
+            clause_type = "limit"
+        elif re.search(r"\b(?:means|is defined as|definition of|for the purposes of this policy)\b", normalized):
+            clause_type = "definition"
+        elif re.search(r"\b(?:optional|optional cover|additional premium|additional amount|add-on)\b", normalized):
+            clause_type = "optional_cover"
+        elif re.search(r"\b(?:must|shall|required to|subject to|provided that|unless|only if|condition of cover)\b", normalized):
+            clause_type = "condition"
+        elif re.search(r"\b(?:covered|cover|benefit|we will pay|we pay|payable|insured against)\b", normalized):
+            clause_type = "benefit"
+        else:
+            clause_type = "unknown"
+
+        document_wide = bool(re.search(
+            r"\b(?:all sections|all benefits|all cover sections|any section of this policy|throughout this policy|applies to this entire policy|general exclusions?)\b",
+            re.sub(r"\s+", " ", heading or "").casefold()
+            + " " + re.split(r"(?<=[.!?])\s+", re.sub(r"\b(?:also )?(?:refer to|see)(?: also)?[^.\n]*", "", text or "", flags=re.I), maxsplit=1)[0].casefold(),
         ))
+        if document_wide:
+            scope = "document_wide"
+        elif section_path:
+            scope = "section"
+        else:
+            scope = "unknown"
+        return clause_type, scope
+
+    @staticmethod
+    def _extract_cross_references(text: str) -> List[str]:
+        pattern = re.compile(
+            r"\b(?:see(?:\s+also)?|refer(?:\s+also)?\s+to|as\s+described\s+in|as\s+set\s+out\s+in|in\s+accordance\s+with)\s+"
+            r"(?P<target>(?:(?:section|clause|part|schedule|appendix|table|page)\s+)?[A-Z]?[0-9]+(?:[.\-][A-Z0-9]+)*(?:\([A-Za-z0-9]+\))?)",
+            re.IGNORECASE,
+        )
+        return list(dict.fromkeys(re.sub(r"\s+", " ", match.group("target")).strip() for match in pattern.finditer(text or "")))
+
+    @staticmethod
+    def _extract_page_tables(page: Any, text_blocks: list[tuple]) -> list[tuple]:
+        """Represent each detected PDF table as a complete, row-preserving source block."""
+        try:
+            finder = page.find_tables()
+            tables = finder.tables
+        except Exception:
+            return []
+        table_blocks = []
+        for table_index, table in enumerate(tables):
+            rows = table.extract() or []
+            normalized_rows = [[str(cell or "").strip() for cell in row] for row in rows]
+            normalized_rows = [row for row in normalized_rows if any(row)]
+            if not normalized_rows:
+                continue
+            bbox = tuple(table.bbox)
+            table_text = "\n".join(" | ".join(row) for row in normalized_rows)
+            overlapping = [
+                block for block in text_blocks
+                if block[0] < bbox[2] and block[2] > bbox[0] and block[1] < bbox[3] and block[3] > bbox[1]
+            ]
+            block_order = min((block[5] for block in overlapping), default=len(text_blocks) + table_index)
+            table_blocks.append((*bbox, table_text, block_order, 0, normalized_rows))
+        return table_blocks
 
     @classmethod
     def _is_policy_clause(cls, text: str, heading: Optional[str], sec_num: Optional[str]) -> bool:
@@ -254,7 +319,7 @@ class DocumentService:
 
         # 6. Check for contractual/policy terms in body
         contractual_patterns = [
-            r"\b(?:shall|must|is\s+covered|are\s+covered|will\s+be\s+covered|not\s+covered|excluded|exclusion|subject\s+to|in\s+the\s+event\s+of|payable|benefits\s+will|deductible|coinsurance|copayment|pre-authorization|prior\s+authorization|medically\s+necessary|maximum\s+allowable|out-of-pocket\s+maximum|eligible\s+expenses|coverage\s+terminates)\b"
+            r"\b(?:shall|must|is\s+covered|are\s+covered|will\s+be\s+covered|not\s+covered|excluded|exclusion|subject\s+to|in\s+the\s+event\s+of|payable|benefits\s+will|excess|depreciation|(?:benefit|claim|coverage)\s+limit|deductible|coinsurance|copayment|pre-authorization|prior\s+authorization|medically\s+necessary|maximum\s+allowable|out-of-pocket\s+maximum|eligible\s+expenses|coverage\s+terminates)\b"
         ]
         if any(re.search(pat, lower_text) for pat in contractual_patterns):
             return True
@@ -264,6 +329,24 @@ class DocumentService:
             return True
 
         return False
+
+    @staticmethod
+    def _running_margin_text(doc) -> set[str]:
+        """Identify repeated running furniture by geometry, never policy wording."""
+        from collections import Counter
+        counts = Counter()
+        for page in doc:
+            seen = set()
+            for block in page.get_text("blocks"):
+                if len(block) < 7 or block[6] != 0:
+                    continue
+                x0, y0, x1, y1, text = block[:5]
+                at_margin = (x0 >= page.rect.width * .90 or x1 <= page.rect.width * .10
+                             or y0 >= page.rect.height * .94 or y1 <= page.rect.height * .035)
+                if at_margin:
+                    seen.add(re.sub(r"\d+", "#", re.sub(r"\s+", " ", text).strip()))
+            counts.update(seen)
+        return {text for text, count in counts.items() if count >= 3}
 
     @classmethod
     def process_pdf(
@@ -297,6 +380,7 @@ class DocumentService:
         except Exception as exc:
             logger.warning("PDF parsing failed (%s).", type(exc).__name__)
             return PolicyExtractionResult(
+                    extraction_version=EXTRACTION_VERSION,
                 document_name=filename,
                 document_hash=doc_hash,
                 file_size_bytes=file_size,
@@ -317,6 +401,7 @@ class DocumentService:
             # Check for encryption
             if doc.is_encrypted or doc.needs_pass:
                 return PolicyExtractionResult(
+                    extraction_version=EXTRACTION_VERSION,
                     document_name=filename,
                     document_hash=doc_hash,
                     file_size_bytes=file_size,
@@ -336,6 +421,7 @@ class DocumentService:
             total_pages = doc.page_count
             if total_pages == 0:
                 return PolicyExtractionResult(
+                    extraction_version=EXTRACTION_VERSION,
                     document_name=filename,
                     document_hash=doc_hash,
                     file_size_bytes=file_size,
@@ -356,78 +442,82 @@ class DocumentService:
             extracted_clauses: List[ExtractedClause] = []
             total_doc_text_len = 0
             total_doc_images = 0
+            section_stack: List[Tuple[Tuple[str, ...], str]] = []
+            current_sub_heading: Optional[str] = None
+            inherited_scope = "unknown"
+            validation_totals = {
+                "verbatim_clause_count": 0,
+                "verbatim_pass_count": 0,
+                "extracted_source_token_count": 0,
+                "covered_source_token_count": 0,
+                "attribution_verified_count": 0,
+                "attribution_flagged_count": 0,
+                "rejected_clause_count": 0,
+                "uncovered_span_count": 0,
+            }
+
+            running_margins = cls._running_margin_text(doc)
 
             # Iterate through each page (preserving 1-based page number)
             for page_idx in range(total_pages):
                 page_number = page_idx + 1  # 1-based page numbering
                 page = doc[page_idx]
+                page_source_text = page.get_text("text")
+                total_doc_text_len += len(page_source_text)
 
                 # Extract text blocks: tuple (x0, y0, x1, y1, text, block_no, block_type)
                 # block_type == 0 is text, block_type == 1 is image
                 blocks = page.get_text("blocks")
+                blocks = [block for block in blocks if not (
+                    len(block) > 6 and block[6] == 0
+                    and re.sub(r"\d+", "#", re.sub(r"\s+", " ", block[4]).strip()) in running_margins
+                    and (block[0] >= page.rect.width * .90 or block[2] <= page.rect.width * .10
+                         or block[1] >= page.rect.height * .94 or block[3] <= page.rect.height * .035))]
                 page_images = page.get_images()
                 total_doc_images += len(page_images)
+
+                layout_section_titles = set()
+                layout = page.get_text("dict")
+                sizes = [round(span["size"], 1) for block in layout["blocks"] if "lines" in block
+                         for line in block["lines"] for span in line["spans"] if len(span["text"].strip()) > 40]
+                from statistics import median
+                body_size = median(sizes) if sizes else 0
+                for block in layout["blocks"]:
+                    if "lines" not in block:
+                        continue
+                    spans = [span for line in block["lines"] for span in line["spans"] if span["text"].strip()]
+                    title = " ".join(span["text"].strip() for span in spans)
+                    if (spans and body_size and len(title) <= 180
+                            and all(span["size"] >= body_size * 1.25 for span in spans)
+                            and not title.endswith((".", ";", "?", "!"))):
+                        layout_section_titles.add(block["lines"][0]["spans"][0]["text"].strip())
 
                 # PDF exporters often put an FAQ question and its answer in
                 # adjacent text blocks. Keep them together so the reader does
                 # not lose the question or show an orphaned answer.
-                text_blocks = [block for block in blocks if len(block) > 6 and block[6] == 0 and len(block) > 4 and block[4].strip()]
+                raw_text_blocks = [block for block in blocks if len(block) > 6 and block[6] == 0 and len(block) > 4 and block[4].strip()]
+                table_blocks = cls._extract_page_tables(page, raw_text_blocks)
+                table_boxes = [block[:4] for block in table_blocks]
+                text_blocks = [
+                    block for block in raw_text_blocks
+                    if not any(block[0] < box[2] and block[2] > box[0] and block[1] < box[3] and block[3] > box[1] for box in table_boxes)
+                ]
+                text_blocks.extend(table_blocks)
+                text_blocks.sort(key=lambda block: (block[5], block[1], block[0]))
                 merged_blocks = []
                 block_index = 0
                 while block_index < len(text_blocks):
                     block = text_blocks[block_index]
                     content = block[4].strip()
-                    if cls._is_standalone_question(content) and block_index + 1 < len(text_blocks):
+                    if len(block) > 7:
+                        merged_blocks.append(block)
+                        block_index += 1
+                        continue
+                    if cls._is_standalone_question(content) and block_index + 1 < len(text_blocks) and len(text_blocks[block_index + 1]) <= 7:
                         answer_block = text_blocks[block_index + 1]
                         answer = answer_block[4].strip()
                         if answer and not cls._is_standalone_question(answer):
                             block = (*block[:4], f"{content}\n\n{answer}", *block[5:])
-                            block_index += 1
-                    elif cls._is_exclusion_section_heading(content):
-                        # PDF text extraction often separates an exclusion
-                        # heading, its introduction, and each wrapped lettered
-                        # item into different blocks. Keep each item together
-                        # with the heading and continuation lines.
-                        section_context = [content]
-                        item_parts: Optional[List[str]] = None
-                        item_block = block
-                        section_groups = []
-                        scan_index = block_index + 1
-                        while scan_index < len(text_blocks):
-                            next_block = text_blocks[scan_index]
-                            next_text = next_block[4].strip()
-                            if cls._is_exclusion_section_heading(next_text):
-                                break
-                            is_list_item = bool(re.match(r"^\s*\(?(?:[ivxlcdm]+|[a-z]|\d+)\)\s*", next_text, re.IGNORECASE))
-                            if not is_list_item and cls._detect_heading(next_text)[2] == "high":
-                                break
-                            if is_list_item:
-                                if item_parts:
-                                    section_groups.append((item_block, "\n".join([*section_context, *item_parts])))
-                                item_block = next_block
-                                item_parts = [next_text]
-                            elif item_parts is None:
-                                section_context.append(next_text)
-                            else:
-                                item_parts.append(next_text)
-                            scan_index += 1
-
-                        if item_parts:
-                            section_groups.append((item_block, "\n".join([*section_context, *item_parts])))
-                        elif len(section_context) > 1:
-                            section_groups.append((block, "\n".join(section_context)))
-                        if section_groups:
-                            merged_blocks.extend(
-                                (*group_block[:4], group_text, *group_block[5:])
-                                for group_block, group_text in section_groups
-                            )
-                            block_index = scan_index
-                            continue
-                    elif block_index + 1 < len(text_blocks):
-                        benefit_block = text_blocks[block_index + 1]
-                        benefit_text = benefit_block[4].strip()
-                        if cls._is_coverage_amount_block(benefit_text):
-                            block = (*block[:4], f"{content}\n{benefit_text}", *block[5:])
                             block_index += 1
                     merged_blocks.append(block)
                     block_index += 1
@@ -442,12 +532,15 @@ class DocumentService:
                         continue
 
                     prev_b = consolidated_blocks[-1]
+                    if len(b_item) > 7 or len(prev_b) > 7:
+                        consolidated_blocks.append(b_item)
+                        continue
                     prev_t = prev_b[4].strip()
                     curr_t = b_item[4].strip()
 
                     # Never merge across high-confidence section/article headings or explicit clause markers
                     curr_sec, curr_heading, curr_conf = cls._detect_heading(curr_t)
-                    is_curr_heading = curr_conf in ("high", "heuristic") or bool(
+                    is_curr_heading = curr_t.splitlines()[0].strip() in layout_section_titles or curr_conf in ("high", "heuristic") or bool(
                         re.match(r"^(?:SECTION|SEC\.|ARTICLE|ART\.|CLAUSE|SCHEDULE|PART)\b", curr_t, re.I)
                     )
 
@@ -458,11 +551,20 @@ class DocumentService:
                     vertical_gap = curr_y0 - prev_y1
                     line_height = max(8.0, prev_y1 - prev_y0)
 
+                    is_list_start = bool(re.match(r"^\s*\(?(?:[ivxlcdm]+|[a-z]|\d+)[.)]\s+", curr_t, re.I))
+                    previous_list_item = bool(re.match(r"^\s*\(?(?:[ivxlcdm]+|[a-z]|\d+)[.)]\s+", prev_t, re.I))
+                    is_curr_heading = is_curr_heading or is_list_start
                     prev_ends_mid_sentence = not prev_t.endswith((".", ":", ";", "?", "!"))
                     prev_ends_hyphen = prev_t.endswith(("-", "–", "—"))
 
-                    can_merge = False
+                    can_merge = bool(
+                        is_list_start and same_column and len(prev_t) <= 240
+                        and not re.search(r"(?m)^\s*\(?(?:[ivxlcdm]+|[a-z]|\d+)[.)]\s+", prev_t, re.I)
+                        and cls._looks_like_list_context_heading(prev_t)
+                    )
                     if not is_curr_heading and same_column:
+                        if previous_list_item and curr_t[:1].islower():
+                            can_merge = True
                         # Normal line spacing within a paragraph
                         if -2.0 <= vertical_gap <= max(12.0, line_height * 1.3):
                             can_merge = True
@@ -502,12 +604,32 @@ class DocumentService:
                     if not raw_text:
                         continue
 
-                    # Accumulate characters
-                    page_char_count += len(raw_text)
-                    total_doc_text_len += len(raw_text)
+                    # Count the source page once; clause text can be joined or table-rendered.
+                    page_char_count = len(page_source_text)
 
                     # Detect clause heading and section number
                     sec_num, heading, confidence = cls._detect_heading(raw_text)
+                    if sec_num:
+                        number_path = tuple(re.findall(r"[A-Za-z]+|\d+", sec_num))
+                        explicit_section = bool(re.match(r"^(?:section|sec\.|article|art\.|clause|schedule|part)\b", raw_text, re.I))
+                        if not explicit_section and section_stack and len(number_path) == 1:
+                            number_path = section_stack[0][0] + ("sub",) + number_path
+                        section_stack = [
+                            (old_path, old_heading) for old_path, old_heading in section_stack
+                            if len(old_path) < len(number_path) and number_path[:len(old_path)] == old_path
+                        ]
+                        section_stack.append((number_path, heading or sec_num))
+                        current_sub_heading = heading if len(number_path) > 1 else None
+                        inherited_scope = "section"
+                    elif raw_text.splitlines()[0].strip() in layout_section_titles:
+                        heading = raw_text.splitlines()[0].strip()
+                        confidence = "high"
+                        section_stack = [(("title", heading), heading)]
+                        current_sub_heading = None
+                        _, inherited_scope = cls._classify_clause_metadata(raw_text, heading, [heading])
+                    elif heading and confidence in {"heuristic", "uncertain"}:
+                        current_sub_heading = heading
+                    section_path = [path_heading for _, path_heading in section_stack]
                     if heading and not sample_heading:
                         sample_heading = heading
 
@@ -524,6 +646,11 @@ class DocumentService:
                     # Rough token estimation (~1.3 tokens per word)
                     word_count = len(raw_text.split())
                     token_count = max(1, int(word_count * 1.3))
+                    is_table = len(block) > 7 and bool(block[7])
+                    clause_type, scope = cls._classify_clause_metadata(raw_text, heading, section_path, is_table)
+                    if inherited_scope == "document_wide":
+                        scope = "document_wide"
+                    cross_references = cls._extract_cross_references(raw_text)
 
                     extracted_clauses.append(
                         ExtractedClause(
@@ -531,8 +658,14 @@ class DocumentService:
                             page_number=page_number,
                             printed_page_label=page.get_label() or None,
                             clause_heading=heading,
+                            section_path=section_path,
+                            sub_heading=current_sub_heading,
                             heading_confidence=confidence,
                             section_number=sec_num,
+                            clause_type=clause_type,
+                            scope=scope,
+                            cross_references=cross_references,
+                            table_rows=block[7] if is_table else [],
                             text=cls._normalize_clause_text(raw_text),
                             token_count=token_count,
                             document_hash=doc_hash,
@@ -542,15 +675,76 @@ class DocumentService:
                     page_clause_count += 1
                     clause_on_page_idx += 1
 
+                page_clauses = [clause for clause in extracted_clauses if clause.page_number == page_number]
+                page_validation = validate_page_clauses(page_source_text, page_clauses)
+                reextracted = 0
+                for uncovered_index, span in enumerate(page_validation["uncovered_spans"], start=1):
+                    if not cls._is_policy_clause(span, None, None):
+                        continue
+                    clause_id = f"P{page_number}-U{uncovered_index}"
+                    fallback_type, fallback_scope = cls._classify_clause_metadata(span, None, [], False)
+                    fallback = ExtractedClause(
+                        clause_id=clause_id,
+                        page_number=page_number,
+                        printed_page_label=page.get_label() or None,
+                        section_path=[],  # A recovered span has no reliable structural position.
+                        sub_heading=current_sub_heading,
+                        heading_confidence="none",
+                        section_number=None,
+                        clause_type=fallback_type,
+                        scope=fallback_scope,
+                        cross_references=cls._extract_cross_references(span),
+                        text=span,
+                        token_count=max(1, int(len(span.split()) * 1.3)),
+                        document_hash=doc_hash,
+                        is_clause=True,
+                    )
+                    if not any(existing.clause_id == clause_id and existing.page_number == page_number for existing in page_clauses):
+                        page_clauses.append(fallback)
+                        extracted_clauses.append(fallback)
+                        reextracted += 1
+                if reextracted:
+                    page_validation = validate_page_clauses(page_source_text, page_clauses)
+
+                validation_totals["verbatim_clause_count"] += page_validation["verbatim_clause_count"]
+                validation_totals["verbatim_pass_count"] += page_validation["verbatim_pass_count"]
+                validation_totals["extracted_source_token_count"] += page_validation["source_token_count"]
+                validation_totals["covered_source_token_count"] += page_validation["covered_token_count"]
+                validation_totals["attribution_verified_count"] += page_validation["attribution_verified_count"]
+                validation_totals["attribution_flagged_count"] += page_validation["attribution_flagged_count"]
+                validation_totals["rejected_clause_count"] += page_validation["verbatim_clause_count"] - page_validation["verbatim_pass_count"]
+                validation_totals["uncovered_span_count"] += len(page_validation["uncovered_spans"])
+
                 page_summaries.append(
                     PageSummary(
                         page_number=page_number,
-                        clause_count=page_clause_count,
+                        clause_count=len(page_clauses),
                         char_count=page_char_count,
                         has_images=len(page_images) > 0,
                         sample_heading=sample_heading,
+                        source_token_count=page_validation["source_token_count"],
+                        covered_token_count=page_validation["covered_token_count"],
+                        extraction_coverage_ratio=page_validation["coverage_ratio"],
+                        uncovered_spans=page_validation["uncovered_spans"],
                     )
                 )
+
+            # Resolve numbered section/page cross-references within this document version.
+            for clause in extracted_clauses:
+                targets: list[str] = []
+                for reference in clause.cross_references:
+                    page_match = re.search(r"\bpage\s+(\d+)\b", reference, re.I)
+                    section_match = re.search(r"\b(?:section|clause|part|schedule|appendix|table)\s+([A-Z0-9][A-Z0-9.\-()]*)", reference, re.I)
+                    if page_match:
+                        target_page = int(page_match.group(1))
+                        targets.extend(item.clause_id for item in extracted_clauses if item.page_number == target_page and item.clause_id != clause.clause_id)
+                    elif section_match:
+                        target = section_match.group(1).casefold().strip(".-()")
+                        targets.extend(item.clause_id for item in extracted_clauses if item.clause_id != clause.clause_id and (
+                            (item.section_number or "").casefold().strip(".-()") == target
+                            or any(re.match(rf"^{re.escape(target)}(?:\s|$)", heading.casefold()) for heading in item.section_path)
+                        ))
+                clause.related_clause_ids = list(dict.fromkeys(targets))
 
             # Check if document is scanned (images exist but negligible digital text)
             is_scanned = (total_doc_images > 0 and total_doc_text_len < 50)
@@ -558,6 +752,7 @@ class DocumentService:
 
             if is_scanned:
                 return PolicyExtractionResult(
+                    extraction_version=EXTRACTION_VERSION,
                     document_name=filename,
                     document_hash=doc_hash,
                     file_size_bytes=file_size,
@@ -579,6 +774,7 @@ class DocumentService:
 
             if not has_extractable_text:
                 return PolicyExtractionResult(
+                    extraction_version=EXTRACTION_VERSION,
                     document_name=filename,
                     document_hash=doc_hash,
                     file_size_bytes=file_size,
@@ -596,6 +792,7 @@ class DocumentService:
                 )
 
             return PolicyExtractionResult(
+                    extraction_version=EXTRACTION_VERSION,
                 document_name=filename,
                 document_hash=doc_hash,
                 file_size_bytes=file_size,
@@ -607,6 +804,11 @@ class DocumentService:
                 message=f"Successfully extracted {len(extracted_clauses)} clause blocks across {total_pages} pages.",
                 pages=page_summaries,
                 clauses=extracted_clauses,
+                extraction_validation=DocumentExtractionValidation(
+                    **validation_totals,
+                    verbatim_pass_rate=validation_totals["verbatim_pass_count"] / max(validation_totals["verbatim_clause_count"], 1),
+                    text_coverage_ratio=validation_totals["covered_source_token_count"] / max(validation_totals["extracted_source_token_count"], 1),
+                ),
                 persistence_mode=persistence_mode,
                 policy_id=policy_id,
                 uploaded_at=uploaded_at,

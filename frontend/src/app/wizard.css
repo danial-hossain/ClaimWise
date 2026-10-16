@@ -85,7 +85,7 @@
 .wizard-analysis-output .wizard-analysis-skeleton, .wizard-analysis-result { position: absolute; inset: 0; overflow: auto; overscroll-behavior: contain; }
 .wizard-analysis-output .wizard-analysis-skeleton { transition: opacity 200ms; pointer-events: none; }
 .wizard-analysis-progress:not([aria-busy=true]) .wizard-analysis-skeleton > div { animation: none; }
-.wizard-step-body [data-wizard-decorative], .wizard-step-body .coverage-results-panel { display: none; }
+.wizard-step-body [data-wizard-decorative] { display: none; }
 .wizard-skeleton-line, .wizard-skeleton-quote { border-radius: 8px; background: linear-gradient(90deg,#e7f1ef 25%,#f4f9f8 50%,#e7f1ef 75%); background-size: 200% 100%; animation: wizard-shimmer 1.6s linear infinite; }
 .wizard-skeleton-line { height: 14px; margin-bottom: 15px; }
 .wizard-skeleton-line.short { width: 35%; height: 22px; }

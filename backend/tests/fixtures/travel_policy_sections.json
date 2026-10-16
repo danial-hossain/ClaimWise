@@ -1,0 +1,4042 @@
+{
+  "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+  "clauses": [
+    {
+      "clause_id": "P11-C3",
+      "page_number": 11,
+      "printed_page_label": null,
+      "clause_heading": "Cruise Cover",
+      "section_path": [
+        "Cruise Cover"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "high",
+      "section_number": null,
+      "clause_type": "condition",
+      "scope": "section",
+      "cross_references": [
+        "SECTION 21"
+      ],
+      "related_clause_ids": [
+        "SEC-21",
+        "P42-C17",
+        "P42-C18",
+        "P42-C19",
+        "P43-C1",
+        "P43-C2",
+        "P43-C3",
+        "P43-C4",
+        "P43-C5",
+        "P43-C6",
+        "P43-C7",
+        "P43-C8",
+        "P43-C9",
+        "P43-C10",
+        "P43-C11",
+        "P43-C12",
+        "P43-C13",
+        "P43-C14",
+        "P43-C15",
+        "P43-C16",
+        "P43-C17",
+        "P43-C18"
+      ],
+      "table_rows": [],
+      "text": "Cruise Cover Available on the International Plans and Inbound plans Will You be travelling for 2 or more nights on an ocean or sea going cruise? If Your cruise is on an ocean or sea overseas or outside Australian Coastal Waters, to be insured for claims relating to cruise travel (e.g. cancelling the cruise) or that occur while on a cruise (e.g. getting sick or injured on-board a cruise vessel), You must tell Us You are doing a cruise and pay an extra premium to have cover. Cruise Cover will then be shown on Your Certificate of Insurance. For all multi-night cruise travel By adding Cruise Cover all of the policy benefit sections included in the plan You chose will apply for a multi-night cruise. The Cruise Cover benefits in the table following will also be included. Also see SECTION 21: Cruise Cover on page\u00a044.",
+      "token_count": 189,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1848,
+        "source_span_end": 2681,
+        "attribution_status": "structural",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P11-C4",
+      "page_number": 11,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "Cruise Cover"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "table",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [
+        [
+          "Summary of benefits",
+          "Excess\napplies?",
+          "Limit per adult"
+        ],
+        [
+          "(i) Cruise Cancellation",
+          "Yes",
+          "$Cover Chosen^"
+        ],
+        [
+          "(ii) \u0007On-board Medical\nand Dental Cover",
+          "Yes",
+          "$Unlimited~"
+        ],
+        [
+          "(iii) \u0007Ship to Shore\nMedical Cover",
+          "Yes",
+          "$Unlimited"
+        ],
+        [
+          "(iv) Sea Sickness Cover",
+          "Yes",
+          "$Unlimited~"
+        ],
+        [
+          "(v) Cabin Confinement",
+          "No",
+          "Up to a maximum\nof $1,500"
+        ],
+        [
+          "(vi) \u0007Missed Port\n(embarkation)",
+          "No",
+          "$1,000"
+        ],
+        [
+          "(vii) \u0007Missed Shore\nExcursions",
+          "No",
+          "$1,000"
+        ]
+      ],
+      "text": "Summary of benefits | Excess applies? | Limit per adult (i) Cruise Cancellation | Yes | $Cover Chosen^ (ii) On-board Medical and Dental Cover | Yes | $Unlimited~ (iii) Ship to Shore Medical Cover | Yes | $Unlimited (iv) Sea Sickness Cover | Yes | $Unlimited~ (v) Cabin Confinement | No | Up to a maximum of $1,500 (vi) Missed Port (embarkation) | No | $1,000 (vii) Missed Shore Excursions | No | $1,000",
+      "token_count": 96,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2683,
+        "source_span_end": 3074,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P11-C5",
+      "page_number": 11,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "Cruise Cover"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "exclusion",
+      "scope": "section",
+      "cross_references": [
+        "page 10"
+      ],
+      "related_clause_ids": [
+        "P10-C1",
+        "P10-C2",
+        "P10-C3",
+        "P10-C4",
+        "P10-C5",
+        "P10-C6"
+      ],
+      "table_rows": [],
+      "text": "~Cover will not exceed 12 months from the onset of the illness or injury. ^Cover chosen applies per policy. See page 10. If You do not tell Us about Your cruise, claims in any way related to Your multi-night cruise, and multi-night cruise travel or that arise while on a multi-night cruise are specifically excluded by this policy. When don\u2019t I need to add Cruise Cover?\n\nYou don\u2019t need to add cruise cover if You are: \u2022 travelling on a river cruise; \u2022 not travelling on a cruise ship; \u2022 on a cruise for only one night; \u2022 only taking a ferry trip; \u2022 cruising in Australia (e.g. on the Murray River) or in Australian coastal waters (e.g. a Kimberley Cruise); or \u2022 sailing. (Note: Sailing is not covered in International Waters).",
+      "token_count": 171,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3076,
+        "source_span_end": 3817,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "SEC-5-P33-C3",
+      "page_number": 33,
+      "printed_page_label": null,
+      "clause_heading": "5 Luggage and Travel",
+      "section_path": [
+        "5 Luggage and Travel"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "high",
+      "section_number": "5",
+      "clause_type": "limit",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "SECTION 5: Luggage and Travel\nDocuments\n1. Loss, Theft or Damage\nIf during the Period of Insurance Your luggage or personal\neffects are lost, stolen or damaged, after deducting\ndepreciation as shown in the depreciation table, We will\nrepair the item if it is practical and economic to do so.\nIf it is not practical and economic to repair the item and\ndepreciation is not applicable, We will replace the item\nor provide You with a replacement voucher if the item is\navailable from Our usual suppliers. If the above do not apply,\nWe will pay You the monetary value of the item.\nIf Your prescription medication is lost, stolen or damaged\nduring the Period of Insurance We will also pay up to $500\nfor expenses incurred overseas to replace that prescription\nmedication.\nIf Your claim for loss or theft can be approved but Your items\nare found in the meantime and can be posted to You, We will\ninstead pay up to $500 for postage costs.\nIt is Your responsibility to provide Us with evidence to\nsupport Your claim for an item. This is \u2018proof of ownership\u2019.\n\u2022\nWe will accept the original or a copy of a purchase\nreceipt, invoice and/or bank statement showing the\npurchase, the date of the purchase and the amount paid.\n\u2022\nWe may consider valuation certificates (issued prior to\nthe Relevant Time), ATM receipts and warranty cards\nwith accompanying bank statement of purchases.\n\u2022\nWe will not accept photographs, packaging or\ninstruction manuals as proof of ownership.\nDepreciation table\nThis policy operates on an indemnity basis which means\nsettlement of Your claim is based on the value of an item at\nthe time of the loss.\nDepreciation takes into account the amount paid originally\nfor the item, its age, wear and tear and advances in\ntechnology.\nWe will reduce the value of the items because of age, wear\nand tear, and advances in technology according to the table\nfollowing:",
+      "token_count": 423,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 304,
+        "source_span_end": 2200,
+        "attribution_status": "structural",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P33-C4",
+      "page_number": 33,
+      "printed_page_label": null,
+      "clause_heading": "| Items |  |",
+      "section_path": [
+        "5 Luggage and Travel"
+      ],
+      "sub_heading": "| Items |  |",
+      "heading_confidence": "uncertain",
+      "section_number": null,
+      "clause_type": "table",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [
+        [
+          "",
+          "Items",
+          "",
+          ""
+        ],
+        [
+          "Age of item and\ndepreciation\nthat applies",
+          "Jewellery\n(not watches\nor costume\njewellery)",
+          "Communication devices,\nall computers, electrical\ndevices, electronics\nequipment, phones, all,\nphotographic equipment,\nsmart watches, tablet\ncomputers",
+          "Any other\nitems"
+        ],
+        [
+          "New-24\nmonths",
+          "0%",
+          "0%",
+          "0%"
+        ],
+        [
+          "25-36 months",
+          "0%",
+          "60%",
+          "36%"
+        ],
+        [
+          "More than 36\nmonths",
+          "0%",
+          "60%",
+          "60%"
+        ]
+      ],
+      "text": "| Items |  | Age of item and depreciation that applies | Jewellery (not watches or costume jewellery) | Communication devices, all computers, electrical devices, electronics equipment, phones, all, photographic equipment, smart watches, tablet computers | Any other items New-24 months | 0% | 0% | 0% 25-36 months | 0% | 60% | 36% More than 36 months | 0% | 60% | 60%",
+      "token_count": 84,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2203,
+        "source_span_end": 2552,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P33-C5",
+      "page_number": 33,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel"
+      ],
+      "sub_heading": "| Items |  |",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "limit",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "This means depreciation will not be deducted from items less than 2 years old at the time of loss. Items greater than 2 years old will have the percentage amount shown above deducted.",
+      "token_count": 42,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2554,
+        "source_span_end": 2739,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P33-C6",
+      "page_number": 33,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel"
+      ],
+      "sub_heading": "| Items |  |",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "limit",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "Item limits Our payment will not exceed the original purchase price of an item with a limit for any one item, set or pair of items including attached and unattached accessories of.",
+      "token_count": 41,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2741,
+        "source_span_end": 2922,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P33-C7",
+      "page_number": 33,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel"
+      ],
+      "sub_heading": "| Items |  |",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "table",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [
+        [
+          "Items and\nlimits",
+          "International\nBasic Plan",
+          "International\nand Domestic\nComprehensive\n& Inbound Plans",
+          "International\nand Domestic\nComprehensive+\nPlans"
+        ],
+        [
+          "Phone",
+          "$1,000",
+          "$1,500",
+          "$2,500"
+        ],
+        [
+          "Smart watch",
+          "$1,000",
+          "$1,500",
+          "$2,500"
+        ],
+        [
+          "Camera",
+          "$3,500",
+          "$4,000",
+          "$6,000"
+        ],
+        [
+          "Video\ncamera",
+          "$3,500",
+          "$4,000",
+          "$6,000"
+        ],
+        [
+          "Drone (with\nor without\ncamera)",
+          "$1,000",
+          "$1,200",
+          "$2,000"
+        ],
+        [
+          "Laptop\ncomputer",
+          "$3,000",
+          "$4,000",
+          "$5,000"
+        ],
+        [
+          "Tablet\ncomputer",
+          "$3,000",
+          "$3,000",
+          "$3,000"
+        ],
+        [
+          "Artificial limb",
+          "$1,000",
+          "$1,200",
+          "$1,500"
+        ],
+        [
+          "Dentures\n(full or\npartial)",
+          "$1,000",
+          "$1,200",
+          "$1,500"
+        ],
+        [
+          "Removable\ndental\nappliance",
+          "$1,000",
+          "$1,200",
+          "$1,500"
+        ],
+        [
+          "Medical\ndevice",
+          "$1,000",
+          "$1,200",
+          "$1,500"
+        ],
+        [
+          "Jewellery",
+          "$1,000",
+          "$1,200",
+          "$1,500"
+        ],
+        [
+          "Watch",
+          "$1,000",
+          "$1,200",
+          "$1,500"
+        ],
+        [
+          "Any other\nitem",
+          "$1,000",
+          "$1,200",
+          "$1,500"
+        ]
+      ],
+      "text": "Items and limits | International Basic Plan | International and Domestic Comprehensive & Inbound Plans | International and Domestic Comprehensive+ Plans Phone | $1,000 | $1,500 | $2,500 Smart watch | $1,000 | $1,500 | $2,500 Camera | $3,500 | $4,000 | $6,000 Video camera | $3,500 | $4,000 | $6,000 Drone (with or without camera) | $1,000 | $1,200 | $2,000 Laptop computer | $3,000 | $4,000 | $5,000 Tablet computer | $3,000 | $3,000 | $3,000 Artificial limb | $1,000 | $1,200 | $1,500 Dentures (full or partial) | $1,000 | $1,200 | $1,500 Removable dental appliance | $1,000 | $1,200 | $1,500 Medical device | $1,000 | $1,200 | $1,500 Jewellery | $1,000 | $1,200 | $1,500 Watch | $1,000 | $1,200 | $1,500 Any other item | $1,000 | $1,200 | $1,500",
+      "token_count": 176,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2924,
+        "source_span_end": 3600,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P33-C8",
+      "page_number": 33,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel"
+      ],
+      "sub_heading": "| Items |  |",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "limit",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "The following are examples of items considered as one item for the purpose of this insurance (an item limit will apply): \u2022 Camera, lenses, tripods and camera accessories (attached or not) \u2022 Smart phone and cover/case \u2022 Matched or unmatched set of golf clubs, golf bag and buggy \u2022 Necklace and pendant \u2022 Charm bracelet and charms. Claim example: A phone purchased for $1,300 was 28 months old when it was stolen. An excess of $100 applies. A claim would be calculated as follows. Item: Phone cost $1,300 when purchased over 2 years ago. Depreciation: Minus $780 depreciation ($1,300 x 60%) = $520 Excess: Minus policy excess $100 (where applicable) Total: The total in this case is $420",
+      "token_count": 153,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3601,
+        "source_span_end": 4298,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C1",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel"
+      ],
+      "sub_heading": "| Items |  |",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "limit",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "International Basic, Comprehensive and Comprehensive+, Domestic Comprehensive and Comprehensive+ and Inbound: \u2022 Increase Luggage Item Limit: Where an additional premium has been paid to increase the luggage item limit for a single item, the claim will be assessed based on the item and item limit specified on the Certificate of Insurance. Depreciation applies. For multiple items, the overall increase in limits cannot exceed $15,000.",
+      "token_count": 83,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 34,
+        "source_span_end": 477,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "SEC-2-P34-C2",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": "2 Travel Document Replacement",
+      "section_path": [
+        "5 Luggage and Travel",
+        "2 Travel Document Replacement"
+      ],
+      "sub_heading": "2 Travel Document Replacement",
+      "heading_confidence": "high",
+      "section_number": "2",
+      "clause_type": "condition",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "2. Travel Document Replacement\nWe will pay You for the cost of replacing travel documents\nand credit cards lost or stolen on the Journey. We will also\npay for Your legal liability arising from their illegal use. You\nmust however, comply with all the conditions of the issue of\nthe document prior to and after the loss or theft.",
+      "token_count": 76,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 479,
+        "source_span_end": 809,
+        "attribution_status": "structural",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "SEC-3-P34-C3",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": "3 Automatic Reinstatement of Sum Insured",
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "3 Automatic Reinstatement of Sum Insured",
+      "heading_confidence": "high",
+      "section_number": "3",
+      "clause_type": "limit",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "3. Automatic Reinstatement of Sum Insured\nIn the event that a claimable loss, or damage to Your luggage\nand personal effects is incurred, We will allow You one\nautomatic reinstatement of the sum insured, stated in the\nplan purchased, while on Your Journey.\nThe maximum benefit limit for this section is:",
+      "token_count": 66,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 811,
+        "source_span_end": 1116,
+        "attribution_status": "structural",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C4",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": "| Domestic | International",
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "uncertain",
+      "section_number": null,
+      "clause_type": "table",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [
+        [
+          "",
+          "Domestic",
+          "International"
+        ],
+        [
+          "Comprehensive+",
+          "$15,000",
+          "$25,000"
+        ],
+        [
+          "Comprehensive",
+          "$5,000",
+          "$15,000"
+        ],
+        [
+          "Inbound",
+          "\u2014",
+          "$15,000"
+        ],
+        [
+          "Basic",
+          "$Nil",
+          "$5,000"
+        ]
+      ],
+      "text": "| Domestic | International Comprehensive+ | $15,000 | $25,000 Comprehensive | $5,000 | $15,000 Inbound | \u2014 | $15,000 Basic | $Nil | $5,000",
+      "token_count": 31,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1118,
+        "source_span_end": 1236,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C5",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "exclusion",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "We will not pay for: 1. loss or theft that is not reported to the:",
+      "token_count": 19,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1237,
+        "source_span_end": 1304,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C6",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "a)\t police or security personnel;",
+      "token_count": 6,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": false,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1308,
+        "source_span_end": 1340,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C7",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "b)\t responsible Transport Provider (if Your items are\nlost or stolen while travelling with a Transport\nProvider); or",
+      "token_count": 23,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1344,
+        "source_span_end": 1462,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C8",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "condition",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "c)\t accommodation provider.\nAll cases of loss or theft must be reported as soon\nas possible and within 7 days. A copy of the relevant\nreport must be submitted for any claim involving loss or\ntheft. If You are unable to provide Us with a copy of the\nrelevant report, You must provide Us with a reasonable\nexplanation and details of the time and place You made\nthe report, including their contact details.",
+      "token_count": 94,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1465,
+        "source_span_end": 1875,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C9",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "condition",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "2. damage, loss or theft of Valuables placed in the care of a Transport Provider unless security regulations prevented You from keeping the Valuables with You.",
+      "token_count": 33,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1877,
+        "source_span_end": 2038,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C10",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "3. items left Unattended in any motor vehicle (for example, a car, campervan or motorhome) or towed land vehicle overnight even if they were in a Concealed Storage Compartment.",
+      "token_count": 37,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2041,
+        "source_span_end": 2220,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C11",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "condition",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "4. items left Unattended in any motor vehicle (for example, a car, campervan or motorhome) or towed land vehicle during daylight hours, unless they were stored in a Concealed Storage Compartment of a locked motor vehicle or towed land vehicle and forced entry was gained.",
+      "token_count": 58,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2222,
+        "source_span_end": 2498,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C12",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "5. any amount exceeding $500 per item and $2,000 in total for all items left Unattended in any motor vehicle (for example, a car, campervan or motorhome) or towed land vehicle.",
+      "token_count": 40,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2500,
+        "source_span_end": 2679,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C13",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "6. items left Unattended in a Public Place.",
+      "token_count": 10,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2681,
+        "source_span_end": 2724,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C14",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "7. loss, theft or damage to drones (including attached and unattached accessories) while in use.",
+      "token_count": 19,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2726,
+        "source_span_end": 2823,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C15",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "8. sporting equipment (including bicycles) damaged, lost or stolen while in use.",
+      "token_count": 15,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2825,
+        "source_span_end": 2906,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C16",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "exclusion",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "9. items sent under the provisions of any freight contract or any luggage forwarded in advance or which is unaccompanied. This exclusion for unaccompanied items will be waived if Your claim for lost stolen items can be approved but Your items are found in the meantime and can be posted to You.",
+      "token_count": 67,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2908,
+        "source_span_end": 3207,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C17",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "exclusion",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "10.\t surfboards or waterborne craft of any description. This\nexclusion does not apply if the item is lost, stolen or\ndamaged while in the custody of a Transport Provider.",
+      "token_count": 37,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3209,
+        "source_span_end": 3380,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C18",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "exclusion",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "11. damage to fragile or brittle articles unless caused by a fire or motor vehicle collision. This exclusion does not apply to spectacles; lenses in cameras and video cameras; laptop and tablet computers; or binoculars.",
+      "token_count": 45,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3382,
+        "source_span_end": 3604,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C19",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "12.\t damage caused by atmospheric or climatic conditions,\nwear and tear, vermin or any process of cleaning,\nrepairing, restoring or alteration.",
+      "token_count": 27,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3606,
+        "source_span_end": 3750,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C20",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "13.\t electrical or mechanical fault or breakdown.",
+      "token_count": 9,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3752,
+        "source_span_end": 3800,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C21",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "14.\t information stored on any electronic device or other\nmedia, including digital photos, downloaded files,\nelectronic applications, programmed data, software or\nany other intangible asset.",
+      "token_count": 32,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3802,
+        "source_span_end": 3994,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C22",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "15.\t bonds, coupons, gift cards, stamps, vouchers,\nwarranties, pre-loaded or rechargeable cards including\nbut not limited to phone, debit or stored value cards.",
+      "token_count": 29,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3996,
+        "source_span_end": 4157,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C23",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "16.\t bullion, deeds, insurance premiums, manuscripts,\nnegotiable instruments, precious metals or securities.",
+      "token_count": 15,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 4159,
+        "source_span_end": 4267,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P34-C24",
+      "page_number": 34,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "5 Luggage and Travel",
+        "3 Automatic Reinstatement of Sum Insured"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "17. items described in SECTION 7: Money. Also refer to: General exclusions \u2013 pages 49-50. Policy conditions \u2013 pages 26-28.",
+      "token_count": 26,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 4269,
+        "source_span_end": 4393,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "SEC-11-P38-C10",
+      "page_number": 38,
+      "printed_page_label": null,
+      "clause_heading": "11 Missed Connections",
+      "section_path": [
+        "11 Missed Connections"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "high",
+      "section_number": "11",
+      "clause_type": "definition",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "SECTION 11: Missed Connections For missed connections during the Period of Insurance. Cover applies where You have prepaid, scheduled transport or a cruise to meet Your pre-booked connection. That prebooked connection is a flight, cruise or multi-night tour. If within 72 hours of Your scheduled departure time, Your prepaid, scheduled transport or cruise is cancelled, delayed or rescheduled which means You won\u2019t make it in time to get Your pre-booked connection, We will pay: \u2022 the Additional public transport and accommodation costs You incur to arrive in time to catch the prebooked connection or to catch up with Your scheduled itinerary (if You are unable to arrive in time), less any refunds or credits from the scheduled transport or cruise provider. This includes flights and transport to the next port of Your cruise and any accommodation costs; \u2022 $50 per missed meal of Your cruise; and \u2022 up to $300 for accommodation per missed prepaid accommodation or cruise night. We only cover You if You have allowed sufficient time for transferring to the connection. Sufficient time to Us is at least 90 minutes between connections.",
+      "token_count": 243,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1316,
+        "source_span_end": 2469,
+        "attribution_status": "structural",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P38-C11",
+      "page_number": 38,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "11 Missed Connections"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "limit",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "The maximum benefit limit for this section is:",
+      "token_count": 10,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1071,
+        "source_span_end": 1116,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P38-C12",
+      "page_number": 38,
+      "printed_page_label": null,
+      "clause_heading": "| Domestic | International",
+      "section_path": [
+        "11 Missed Connections"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "uncertain",
+      "section_number": null,
+      "clause_type": "table",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [
+        [
+          "",
+          "Domestic",
+          "International"
+        ],
+        [
+          "Comprehensive+",
+          "$2,000",
+          "$3,000"
+        ],
+        [
+          "Comprehensive",
+          "$Nil",
+          "$3,000"
+        ],
+        [
+          "Inbound",
+          "$Nil",
+          "$3,000"
+        ],
+        [
+          "Basic",
+          "$Nil",
+          "$Nil"
+        ]
+      ],
+      "text": "| Domestic | International Comprehensive+ | $2,000 | $3,000 Comprehensive | $Nil | $3,000 Inbound | $Nil | $3,000 Basic | $Nil | $Nil",
+      "token_count": 31,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2518,
+        "source_span_end": 2631,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P38-C13",
+      "page_number": 38,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "11 Missed Connections"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "exclusion",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "You must claim from the Transport Provider first, and provide Us with confirmation from the Transport Provider of the cause and period of the delay and the amount of compensation offered by them. If You are unable to obtain confirmation from the Transport Provider, You must provide Us with a reasonable explanation and details on Your request of this information, including their contact details. You must also provide Us with receipts for the Additional accommodation (room rate only) expenses incurred. We will not pay for claims:",
+      "token_count": 111,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2632,
+        "source_span_end": 3172,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P38-C14",
+      "page_number": 38,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "11 Missed Connections"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "1. where the leg of transport that is initially delayed arrives at its destination less than 90 minutes later than originally scheduled.",
+      "token_count": 28,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3174,
+        "source_span_end": 3312,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P38-C15",
+      "page_number": 38,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "11 Missed Connections"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "2. where the Transport Provider provides an alternative mode of transportation without additional cost to You that would get You there in time to meet Your connection or to catch up with Your scheduled itinerary.",
+      "token_count": 45,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3314,
+        "source_span_end": 3529,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P38-C16",
+      "page_number": 38,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "11 Missed Connections"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "3. caused by an Act of Terrorism.",
+      "token_count": 9,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": false,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3531,
+        "source_span_end": 3564,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P38-C17",
+      "page_number": 38,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "11 Missed Connections"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "4. caused by an Epidemic, Pandemic or outbreak of an infectious disease or any derivative or mutation of such viruses.",
+      "token_count": 26,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3567,
+        "source_span_end": 3687,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P38-C18",
+      "page_number": 38,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "11 Missed Connections"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "5. arising from the failure of any travel agent, tour operator, accommodation provider, airline or other carrier, car rental agency or any other travel or tourism services provider to provide services or accommodation due to their Insolvency or the Insolvency of any person, company or organisation they deal with. Also refer to: General exclusions \u2013 pages 49-50. Policy conditions \u2013 pages 26-28.",
+      "token_count": 80,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3689,
+        "source_span_end": 4093,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "SEC-12",
+      "page_number": 38,
+      "printed_page_label": null,
+      "clause_heading": "12 Special Events",
+      "section_path": [
+        "12 Special Events"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "high",
+      "section_number": "12",
+      "clause_type": "benefit",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "SECTION 12: Special Events If due to an unforeseeable circumstance outside Your control Your Journey would otherwise be delayed resulting in You being unable to arrive in time to attend a wedding, funeral, 25th or 50th wedding anniversary or, a prepaid conference, concert, music festival or sporting event, which cannot be delayed due to Your late arrival, We will pay for:",
+      "token_count": 79,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 4095,
+        "source_span_end": 4473,
+        "attribution_status": "structural",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P38-C20",
+      "page_number": 38,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "12 Special Events"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "1. the reasonable Additional cost of using alternative public transport to arrive at Your destination on time; and",
+      "token_count": 23,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 4475,
+        "source_span_end": 4591,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P38-C21",
+      "page_number": 38,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "12 Special Events"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "limit",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "2. the cost of the unused connection (if You have to buy a new connection) less any refund or credit You are entitled to from the supplier of that connection. The maximum benefit limit for this section is:",
+      "token_count": 49,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 4592,
+        "source_span_end": 4799,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P38-C22",
+      "page_number": 38,
+      "printed_page_label": null,
+      "clause_heading": "| Domestic | International",
+      "section_path": [
+        "12 Special Events"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "uncertain",
+      "section_number": null,
+      "clause_type": "table",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [
+        [
+          "",
+          "Domestic",
+          "International"
+        ],
+        [
+          "Comprehensive+",
+          "$2,000",
+          "$6,000"
+        ],
+        [
+          "Comprehensive",
+          "$2,000",
+          "$5,000"
+        ],
+        [
+          "Inbound",
+          "$Nil",
+          "$5,000"
+        ],
+        [
+          "Basic",
+          "$Nil",
+          "$Nil"
+        ]
+      ],
+      "text": "| Domestic | International Comprehensive+ | $2,000 | $6,000 Comprehensive | $2,000 | $5,000 Inbound | $Nil | $5,000 Basic | $Nil | $Nil",
+      "token_count": 31,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 4801,
+        "source_span_end": 4916,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P39-C1",
+      "page_number": 39,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "12 Special Events"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "exclusion",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "We will not pay for claims caused by: 1. an Epidemic, Pandemic or outbreak of an infectious disease or any derivative or mutation of such viruses.",
+      "token_count": 33,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 34,
+        "source_span_end": 181,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P39-C2",
+      "page_number": 39,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "12 Special Events"
+      ],
+      "sub_heading": "| Domestic | International",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "2. arising from the failure of any travel agent, tour operator, accommodation provider, airline or other carrier, car rental agency or any other travel or tourism services provider to provide services or accommodation due to their Insolvency or the Insolvency of any person, company or organisation they deal with. Also refer to: General exclusions \u2013 pages 49-50. Policy conditions \u2013 pages 26-28.",
+      "token_count": 80,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 183,
+        "source_span_end": 587,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "SEC-21",
+      "page_number": 42,
+      "printed_page_label": null,
+      "clause_heading": "21 Cruise Cover",
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "high",
+      "section_number": "21",
+      "clause_type": "optional_cover",
+      "scope": "section",
+      "cross_references": [
+        "SECTION 4"
+      ],
+      "related_clause_ids": [
+        "SEC-4",
+        "SEC-4-P30-C8",
+        "SEC-4-P31-C12",
+        "P31-C13",
+        "P31-C14",
+        "P31-C15",
+        "P31-C16",
+        "P31-C17",
+        "P31-C18",
+        "P31-C19",
+        "P31-C20",
+        "P31-C21",
+        "P31-C22",
+        "P32-C1",
+        "P32-C2",
+        "P32-C3",
+        "P32-C4",
+        "P32-C5",
+        "P32-C6",
+        "P32-C7",
+        "P32-C8",
+        "P32-C9",
+        "P32-C10",
+        "P32-C11",
+        "P32-C12",
+        "P32-C13",
+        "P32-C14",
+        "P32-C15",
+        "P32-C16",
+        "P32-C17",
+        "P32-C18",
+        "P32-C19",
+        "P32-C20",
+        "P32-C21",
+        "P32-C22",
+        "P32-C23",
+        "P32-C24",
+        "P32-C25",
+        "P32-C26",
+        "P32-C27",
+        "P32-C28",
+        "P32-C29",
+        "P32-C30",
+        "P32-C31",
+        "P33-C1",
+        "P33-C2",
+        "SEC-4-P47-C7",
+        "P47-C8",
+        "P47-C9",
+        "SEC-4-P48-C1",
+        "P48-C2",
+        "P48-C3",
+        "P48-C4"
+      ],
+      "table_rows": [],
+      "text": "SECTION 21: Cruise Cover The following benefits only apply to the International plans where Cruise Cover is included and the additional premium for participation in multi-night cruising has been paid. (i) Cruise Cancellation Cover If prior to Your cruise, You need to cancel Your trip the cancellation cover chosen for SECTION 4: Amendment or Cancellation Costs will extend to Your cruising portion of the trip. Please refer to SECTION 4: Amendment or Cancellation Costs.",
+      "token_count": 96,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3880,
+        "source_span_end": 4357,
+        "attribution_status": "structural",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P42-C17",
+      "page_number": 42,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "limit",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "(ii) On-board Medical and Dental Cover If during the Period of Insurance You suffer a Disabling Injury, Sickness or Disease We will pay the usual and customary cost of medical treatment and emergency dental treatment which is provided while on board a cruise ship outside Australia by or on the advice of a qualified medical practitioner or dentist. The maximum benefit limit for this section is: $Unlimited",
+      "token_count": 87,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 4360,
+        "source_span_end": 4772,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P42-C18",
+      "page_number": 42,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "limit",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "(iii) Ship to Shore Medical Cover If during the Period of Insurance You suffer a Disabling Injury, Sickness or Disease We will pay the usual and customary cost of emergency transportation provided outside Australia by or on the advice of a qualified medical practitioner to evacuate You to the nearest onshore medical facility. The maximum benefit limit for this section is: $Unlimited",
+      "token_count": 80,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 4774,
+        "source_span_end": 5163,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P42-C19",
+      "page_number": 42,
+      "printed_page_label": null,
+      "clause_heading": "(iv) Sea Sickness Cover",
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": "(iv) Sea Sickness Cover",
+      "heading_confidence": "uncertain",
+      "section_number": null,
+      "clause_type": "limit",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "(iv) Sea Sickness Cover If during the Period of Insurance while on board a cruise ship You suffer sea sickness We will pay the usual and customary cost of medical treatment which is provided outside Australia by or on the advice of a qualified medical practitioner. Please note Cover applies for a maximum of 12 months from the date of suffering the Disabling Injury, Sickness or Disease. Overseas medical and dental expenses cover may end less than 12 months from the date of suffering the Disabling Injury, Sickness or Disease as We do not provide cover if these expenses are incurred outside the Period of Insurance. In certain circumstances The Period of Insurance will automatically extend for a period of time \u2013 see Policy condition 9. Free extension of insurance on page 27 for more information. The maximum benefit limit for this section is: $Unlimited",
+      "token_count": 188,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 5165,
+        "source_span_end": 6036,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P43-C1",
+      "page_number": 43,
+      "printed_page_label": null,
+      "clause_heading": "(v) Cabin Confinement",
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": "(v) Cabin Confinement",
+      "heading_confidence": "uncertain",
+      "section_number": null,
+      "clause_type": "exclusion",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "(v) Cabin Confinement If during the Period of Insurance You suffer a Disabling Injury, Sickness or Disease and the treating medical practitioner on board the cruise ship orders You to be confined to Your cabin We will pay You up to $100 per day provided that the period of confinement is at least 24\u00a0hours. We will not pay for:",
+      "token_count": 78,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 35,
+        "source_span_end": 365,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P43-C2",
+      "page_number": 43,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": "(v) Cabin Confinement",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "exclusion",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "1. cabin confinement claims arising from or caused by COVID-19 (whether or not You are diagnosed with COVID-19). The maximum benefit limit for this section is: $1,500 For Cruise Benefits (ii) \u2013 (v), We will not pay for:",
+      "token_count": 49,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 367,
+        "source_span_end": 588,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P43-C3",
+      "page_number": 43,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": "(v) Cabin Confinement",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "exclusion",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "1. medical treatment, dental treatment or ambulance transportation provided in Australia. This exclusion does not apply to medical treatment provided while on a ship (including cruise ship, passenger ship or passenger ferry) even if that ship is within Australian territorial waters. However, this additional benefit does not apply to any medical treatment provided on Australian inland waterways or while the ship is tied up in an Australian port.",
+      "token_count": 88,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 590,
+        "source_span_end": 1048,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P43-C4",
+      "page_number": 43,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": "(v) Cabin Confinement",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "2. dental treatment involving the use of precious metals, teeth whitening or cosmetic dentistry.",
+      "token_count": 18,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1050,
+        "source_span_end": 1147,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P43-C5",
+      "page_number": 43,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": "(v) Cabin Confinement",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "3. the continuation or follow-up of treatment (including medication and ongoing immunisations) started prior to Your Journey.",
+      "token_count": 22,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1149,
+        "source_span_end": 1276,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P43-C6",
+      "page_number": 43,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": "(v) Cabin Confinement",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "4. routine medical or dental treatment or prenatal visits.",
+      "token_count": 11,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1278,
+        "source_span_end": 1336,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P43-C7",
+      "page_number": 43,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": "(v) Cabin Confinement",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "5. medical treatment, dental treatment or ambulance transportation provided in Your country of\u00a0residence.",
+      "token_count": 18,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1338,
+        "source_span_end": 1444,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P43-C8",
+      "page_number": 43,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": "(v) Cabin Confinement",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "condition",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "6. private medical or hospital treatment where public funded services or care is available, including medical or hospital treatment under any Reciprocal Health Agreement between Australia and the Government of any other country unless We agree to the private treatment.",
+      "token_count": 52,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1446,
+        "source_span_end": 1719,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P43-C9",
+      "page_number": 43,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": "(v) Cabin Confinement",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "(vi) Missed port (Embarkation) If during the Period of Insurance You are on a Journey from or to Australia and due to an unforeseeable circumstance outside Your control You miss:",
+      "token_count": 39,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1722,
+        "source_span_end": 1900,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P43-C10",
+      "page_number": 43,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": "(v) Cabin Confinement",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "a) getting to Your pre-booked embarkation port; or",
+      "token_count": 10,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1902,
+        "source_span_end": 1953,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P43-C11",
+      "page_number": 43,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": "(v) Cabin Confinement",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "exclusion",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "b) Your pre-booked connection to get You to Your prebooked embarkation port, where You have allowed the minimum connection time between transport as stipulated by Your Transport Provider We will pay the costs You incur to use alternative public transport services to catch up on Your planned itinerary. If You claim under this section, You are not entitled to make a claim under any other section of this policy for the same incident. The maximum benefit limit for this section is: $1,000 We will not pay for claims caused by:",
+      "token_count": 118,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1954,
+        "source_span_end": 2489,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P43-C12",
+      "page_number": 43,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": "(v) Cabin Confinement",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "1. Transport Provider caused cancellations, delays or rescheduling other than when caused by mechanical failure or strike.",
+      "token_count": 22,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2491,
+        "source_span_end": 2615,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P43-C13",
+      "page_number": 43,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": "(v) Cabin Confinement",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "2. an Act of Terrorism.",
+      "token_count": 6,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": false,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2617,
+        "source_span_end": 2640,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P43-C14",
+      "page_number": 43,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": "(v) Cabin Confinement",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "3. an Epidemic, Pandemic or outbreak of an infectious disease or any derivative or mutation of such viruses.",
+      "token_count": 23,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2642,
+        "source_span_end": 2751,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P43-C15",
+      "page_number": 43,
+      "printed_page_label": null,
+      "clause_heading": "(vii) Missed Shore Excursions",
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": "(vii) Missed Shore Excursions",
+      "heading_confidence": "uncertain",
+      "section_number": null,
+      "clause_type": "condition",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "(vii) Missed Shore Excursions If due to an unforeseeable circumstance outside Your control You are unable to attend a shore excursion for which You hold a prepaid ticket or pass, We will pay for the non\u2011refundable cost of the unused ticket. The original ticket must be submitted with Your claim.",
+      "token_count": 65,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2754,
+        "source_span_end": 3051,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P43-C16",
+      "page_number": 43,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": "(vii) Missed Shore Excursions",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "exclusion",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "The maximum benefit limit for this section is: $1,000 We will not pay for claims caused by:",
+      "token_count": 22,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2399,
+        "source_span_end": 2489,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P43-C17",
+      "page_number": 43,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": "(vii) Missed Shore Excursions",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "1. an Act of Terrorism.",
+      "token_count": 6,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": false,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3145,
+        "source_span_end": 3168,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P43-C18",
+      "page_number": 43,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "21 Cruise Cover"
+      ],
+      "sub_heading": "(vii) Missed Shore Excursions",
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "section",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "2. an Epidemic, Pandemic or outbreak of an infectious disease or any derivative or mutation of such viruses. Also refer to: General exclusions \u2013 pages 49-50. Policy conditions \u2013 pages 26-28.",
+      "token_count": 40,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3170,
+        "source_span_end": 3363,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C1",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": "General exclusions",
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "high",
+      "section_number": null,
+      "clause_type": "exclusion",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "General exclusions Unless otherwise indicated these exclusions on pages 49-50 apply to all Sections of the policy. They are listed in no particular order. We will not pay for:",
+      "token_count": 37,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 34,
+        "source_span_end": 210,
+        "attribution_status": "structural",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C2",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "exclusion",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "1. any other loss, damage or additional expenses following on from the event for which You are claiming that is not covered under this insurance. Examples of such loss, damage or additional expense would be the cost of replacing locks after losing keys, costs incurred in preparing a claim or loss of enjoyment.",
+      "token_count": 68,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 212,
+        "source_span_end": 528,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C3",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "2. claims arising from loss, theft or damage to property, or death, illness or bodily injury if You fail to take reasonable care or put Yourself in a situation where a reasonable person could foresee that loss, theft or damage to property, or a death, illness or bodily injury might happen.",
+      "token_count": 66,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 530,
+        "source_span_end": 825,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C4",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "3. claims involving air travel other than as a passenger on a fully licensed passenger carrying aircraft operated by an airline or an air charter company.",
+      "token_count": 33,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 827,
+        "source_span_end": 983,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C5",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "4. claims arising as a result of war, invasion, act of foreign enemy, hostilities (whether war be declared or not), civil war, rebellion, revolution, insurrection or military or usurped power.",
+      "token_count": 39,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 985,
+        "source_span_end": 1180,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C6",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "5. claims which are in any way related to ionising radiation or radioactive contamination caused by nuclear fuel or waste, or the radioactive, toxic explosive or other dangerous properties of any explosive nuclear equipment.",
+      "token_count": 44,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1182,
+        "source_span_end": 1410,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C7",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "6. claims arising from biological and/or chemical materials, substances, compounds or the like used directly for the purpose to harm or to destroy human life and/or create public fear.",
+      "token_count": 37,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1412,
+        "source_span_end": 1599,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C8",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "7. loss or damage caused by detention, confiscation or destruction by customs or other officials or authorities.",
+      "token_count": 22,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1601,
+        "source_span_end": 1714,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C9",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "8. claims arising from any unlawful act committed by You.",
+      "token_count": 13,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1716,
+        "source_span_end": 1773,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C10",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "9. claims arising from any government intervention, prohibition, sanction, regulation or restriction or court order.",
+      "token_count": 19,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1775,
+        "source_span_end": 1893,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C11",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "10.\t claims which in any way relate to circumstances You\nknew of, or a person in Your circumstances would\nhave reasonably known or foreseen, at the Relevant\nTime, that could lead to the Journey being delayed,\nabandoned or cancelled.",
+      "token_count": 50,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1896,
+        "source_span_end": 2131,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C12",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "11. claims which in any way relate to, or are exacerbated by, any physiological or psychological signs or symptoms that You were aware of or a person in Your circumstances reasonably should have been aware of at or before the Relevant Time, if You:",
+      "token_count": 57,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2133,
+        "source_span_end": 2385,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C13",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "a)\t had not yet sought a medical opinion regarding the\ncause;",
+      "token_count": 14,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2389,
+        "source_span_end": 2450,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C14",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "b)\t were currently under investigation to obtain a\ndiagnosis; or",
+      "token_count": 13,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2454,
+        "source_span_end": 2519,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C15",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "c)\t were awaiting specialist opinion.",
+      "token_count": 6,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": false,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2522,
+        "source_span_end": 2558,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C16",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "12.\t claims arising from travel booked or undertaken by You:",
+      "token_count": 13,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2560,
+        "source_span_end": 2619,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C17",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "a)\t even though You knew, or a reasonable person in\nYour circumstances would know, You were unfit\nto travel, whether or not You had sought medical\nadvice;",
+      "token_count": 35,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2623,
+        "source_span_end": 2779,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C18",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "b)\t against the advice of a medical practitioner;",
+      "token_count": 10,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2783,
+        "source_span_end": 2831,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C19",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "c)\t to seek, or obtain, medical or dental advice,\ntreatment or review; or",
+      "token_count": 16,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2835,
+        "source_span_end": 2909,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C20",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "d)\t to participate in a clinical trial.",
+      "token_count": 9,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": false,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2912,
+        "source_span_end": 2950,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C21",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "benefit",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "13.\t claims relating to, arising from, or exacerbated by,\nany Existing Medical Condition You or Your travelling\ncompanion has except where Your conditions are\nautomatically accepted by Us or where You have\napplied for cover and Your conditions have been\naccepted by Us in writing and You have paid the\nrequired extra premium.",
+      "token_count": 68,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2952,
+        "source_span_end": 3282,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C22",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "14.\t claims arising from pregnancy of You or any other\nperson if You are aware of the pregnancy at the\nRelevant Time and:",
+      "token_count": 29,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3284,
+        "source_span_end": 3406,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C23",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "a)\t where complications of this pregnancy or any\nprevious pregnancy had occurred prior to this time;",
+      "token_count": 20,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3410,
+        "source_span_end": 3510,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C24",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "b)\t it was a multiple pregnancy e.g. twins or triplets; or",
+      "token_count": 14,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3515,
+        "source_span_end": 3573,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C25",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "exclusion",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "c)\t where the conception was medically assisted e.g.\nusing assisted fertility treatment including hormone\ntherapies or IVF.\nThis exclusion will be waived if You have applied for\ncover and Your conditions have been accepted by Us in\nwriting and You have paid the required extra premium.",
+      "token_count": 59,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3576,
+        "source_span_end": 3866,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C26",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "15.\t claims arising from:",
+      "token_count": 5,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": false,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3868,
+        "source_span_end": 3892,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C27",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "condition",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "a)\t pregnancy of You or any other person after the\nstart of the 24th week of pregnancy (unless\nCancellation Plus Cover is applicable for a claim\nunder SECTION 4: Amendment or Cancellation\nCosts only); or",
+      "token_count": 45,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3896,
+        "source_span_end": 4103,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C28",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "b)\t pregnancy of You or any other person where\nthe problem arising is not an unexpected serious\nmedical complication.",
+      "token_count": 24,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 4106,
+        "source_span_end": 4224,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C29",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "exclusion",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "16.\t claims arising from childbirth or the health of a newborn\nchild whatever the proximate cause of the claim is. This\nexclusion applies irrespective of the stage of pregnancy\nat which the child is born.",
+      "token_count": 45,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 4226,
+        "source_span_end": 4432,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C30",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "17. claims arising from You having elective medical or dental treatment or surgery, a cosmetic procedure or body modification (e.g. tattoos and piercings) during the Journey, such as any complication, even if Your Existing Medical Condition has been approved by Us.",
+      "token_count": 53,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 4434,
+        "source_span_end": 4703,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P49-C31",
+      "page_number": 49,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "18.\t claims which in any way relate to Your wilful or selfinflicted injury or illness, suicide or attempted suicide.",
+      "token_count": 26,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 4705,
+        "source_span_end": 4822,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C1",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "19.\t claims which in any way relate to Your:",
+      "token_count": 11,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 34,
+        "source_span_end": 77,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C2",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "a)\t chronic use of alcohol;",
+      "token_count": 6,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": false,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 81,
+        "source_span_end": 107,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C3",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "b)\t substance abuse, drug abuse (whether over the\ncounter, prescription or otherwise); or",
+      "token_count": 16,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 112,
+        "source_span_end": 202,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C4",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "c)\t ingestion of any non-prescription drug or substance\n(e.g. marijuana, ecstasy, heroin).",
+      "token_count": 15,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 205,
+        "source_span_end": 294,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C5",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "20.\t claims involving, arising from or related to Your\nimpairment due to You drinking too much alcohol:",
+      "token_count": 22,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 297,
+        "source_span_end": 400,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C6",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "limit",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "a)\t which is evidenced by the results of a blood test\nwhich show that Your blood alcohol concentration\nlevel is 0.19% or above. (The level of alcohol in Your\nblood is called blood alcohol concentration (BAC).\nAs a point of reference, a BAC of 0.19% is almost\nfour times the legal driving BAC limit range in\nAustralia which is currently 0.05%); or",
+      "token_count": 80,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 404,
+        "source_span_end": 756,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C7",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "b)\t taking into account the following, where available:",
+      "token_count": 10,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 759,
+        "source_span_end": 813,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C8",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "(i)\t the report of a medical practitioner or forensic expert;",
+      "token_count": 13,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 820,
+        "source_span_end": 880,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C9",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "(ii)\t the witness report of a third party;",
+      "token_count": 10,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 887,
+        "source_span_end": 927,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C10",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "(iii)\t Your own admission; or",
+      "token_count": 6,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": false,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 934,
+        "source_span_end": 962,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C11",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "(iv)\t the description of events You described to Us or the treating medical professional (e.g. paramedic, nurse, doctor) as documented in their records.",
+      "token_count": 29,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 968,
+        "source_span_end": 1121,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C12",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "21. claims involving You travelling (during the Journey) in International Waters in a private sailing vessel or a privately registered vessel.",
+      "token_count": 27,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1123,
+        "source_span_end": 1267,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C13",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "limit",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "22.\t claims involving participation by You or Your travelling\ncompanion (during the Journey, in any capacity) in\nhunting; rodeo riding; BASE jumping; hang gliding;\nmotocross; running with the bulls; sports activities in\na Professional capacity; free climbing; mountaineering\nusing guides, ropes, rock climbing equipment or oxygen;\ntrekking greater than 6,000 metres above sea level;\nscuba diving to a depth of 30 metres below the surface\nunless You hold an Open Water Diving Certificate or are\ndiving with a qualified diving instructor; or, scuba diving\nif the maximum depth is greater than 50 metres below\nthe surface.",
+      "token_count": 124,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1269,
+        "source_span_end": 1898,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C14",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "optional_cover",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "23.\t claims involving participation by You (during the\nJourney) in racing (other than swimming races of 10\nkilometres or less, or running races that are marathon\ndistance or less).\n(See Adventure activities cover pages 14-15 for\ndetails of optional cover available to purchase and the\nterms that apply.)",
+      "token_count": 62,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 1900,
+        "source_span_end": 2209,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C15",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "optional_cover",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "24.\t claims involving participation by You during the Journey\nin any adventure activity listed under Adventure or\nAdventure+ options to vary the cover.\n(See Adventure activities cover page 15 for details\nof optional cover available to purchase and the terms\nthat apply.)",
+      "token_count": 54,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2212,
+        "source_span_end": 2487,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C16",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "optional_cover",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "25.\t claims involving participation by You (during the\nJourney) in motorcycling or moped riding for any\npurpose.\n(See Motorcycle/moped riding cover on page 16 for\ndetails of optional cover available to purchase and the\nterms that apply.)",
+      "token_count": 48,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2490,
+        "source_span_end": 2732,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C17",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "optional_cover",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "26.\t claims involving participation by You (during the\nJourney) in snow skiing, snowboarding or snowmobiling.\n(See Snow sports: snow skiing, snowboarding\nand\u00a0snowmobiling cover page 16 for details of\noptional cover available to purchase and the terms\nthat apply.)",
+      "token_count": 50,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 2735,
+        "source_span_end": 3003,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C18",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "benefit",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "27.\t claims which in any way relate to Your multi-night\ncruise, any multi-night cruise travel or that arise while\non a multi-night cruise.\n(See Cruise Cover on page 11 for details of cover\navailable to purchase and the terms that apply.)",
+      "token_count": 53,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3006,
+        "source_span_end": 3246,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C19",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "benefit",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "28.\t any benefit, or provide cover, if the provision of\na payment, benefit or cover would result in Us\ncontravening the Health Insurance Act 1973 (Cth),\nthe Private Health Insurance Act 2007 (Cth) or the\nNational Health Act 1953 (Cth) or any applicable\nlegislation (whether in Australia or not) or where We\ndo not have the necessary licenses or authority to\nprovide such cover.",
+      "token_count": 83,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3249,
+        "source_span_end": 3632,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C20",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "exclusion",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "29.\t any costs or expenses incurred if a government or\npublic health authority mandatory quarantine or\nisolation order is imposed on You related to cross area,\nborder, region or territory travel. \u200aThis exclusion only\napplies to COVID-19 and applies regardless of \u200aYou\nbeing diagnosed with COVID-19 or being directed by a\nlocal public health authority into a period of quarantine\nbecause they have classified You as having close\ncontact with a person diagnosed with COVID-19.",
+      "token_count": 97,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 3634,
+        "source_span_end": 4115,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C21",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "condition",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "30.\t claims arising from or caused by COVID-19, unless\ncover is extended as stated in SECTION 23: COVID-19\nBenefits and SECTION 21: Cruise Cover (ii) On-board\nMedical and Dental Cover and (iii) Ship to Shore\nMedical Cover.",
+      "token_count": 48,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 4117,
+        "source_span_end": 4342,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C22",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "exclusion",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "31.\t claims for costs or expenses incurred outside the Period\nof Insurance. This exclusion does not apply to benefit\nSections SECTION 5: Luggage and Travel Documents,\nSECTION 8: Driving Holidays, SECTION 10: Resumption\nof Journey and SECTION 18: Personal Liability.",
+      "token_count": 52,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 4344,
+        "source_span_end": 4612,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C23",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "32.\t claims directly arising from You not following an advice\nor warning:",
+      "token_count": 15,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 4614,
+        "source_span_end": 4687,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C24",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "a)\t of a \u201cDo not travel\u201d advice issued by the Australian\nGovernment on the smartraveller.gov.au website (or\nthe equivalent authority responsible in Your country\nof residence for setting advisories for citizens and/\nor residents); or",
+      "token_count": 45,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 4691,
+        "source_span_end": 4926,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C25",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "exclusion",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "b)\t published in the mass media;\nand the subject of the advice or warning is related to\nthe nature of Your claim. This exclusion does not apply\nto any events which are independent or unrelated to\nthe reason for the warning.",
+      "token_count": 53,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 4929,
+        "source_span_end": 5157,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    },
+    {
+      "clause_id": "P50-C26",
+      "page_number": 50,
+      "printed_page_label": null,
+      "clause_heading": null,
+      "section_path": [
+        "General exclusions"
+      ],
+      "sub_heading": null,
+      "heading_confidence": "none",
+      "section_number": null,
+      "clause_type": "unknown",
+      "scope": "document_wide",
+      "cross_references": [],
+      "related_clause_ids": [],
+      "table_rows": [],
+      "text": "33.\t claims for loss, injury, damage or legal liability arising\ndirectly or indirectly from planned or actual travel in, to,\nor through Cuba, Iran, Syria, North Korea or the Crimea,\nDonetsk People\u2019s Republic (DNR), or Luhansk People\u2019s\nRepublic (LNR) regions of Ukraine.",
+      "token_count": 54,
+      "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+      "is_clause": true,
+      "validation": {
+        "verbatim_similarity": 1.0,
+        "verbatim_pass": true,
+        "source_span_start": 5159,
+        "source_span_end": 5431,
+        "attribution_status": "inherited",
+        "attribution_flagged": false
+      }
+    }
+  ]
+}

@@ -1,8 +1,8 @@
 export const WIZARD_STEPS = [
-  { id: 'policy', label: 'Policy', title: 'Choose your policy', description: 'Select or upload the policy you want to check.', page: '/policies' },
-  { id: 'analysis', label: 'Analysis', title: 'Understand your coverage', description: 'Describe what happened and review the findings against your policy evidence.', page: '/coverage' },
+  { id: 'policy', label: 'My policies', title: 'My Policies', description: 'Select or upload the policy you want to check.', page: '/policies' },
+  { id: 'analysis', label: 'Coverage', title: 'Coverage', description: 'Describe what happened and review the findings against your policy evidence.', page: '/coverage' },
   { id: 'guidance', label: 'Ask ClaimWise', title: 'Ask ClaimWise', description: 'Ask follow-up questions while keeping your policy and analysis in context.', page: '/workspace' },
-  { id: 'draft', label: 'Claim draft', title: 'Prepare your claim draft', description: 'Review the incident, checklist, and supporting evidence before saving a draft.', page: '/claims' },
+  { id: 'draft', label: 'My claims', title: 'My Claims', description: 'Review the incident, checklist, and supporting evidence before saving a draft.', page: '/claims' },
 ] as const;
 export type WizardStep = typeof WIZARD_STEPS[number]['id'];
 export type WizardReferences = { policyId?: string; analysisId?: string; claimId?: string };

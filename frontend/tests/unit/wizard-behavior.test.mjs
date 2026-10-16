@@ -28,8 +28,9 @@ test('Back and refresh after analysis auto-advance do not schedule a repeat', ()
   const state = JSON.parse(JSON.stringify({ analysisId: 'saved', analysisReady: true, analysisAdvancedId: 'saved', analysisAdvancePending: 'saved' }));
   assert.equal(autoAdvanceDelay('analysis', state), null);
 });
-test('sandbox eligibility mirrors the existing backend rather than internal readiness', () => {
-  for (const status of [undefined, 'draft', 'preparing_documents', 'ready_to_submit', 'approved']) assert.equal(sandboxEligibility(status), false);
-  assert.equal(sandboxEligibility('analyzed'), true);
-  assert.equal(sandboxEligibility('sandbox_submitted'), true);
+test('saved claim drafts and analyzed claims can enter the local sandbox', () => {
+  for (const status of ['draft', 'evidence_gathering', 'preparing_documents', 'ready_to_submit', 'analyzed', 'sandbox_submitted']) {
+    assert.equal(sandboxEligibility(status), true);
+  }
+  for (const status of [undefined, 'approved', 'rejected', 'closed']) assert.equal(sandboxEligibility(status), false);
 });

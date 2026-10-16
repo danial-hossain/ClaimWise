@@ -145,6 +145,15 @@ class QAService:
             policy_id=policy_id,
             document_hash=clause.document_hash,
             clause_heading=clause.clause_heading,
+            section_number=clause.section_number,
+            section_path=clause.section_path,
+            sub_heading=clause.sub_heading,
+            clause_type=clause.clause_type,
+            scope=clause.scope,
+            cross_references=clause.cross_references,
+            related_clause_ids=clause.related_clause_ids,
+            table_rows=clause.table_rows,
+            validation=clause.validation,
             text=clause.text,
             lexical_rank=None,
             dense_rank=None,
@@ -440,11 +449,13 @@ class QAService:
         api_key: str,
         timeout_seconds: float = 30.0,
         max_output_tokens: int = 2048,
+        thinking_level: Optional[str] = None,
     ) -> str:
         """Execute raw HTTP request to Google Gemini API with automatic model fallback."""
         clean_initial = model_name.replace("models/", "")
         models_to_try = [clean_initial]
         for fallback in [
+            "gemini-3-flash-preview",
             "gemini-3.1-flash-lite",
             "gemini-2.5-flash",
             "gemini-2.5-flash-lite",
@@ -482,6 +493,8 @@ class QAService:
                     },
                 }
 
+                if clean_model.startswith("gemini-3") and "flash" in clean_model:
+                    payload["generationConfig"]["thinkingConfig"] = {"thinkingLevel": thinking_level or "minimal"}
                 for attempt in range(2):
                     try:
                         res = client.post(url, json=payload, headers=headers)
@@ -491,6 +504,10 @@ class QAService:
                             if not candidates:
                                 raise RuntimeError("Gemini returned zero candidates.")
 
+                            if candidates[0].get("finishReason") == "MAX_TOKENS":
+                                last_error = RuntimeError("Gemini response was truncated before structured output completed")
+                                payload["generationConfig"]["maxOutputTokens"] = min(payload["generationConfig"]["maxOutputTokens"] * 2, 65536)
+                                continue
                             parts = candidates[0].get("content", {}).get("parts", [])
                             text_parts = [p.get("text", "") for p in parts if "text" in p]
                             if not text_parts:

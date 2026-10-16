@@ -38,7 +38,7 @@ export default function CitationChip({ citation, policyName, className = '', def
           </span>
         )}
         <span className="text-slate-300">&bull;</span>
-        <span className="text-slate-500 text-[11px] font-mono">p. {citation.page_number}</span>
+        <span className="text-slate-500 text-[11px] font-mono">PDF p. {citation.page_number}{citation.printed_page_label ? ` (printed p. ${citation.printed_page_label})` : ''}</span>
         {isExpanded ? (
           <ChevronUp className="h-3 w-3 text-teal-700 ml-0.5" />
         ) : (

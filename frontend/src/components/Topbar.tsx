@@ -8,6 +8,7 @@ import Brand from './Brand';
 import { GlassBar } from './ui/Glass';
 import { useAuth } from '@/context/AuthContext';
 import { useScenario } from '@/context/ScenarioContext';
+import { WIZARD_STEPS } from '@/lib/wizard';
 
 const primaryLinks = [
   { href: '/dashboard', label: 'Overview', icon: LayoutDashboard },
@@ -19,7 +20,7 @@ const primaryLinks = [
 
 export default function Topbar() {
   const path = usePathname();
-  const { href: journeyHref } = useScenario();
+  const { href: journeyHref, isWizard, scenario, wizardHref } = useScenario();
   const { user, isAuthenticated, openAuthModal, logout } = useAuth();
   const [open, setOpen] = useState<'navigation' | 'account' | null>(null);
   const navigation = useRef<HTMLDivElement>(null);
@@ -67,8 +68,11 @@ export default function Topbar() {
     document.addEventListener('keydown', escape);
     return () => { document.removeEventListener('pointerdown', outside); document.removeEventListener('keydown', escape); };
   }, [open]);
-  const active = (href: string) => path === href || path.startsWith(`${href}/`);
-  const destination = (page: string) => page === '/dashboard' ? page : journeyHref(page);
+  const active = (href: string) => path === href || path.startsWith(`${href}/`) || (isWizard && WIZARD_STEPS.find(step => step.page === href)?.id === (scenario.lastStep || 'policy'));
+  const destination = (page: string) => {
+    const step = isWizard ? WIZARD_STEPS.find(item => item.page === page) : undefined;
+    return step ? wizardHref(step.id) : page === '/dashboard' ? page : journeyHref(page);
+  };
   const name = user?.full_name?.trim() || user?.email || '';
   return <GlassBar className="cw-header">
     <div className="cw-header-inner mx-auto flex min-h-[76px] max-w-7xl items-center justify-between gap-4 px-4 sm:px-7 lg:px-10">

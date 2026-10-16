@@ -1,0 +1,92 @@
+{
+  "scenario": "Priya (Australian resident) bought the International Comprehensive Plan (Single Trip) with no add-ons and $0 excess. During the trip: (1) her camera, bought 14 months ago for $5,000, was stolen from her hotel room and reported to the police the same day; (2) a storm delayed her flight, so she paid $800 for alternative public transport to reach a friend\u2019s wedding on time; (3) she missed a prepaid connecting flight after her first flight was delayed, because the scheduled layover was only 60 minutes; (4) she needed $2,000 of on-board medical treatment during a 7-night cruise, and she did not buy Cruise Cover.",
+  "document_hash": "1a0c04327d7cf700caa7254ca719f74d8672b50896602f5045e8ee01d20fc42f",
+  "events": [
+    {
+      "key": "camera",
+      "part": "her camera, bought 14 months ago for $5,000, was stolen from her hotel room and reported to the police the same day",
+      "queries": [
+        "luggage theft camera item limits depreciation proof ownership hotel reporting"
+      ],
+      "expected_verdict": "conditional",
+      "expected_amount": "4000.00",
+      "required_text": [
+        "Loss, Theft or Damage",
+        "Camera",
+        "0%",
+        "within 7 days"
+      ],
+      "payable_inputs": {
+        "depreciation_method": "flat",
+        "claimed_amount": 5000,
+        "item_age": "1.1666666667",
+        "limit": 4000,
+        "depreciation_rate": 0,
+        "excess": 0
+      },
+      "expected_quotes": [
+        "If during the Period of Insurance Your luggage or personal effects are lost, stolen or damaged",
+        "This means depreciation will not be deducted from items less than 2 years old at the time of loss.",
+        "Camera | $3,500 | $4,000 | $6,000"
+      ]
+    },
+    {
+      "key": "alternative_transport",
+      "part": "a storm delayed her flight, so she paid $800 for alternative public transport to reach a friend\u2019s wedding on time",
+      "queries": [
+        "special events wedding alternative public transport unforeseeable delay"
+      ],
+      "expected_verdict": "covered",
+      "expected_amount": "800.00",
+      "required_text": [
+        "Special Events",
+        "wedding",
+        "alternative public transport"
+      ],
+      "payable_inputs": {
+        "depreciation_method": "not_applicable",
+        "claimed_amount": 800,
+        "limit": 5000,
+        "excess": 0
+      },
+      "expected_quotes": [
+        "the reasonable Additional cost of using alternative public transport to arrive at Your destination on time",
+        "Comprehensive | $2,000 | $5,000"
+      ]
+    },
+    {
+      "key": "missed_connection",
+      "part": "she missed a prepaid connecting flight after her first flight was delayed, because the scheduled layover was only 60 minutes",
+      "queries": [
+        "missed connections sufficient transfer time between connections"
+      ],
+      "expected_verdict": "excluded",
+      "expected_amount": "0.00",
+      "required_text": [
+        "Missed Connections",
+        "at least 90 minutes"
+      ],
+      "payable_inputs": {},
+      "expected_quotes": [
+        "Sufficient time to Us is at least 90 minutes between connections."
+      ]
+    },
+    {
+      "key": "cruise",
+      "part": "she needed $2,000 of on-board medical treatment during a 7-night cruise, and she did not buy Cruise Cover",
+      "queries": [
+        "cruise optional cover additional premium on board medical multi night cruise general exclusions"
+      ],
+      "expected_verdict": "excluded",
+      "expected_amount": "0.00",
+      "required_text": [
+        "multi-night cruise",
+        "On-board Medical"
+      ],
+      "payable_inputs": {},
+      "expected_quotes": [
+        "claims which in any way relate to Your multi-night cruise, any multi-night cruise travel or that arise while on a multi-night cruise."
+      ]
+    }
+  ]
+}

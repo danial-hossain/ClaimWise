@@ -158,7 +158,7 @@ export default function PoliciesPage() {
   const [sessionPolicies, setSessionPolicies] = useState<PolicyExtractionResult[]>([]);
   const readyPolicy = sessionPolicies.find(policy => policy.policy_id === scenario.policyId);
   const readyToAdvance = Boolean(readyPolicy?.status === 'success' && readyPolicy.has_extractable_text && readyPolicy.clauses.length && !isUploading);
-  useWizardAction({ label: 'Continue to analysis', disabled: !readyToAdvance, autoAdvanceReady: readyToAdvance, onClick: () => { remember({ policyAdvancedId: scenario.policyId }); router.push(wizardHref('analysis'), { scroll: false }); } });
+  useWizardAction({ label: 'Continue to Coverage', disabled: !readyToAdvance, autoAdvanceReady: readyToAdvance, onClick: () => { remember({ policyAdvancedId: scenario.policyId }); router.push(wizardHref('analysis'), { scroll: false }); } });
   useEffect(() => {
     if (!isWizard || !scenario.policyId) return;
     const selected = sessionPolicies.find(policy => policy.policy_id === scenario.policyId);

@@ -99,11 +99,11 @@ class PolicyRepository:
                 )
 
                 for idx, clause in enumerate(clauses):
+                    from app.services.policy_extraction_validation import is_clause_evidence_eligible
+                    if not is_clause_evidence_eligible(clause):
+                        continue
                     chunk_id = str(uuid.uuid4())
-                    meta = {
-                        "heading_confidence": clause.heading_confidence,
-                        "section_number": clause.section_number,
-                    }
+                    meta = clause.model_dump(mode="json", exclude={"text"})
                     await conn.execute(
                         """
                         INSERT INTO policy_chunks (

@@ -16,6 +16,7 @@ from app.schemas.policy import ExtractedClause
 from app.schemas.qa import RetrievedClause
 from app.services.retrieval.bm25_service import BM25RetrievalService, bm25_service
 from app.services.retrieval.dense_service import DenseRetrievalService, dense_service
+from app.services.policy_extraction_validation import is_clause_evidence_eligible
 
 logger = logging.getLogger("claimwise.retrieval.hybrid")
 
@@ -48,6 +49,7 @@ class HybridRetrievalService:
         """
         Index policy clauses into both lexical and dense engines.
         """
+        clauses = [clause for clause in clauses if is_clause_evidence_eligible(clause)]
         fingerprint = hashlib.sha256("\n".join(c.model_dump_json() for c in clauses).encode()).hexdigest()
         if self._indexed_document_hashes.get(policy_id) == fingerprint:
             return self._indexed_policy_results[policy_id].copy()
@@ -207,10 +209,8 @@ class HybridRetrievalService:
                 while right + 1 < len(source) and unfinished(source[right]) and not boundary(source[right + 1]):
                     right += 1
                 additions = [RetrievedClause(
-                    clause_id=c.clause_id, page_number=c.page_number,
-                    printed_page_label=c.printed_page_label, policy_id=hit.policy_id,
-                    document_hash=c.document_hash, clause_heading=c.clause_heading,
-                    text=c.text, lexical_rank=hit.lexical_rank, dense_rank=hit.dense_rank,
+                    **{name: value for name, value in c.model_dump().items() if name in RetrievedClause.model_fields},
+                    policy_id=hit.policy_id, lexical_rank=hit.lexical_rank, dense_rank=hit.dense_rank,
                     fused_rank=hit.fused_rank, rrf_score=hit.rrf_score,
                 ) for c in source[left:right + 1]]
             for item in additions:

@@ -32,7 +32,6 @@ import {
   QAResponse,
 } from '@/types/api';
 import GroundedAnswer from '@/components/ui/GroundedAnswer';
-import TechnicalDetails from '@/components/ui/TechnicalDetails';
 import PageHero from '@/components/ui/PageHero';
 
 type ChatMessage = ScenarioMessage;
@@ -139,7 +138,7 @@ export default function AskClaimWisePage() {
     if (isWizard && !contextLoading && !analysisContext) remember({ guidanceMessages: chatMessages });
   }, [isWizard, contextLoading, analysisContext, chatMessages, remember]);
   useWizardAction({
-    label: 'Continue to claim draft',
+    label: 'Continue to My claims',
     disabled: contextLoading || contextFailed || !analysisContext,
     busy: isSubmitting,
     onClick: () => {
@@ -388,7 +387,9 @@ export default function AskClaimWisePage() {
       </nav>}
 
       {/* Main Chat Canvas */}
-      <button type="button" onClick={() => setChatOpen(true)} aria-haspopup="dialog" className="hero-section-primary workspace-chat-launcher"><Bot className="h-4 w-4" />Open Ask ClaimWise</button>
+      <div className="workspace-chat-launcher-wrap">
+        <button type="button" onClick={() => setChatOpen(true)} aria-haspopup="dialog" className="hero-section-primary workspace-chat-launcher"><Bot className="h-4 w-4" />Open Ask ClaimWise</button>
+      </div>
       <GlassModal open={chatOpen} onClose={() => setChatOpen(false)} title="Ask ClaimWise" description="Ask a question and review the supporting policy evidence." className="workspace-chat-modal">
       {policies.length > 0 && <label className="workspace-chat-scope">Policy scope<select disabled={Boolean(analysisContext) || Boolean(linkedClaimId) || contextLoading} value={selectedPolicyId} onChange={event => { responseEpoch.current.invalidate(); setChatMessages([]); setIsSubmitting(false); setErrorMessage(null); setSelectedPolicyId(event.target.value); remember({ policyId: event.target.value === ALL_POLICIES ? undefined : event.target.value, analysisId: undefined, claimId: undefined, title: undefined }); }}><option value={ALL_POLICIES}>All saved policies ({policies.length})</option>{policies.map(policy => <option key={policy.policy_id || policy.document_hash} value={policy.policy_id || ''}>{policy.document_name}</option>)}</select></label>}
       <GlassPanel as="div" className="cw-chat-panel rounded-2xl border border-slate-200 bg-white shadow-xs flex flex-col min-h-[580px] cw-glass">
@@ -546,14 +547,6 @@ export default function AskClaimWisePage() {
                             )}
                           </div>}
 
-                      {/* Technical Details */}
-                      {msg.qaResponse && (
-                        <TechnicalDetails title="Technical Retrieval Evidence">
-                          <div>Latency: {msg.qaResponse.latency_ms}ms &bull; Mode: {msg.qaResponse.retrieval_mode}</div>
-                          <div>Model Engine: {msg.qaResponse.model_used}</div>
-                          <div>Retrieved Clauses: {msg.qaResponse.retrieved_evidence.length}</div>
-                        </TechnicalDetails>
-                      )}
                     </div>
                   )}
                 </div>

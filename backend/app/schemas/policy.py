@@ -48,15 +48,23 @@ class ExtractedClause(BaseModel):
     page_number: int = Field(..., ge=1, description="One-based page number")
     printed_page_label: Optional[str] = Field(None, description="PDF page label, when explicitly supplied by the source; distinct from PDF index")
     clause_heading: Optional[str] = Field(None, description="Detected or inferred clause heading")
+    section_path: List[str] = Field(default_factory=list, description="Document hierarchy from top-level section through this clause")
+    sub_heading: Optional[str] = Field(None, description="Nearest structural subheading")
     heading_confidence: str = Field(
         default="none",
         description="Confidence in heading detection: high, heuristic, uncertain, or none",
     )
     section_number: Optional[str] = Field(None, description="Explicit section/article number if detected")
+    clause_type: str = Field(default="unknown", description="Structural classification: benefit, limit, exclusion, condition, definition, optional_cover, table, or unknown")
+    scope: str = Field(default="unknown", description="Whether wording applies to a section, document-wide, or cannot be established")
+    cross_references: List[str] = Field(default_factory=list, description="Verbatim structural cross-references found in this clause")
+    related_clause_ids: List[str] = Field(default_factory=list, description="Resolved target clause IDs for this clause's cross-references")
+    table_rows: List[List[str]] = Field(default_factory=list, description="Complete extracted table rows when this clause represents a table")
     text: str = Field(..., description="Original extracted verbatim clause text")
     token_count: int = Field(default=0, ge=0, description="Approximate token count for the clause")
     document_hash: str = Field(..., description="SHA-256 hash of the parent document")
     is_clause: bool = Field(default=True, description="True if text represents a genuine contractual clause/provision")
+    validation: Optional[Dict[str, object]] = Field(None, description="Automatic verbatim and structural attribution validation result")
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -83,10 +91,28 @@ class PageSummary(BaseModel):
     char_count: int = Field(default=0, ge=0)
     has_images: bool = Field(default=False)
     sample_heading: Optional[str] = None
+    source_token_count: int = Field(default=0, ge=0)
+    covered_token_count: int = Field(default=0, ge=0)
+    extraction_coverage_ratio: float = Field(default=0.0, ge=0.0, le=1.0)
+    uncovered_spans: List[str] = Field(default_factory=list)
+
+
+class DocumentExtractionValidation(BaseModel):
+    verbatim_clause_count: int = Field(default=0, ge=0)
+    verbatim_pass_count: int = Field(default=0, ge=0)
+    verbatim_pass_rate: float = Field(default=0.0, ge=0.0, le=1.0)
+    extracted_source_token_count: int = Field(default=0, ge=0)
+    covered_source_token_count: int = Field(default=0, ge=0)
+    text_coverage_ratio: float = Field(default=0.0, ge=0.0, le=1.0)
+    attribution_verified_count: int = Field(default=0, ge=0)
+    attribution_flagged_count: int = Field(default=0, ge=0)
+    rejected_clause_count: int = Field(default=0, ge=0)
+    uncovered_span_count: int = Field(default=0, ge=0)
 
 
 class PolicyExtractionResult(BaseModel):
     """Complete structured response for policy document ingestion and evidence extraction."""
+    extraction_version: int = Field(default=0, ge=0)
     document_name: str = Field(..., description="Original uploaded filename")
     document_hash: str = Field(..., description="Cryptographic SHA-256 hash of original PDF")
     file_size_bytes: int = Field(..., ge=0, description="Document byte size")
@@ -98,6 +124,7 @@ class PolicyExtractionResult(BaseModel):
     message: str = Field(..., description="Safe human-readable status or warning message")
     pages: List[PageSummary] = Field(default_factory=list, description="Page-level extraction summaries")
     clauses: List[ExtractedClause] = Field(default_factory=list, description="Extracted clause references")
+    extraction_validation: Optional[DocumentExtractionValidation] = None
     persistence_mode: str = Field(
         default="development_preview",
         description="Storage status: development_preview (in-memory demo) or persistent_db",

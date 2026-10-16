@@ -26,7 +26,7 @@ from app.schemas.coverage import (
 )
 from app.schemas.policy import ExtractedClause, PolicyExtractionResult
 from app.schemas.qa import PolicyEvidenceStatus, QARequest, ChatHistoryMessage
-from app.services.coverage_gap_service import coverage_gap_service
+from app.services.coverage_gap_service import CoverageAnalysisError, coverage_gap_service
 from app.services.document_service import document_service
 from app.services.retrieval.hybrid_service import hybrid_retrieval_service
 
@@ -142,6 +142,15 @@ async def analyze_coverage_scenario(
             detail=f"Access denied: Policy '{payload.policy_id}' belongs to another account.",
         )
 
+    from app.services.document_service import EXTRACTION_VERSION
+    if isinstance(policy_record, PolicyExtractionResult) and policy_record.extraction_version < EXTRACTION_VERSION:
+        from app.api.v1.endpoints.policies import _policy_pdf_path
+        from app.services.policy_evidence_refresh import refresh_policy_evidence
+        path = _policy_pdf_path(policy_record.document_hash)
+        if path.is_file():
+            policy_record = await run_in_threadpool(refresh_policy_evidence, policy_record, path.read_bytes())
+            await run_in_threadpool(_dev_policy_store.__setitem__, payload.policy_id, policy_record)
+
     retrieval_trace = []
     if (
         policy_record.status != "success"
@@ -161,20 +170,25 @@ async def analyze_coverage_scenario(
             confidence_score=0.0,
         )
     else:
-        result = await run_in_threadpool(
-            coverage_gap_service.analyze_scenario,
-            policy_id=payload.policy_id,
-            situation=payload.situation,
-            category=payload.category,
-            description=payload.description,
-            policy_clauses=policy_record.clauses,
-            document_hash=policy_record.document_hash,
-            # Match the working Coverage report's evaluation contract. A
-            # configured optional provider must not select a different engine.
-            use_live_llm=False,
-            retrieval_trace=retrieval_trace,
-        )
+        try:
+            result = await run_in_threadpool(
+                coverage_gap_service.analyze_scenario,
+                policy_id=payload.policy_id,
+                situation=payload.situation,
+                category=payload.category,
+                description=payload.description,
+                policy_clauses=policy_record.clauses,
+                document_hash=policy_record.document_hash,
+                use_live_llm=True,
+                retrieval_trace=retrieval_trace,
+            )
+        except CoverageAnalysisError:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Coverage analysis could not be verified. Your scenario is unchanged; please retry.",
+            ) from None
 
+    result.policy_name = getattr(policy_record, "document_name", None)
     user_id = current_user.id if current_user else "dev-user-001"
     valid = [
         citation for citation in result.clauses

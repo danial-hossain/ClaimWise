@@ -214,6 +214,7 @@ class PostgresStore:
         if eff_user_id and hasattr(policy, "user_id"):
             policy.user_id = eff_user_id
         policy.persistence_mode = "persistent_db"
+        policy.policy_id = policy_id
         data_json = policy.model_dump_json()
         now_ts = policy.uploaded_at if hasattr(policy, "uploaded_at") and policy.uploaded_at else datetime.now(timezone.utc)
         title = policy.document_name.rsplit(".", 1)[0].replace("_", " ").title()
@@ -259,6 +260,9 @@ class PostgresStore:
                 cur.execute("DELETE FROM policy_chunks WHERE policy_id = %s;", (policy_id,))
                 chunk_rows = []
                 for idx, clause in enumerate(policy.clauses):
+                    from app.services.policy_extraction_validation import is_clause_evidence_eligible
+                    if not is_clause_evidence_eligible(clause):
+                        continue
                     chunk_id = str(uuid.uuid4())
                     chunk_rows.append((
                         chunk_id,
@@ -270,6 +274,7 @@ class PostgresStore:
                         clause.text,
                         clause.token_count,
                         clause.document_hash,
+                        json.dumps(clause.model_dump(mode="json", exclude={"text"})),
                     ))
                 if chunk_rows:
                     cur.executemany(
@@ -277,8 +282,8 @@ class PostgresStore:
                         INSERT INTO policy_chunks (
                             id, policy_id, chunk_index, page_number,
                             clause_id, clause_heading, content,
-                            token_count, document_hash
-                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);
+                            token_count, document_hash, metadata
+                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
                         """,
                         chunk_rows,
                     )

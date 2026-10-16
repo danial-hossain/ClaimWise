@@ -7,5 +7,12 @@ export function autoAdvanceDelay(step: string, state: {
   return null;
 }
 export function sandboxEligibility(status?: string): boolean {
-  return status === 'analyzed' || status === 'sandbox_submitted';
+  return status != null && [
+    'draft',
+    'evidence_gathering',
+    'preparing_documents',
+    'ready_to_submit',
+    'analyzed',
+    'sandbox_submitted',
+  ].includes(status);
 }

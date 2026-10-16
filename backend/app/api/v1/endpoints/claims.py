@@ -807,11 +807,20 @@ async def submit_claim_to_sandbox(
         )
     _check_claim_access(claim, current_user)
 
-    # State validation: must be analyzed before submitting
-    if claim.status not in (ClaimStatus.ANALYZED, ClaimStatus.SANDBOX_SUBMITTED):
+    # Saved claim drafts may be simulated; unadjudicated drafts resolve to a
+    # request-for-information outcome in the local sandbox.
+    sandbox_eligible_statuses = {
+        ClaimStatus.DRAFT,
+        ClaimStatus.EVIDENCE_GATHERING,
+        ClaimStatus.PREPARING_DOCUMENTS,
+        ClaimStatus.READY_TO_SUBMIT,
+        ClaimStatus.ANALYZED,
+        ClaimStatus.SANDBOX_SUBMITTED,
+    }
+    if claim.status not in sandbox_eligible_statuses:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Claim must be in 'analyzed' status before sandbox submission (current status: '{claim.status.value}'). Run /adjudicate first.",
+            detail=f"Claim in status '{claim.status.value}' cannot be submitted to the sandbox.",
         )
 
     try:

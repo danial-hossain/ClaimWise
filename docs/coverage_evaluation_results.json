@@ -1,0 +1,444 @@
+{
+  "benchmark": "ClaimWise Coverage Evaluation",
+  "case_count": 7,
+  "passed_cases": 7,
+  "failed_cases": 0,
+  "pass_rate_pct": 100.0,
+  "retrieval_recall_pct": 100.0,
+  "stage_summary": {
+    "extraction": {
+      "checks": 2,
+      "passed": 2,
+      "pass_rate_pct": 100.0
+    },
+    "retrieval": {
+      "checks": 5,
+      "passed": 5,
+      "pass_rate_pct": 100.0
+    },
+    "evidence_context": {
+      "checks": 5,
+      "passed": 5,
+      "pass_rate_pct": 100.0
+    },
+    "evaluation": {
+      "checks": 4,
+      "passed": 4,
+      "pass_rate_pct": 100.0
+    },
+    "verification": {
+      "checks": 4,
+      "passed": 4,
+      "pass_rate_pct": 100.0
+    }
+  },
+  "all_passed": true,
+  "cases": [
+    {
+      "case_id": "bordered-vector-table",
+      "passed": true,
+      "failure_stage": null,
+      "checks": [
+        {
+          "stage": "extraction",
+          "passed": true,
+          "detail": "Expected 3 exact table rows; extracted 3."
+        }
+      ]
+    },
+    {
+      "case_id": "unbordered-visual-table",
+      "passed": true,
+      "failure_stage": null,
+      "checks": [
+        {
+          "stage": "extraction",
+          "passed": true,
+          "detail": "Text-only visual table content retained in extracted text blocks."
+        }
+      ]
+    },
+    {
+      "case_id": "multi-event-camera-and-accommodation",
+      "passed": true,
+      "failure_stage": null,
+      "checks": [
+        {
+          "stage": "retrieval",
+          "passed": true,
+          "detail": "All expected event seeds were retrieved.",
+          "recall": {
+            "found": 2,
+            "expected": 2
+          }
+        },
+        {
+          "stage": "evidence_context",
+          "passed": true,
+          "detail": "All event section bundles and document-wide clauses were retained."
+        }
+      ]
+    },
+    {
+      "case_id": "emergency-room-copayment",
+      "passed": true,
+      "failure_stage": null,
+      "checks": [
+        {
+          "stage": "retrieval",
+          "passed": true,
+          "detail": "Expected citation sources ['ER-1']; retrieved ['ER-1']; error=None."
+        },
+        {
+          "stage": "evidence_context",
+          "passed": true,
+          "detail": "Selected ['ER-1', 'GLOBAL-WEAR']; omitted []; error=None."
+        },
+        {
+          "stage": "evaluation",
+          "passed": true,
+          "detail": "verdict=covered, payable='$150 copayment per visit', calculation='Stated benefit: $150 copayment per visit.'; expected verdict=covered."
+        },
+        {
+          "stage": "verification",
+          "passed": true,
+          "detail": "Verified source citations ['ER-1'] against original clause text."
+        }
+      ]
+    },
+    {
+      "case_id": "camera-limit-and-depreciation",
+      "passed": true,
+      "failure_stage": null,
+      "checks": [
+        {
+          "stage": "retrieval",
+          "passed": true,
+          "detail": "Expected citation sources ['CAM-1']; retrieved ['CAM-1', 'CAM-REPORTING', 'CAM-TABLE', 'GLOBAL-WEAR', 'HOTEL-1', 'OTHER-BENEFIT']; error=None."
+        },
+        {
+          "stage": "evidence_context",
+          "passed": true,
+          "detail": "Selected ['CAM-1', 'CAM-REPORTING', 'CAM-TABLE', 'GLOBAL-WEAR']; omitted []; error=None."
+        },
+        {
+          "stage": "evaluation",
+          "passed": true,
+          "detail": "verdict=conditional, payable='Camera: $1,500', calculation='Stated benefit: Camera: $1,500. Subject to policy excess of $100. Subject to 10% depreciation per year.'; expected verdict=conditional."
+        },
+        {
+          "stage": "verification",
+          "passed": true,
+          "detail": "Verified source citations ['CAM-1'] against original clause text."
+        }
+      ]
+    },
+    {
+      "case_id": "cosmetic-rhinoplasty-exclusion",
+      "passed": true,
+      "failure_stage": null,
+      "checks": [
+        {
+          "stage": "retrieval",
+          "passed": true,
+          "detail": "Expected citation sources ['COS-1']; retrieved ['COS-1']; error=None."
+        },
+        {
+          "stage": "evidence_context",
+          "passed": true,
+          "detail": "Selected ['COS-1', 'GLOBAL-WEAR']; omitted []; error=None."
+        },
+        {
+          "stage": "evaluation",
+          "passed": true,
+          "detail": "verdict=excluded, payable=None, calculation=None; expected verdict=excluded."
+        },
+        {
+          "stage": "verification",
+          "passed": true,
+          "detail": "Verified source citations ['COS-1'] against original clause text."
+        }
+      ]
+    },
+    {
+      "case_id": "additional-accommodation-limit",
+      "passed": true,
+      "failure_stage": null,
+      "checks": [
+        {
+          "stage": "retrieval",
+          "passed": true,
+          "detail": "Expected citation sources ['HOTEL-1']; retrieved ['CAM-1', 'CAM-TABLE', 'ER-1', 'HOTEL-1', 'OPTIONAL-BIKE']; error=None."
+        },
+        {
+          "stage": "evidence_context",
+          "passed": true,
+          "detail": "Selected ['GLOBAL-WEAR', 'HOTEL-1']; omitted []; error=None."
+        },
+        {
+          "stage": "evaluation",
+          "passed": true,
+          "detail": "verdict=conditional, payable='Maximum limit: $500', calculation='Stated benefit: Maximum limit: $500.'; expected verdict=conditional."
+        },
+        {
+          "stage": "verification",
+          "passed": true,
+          "detail": "Verified source citations ['HOTEL-1'] against original clause text."
+        }
+      ]
+    }
+  ],
+  "event_evaluation": {
+    "mode": "offline_recorded_model_output",
+    "events": [
+      {
+        "event": "global-exclusion",
+        "metrics": {
+          "extraction_accuracy": 1.0,
+          "retrieval_recall": 1.0,
+          "selection_recall": 1.0,
+          "status_accuracy": 1.0,
+          "amount_accuracy": 1.0,
+          "citation_accuracy": 1.0
+        },
+        "error_stage": null,
+        "details": {
+          "detected_tables": 0,
+          "actual_status": "excluded",
+          "actual_amount": "0.00",
+          "sections": {
+            "My instrument was damaged by wear.": {
+              "kept": [
+                {
+                  "document_hash": "456cc88f1e7bb8f746ab2ea6b685fb5b4d39b5a1f4bb66a2fdb00c59fe5953c3",
+                  "section_path": [
+                    "2 General exclusions"
+                  ],
+                  "clause_ids": [
+                    "SEC-2",
+                    "P2-C2"
+                  ],
+                  "chars": 679
+                },
+                {
+                  "document_hash": "456cc88f1e7bb8f746ab2ea6b685fb5b4d39b5a1f4bb66a2fdb00c59fe5953c3",
+                  "section_path": [
+                    "1 Instruments"
+                  ],
+                  "clause_ids": [
+                    "SEC-1",
+                    "P1-C2"
+                  ],
+                  "chars": 666
+                }
+              ],
+              "dropped": [],
+              "budget_chars": 40000
+            }
+          }
+        }
+      },
+      {
+        "event": "optional-condition",
+        "metrics": {
+          "extraction_accuracy": 1.0,
+          "retrieval_recall": 1.0,
+          "selection_recall": 1.0,
+          "status_accuracy": 1.0,
+          "amount_accuracy": 1.0,
+          "citation_accuracy": 1.0
+        },
+        "error_stage": null,
+        "details": {
+          "detected_tables": 0,
+          "actual_status": "conditional",
+          "actual_amount": "needs more information: claimed_amount, item_age, limit, depreciation_rate, excess",
+          "sections": {
+            "My selected optional instrument cover has an unpaid additional premium.": {
+              "kept": [
+                {
+                  "document_hash": "4725be0ba927f7c87ff554e473e99292dfea03983d1b2748035edada8011504f",
+                  "section_path": [
+                    "1 Optional instruments"
+                  ],
+                  "clause_ids": [
+                    "SEC-1",
+                    "P1-C2"
+                  ],
+                  "chars": 717
+                }
+              ],
+              "dropped": [],
+              "budget_chars": 40000
+            }
+          }
+        }
+      },
+      {
+        "event": "limit-and-depreciation",
+        "metrics": {
+          "extraction_accuracy": 1.0,
+          "retrieval_recall": 1.0,
+          "selection_recall": 1.0,
+          "status_accuracy": 1.0,
+          "amount_accuracy": 1.0,
+          "citation_accuracy": 1.0
+        },
+        "error_stage": null,
+        "details": {
+          "detected_tables": 0,
+          "actual_status": "covered",
+          "actual_amount": "1400.00",
+          "sections": {
+            "My instrument costing 2000 was damaged at age 1 year.": {
+              "kept": [
+                {
+                  "document_hash": "b35981efac913020dc210786944ccac40417e7d726091cc735e6d13c7acb1b96",
+                  "section_path": [
+                    "1 Instruments"
+                  ],
+                  "clause_ids": [
+                    "SEC-1",
+                    "P1-C2"
+                  ],
+                  "chars": 733
+                }
+              ],
+              "dropped": [],
+              "budget_chars": 40000
+            }
+          }
+        }
+      },
+      {
+        "event": "section-scoped-condition",
+        "metrics": {
+          "extraction_accuracy": 1.0,
+          "retrieval_recall": 1.0,
+          "selection_recall": 1.0,
+          "status_accuracy": 1.0,
+          "amount_accuracy": 1.0,
+          "citation_accuracy": 1.0
+        },
+        "error_stage": null,
+        "details": {
+          "detected_tables": 0,
+          "actual_status": "covered",
+          "actual_amount": "needs more information: claimed_amount, item_age, limit, depreciation_rate, excess",
+          "sections": {
+            "My hotel room was damaged.": {
+              "kept": [
+                {
+                  "document_hash": "78448c1e2d689856fcddc917bfd8f28dd37c08334bd6893d1893724e0f4c56c5",
+                  "section_path": [
+                    "1 Hotel"
+                  ],
+                  "clause_ids": [
+                    "SEC-1",
+                    "P1-C2"
+                  ],
+                  "chars": 690
+                }
+              ],
+              "dropped": [],
+              "budget_chars": 40000
+            }
+          }
+        }
+      },
+      {
+        "event": "cross-reference",
+        "metrics": {
+          "extraction_accuracy": 1.0,
+          "retrieval_recall": 1.0,
+          "selection_recall": 1.0,
+          "status_accuracy": 1.0,
+          "amount_accuracy": 1.0,
+          "citation_accuracy": 1.0
+        },
+        "error_stage": null,
+        "details": {
+          "detected_tables": 0,
+          "actual_status": "covered",
+          "actual_amount": "needs more information: claimed_amount, item_age, limit, depreciation_rate",
+          "sections": {
+            "My instrument was damaged.": {
+              "kept": [
+                {
+                  "document_hash": "d81f276c6e7af448fbf590fcd7fe5e0a5e993669d4180e9aa69e2309d679e7b8",
+                  "section_path": [
+                    "2 Excess"
+                  ],
+                  "clause_ids": [
+                    "SEC-2",
+                    "P2-C2"
+                  ],
+                  "chars": 652
+                },
+                {
+                  "document_hash": "d81f276c6e7af448fbf590fcd7fe5e0a5e993669d4180e9aa69e2309d679e7b8",
+                  "section_path": [
+                    "1 Instruments"
+                  ],
+                  "clause_ids": [
+                    "SEC-1",
+                    "P1-C2"
+                  ],
+                  "chars": 707
+                }
+              ],
+              "dropped": [],
+              "budget_chars": 40000
+            }
+          }
+        }
+      },
+      {
+        "event": "table-detector-miss",
+        "metrics": {
+          "extraction_accuracy": 1.0,
+          "retrieval_recall": 1.0,
+          "selection_recall": 1.0,
+          "status_accuracy": 1.0,
+          "amount_accuracy": 1.0,
+          "citation_accuracy": 1.0
+        },
+        "error_stage": null,
+        "details": {
+          "detected_tables": 0,
+          "actual_status": "covered",
+          "actual_amount": "1400.00",
+          "sections": {
+            "My camera costing 2000 was damaged at age 1 year.": {
+              "kept": [
+                {
+                  "document_hash": "5c2695ac80f49e109dd06c9f303970616e61eb940eb03e84e943e989c90ce571",
+                  "section_path": [
+                    "4 Item limits and depreciation"
+                  ],
+                  "clause_ids": [
+                    "SEC-4",
+                    "P1-C2"
+                  ],
+                  "chars": 761
+                }
+              ],
+              "dropped": [],
+              "budget_chars": 40000
+            }
+          }
+        }
+      }
+    ],
+    "metrics": {
+      "extraction_accuracy": 1.0,
+      "retrieval_recall": 1.0,
+      "selection_recall": 1.0,
+      "status_accuracy": 1.0,
+      "amount_accuracy": 1.0,
+      "citation_accuracy": 1.0
+    },
+    "passed": 6,
+    "total": 6
+  }
+}

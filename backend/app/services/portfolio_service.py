@@ -1070,9 +1070,7 @@ class PortfolioService:
 
     def _make_citation(self, clause: ExtractedClause, policy_id: str) -> VerifiedCitation:
         """Create a VerifiedCitation object from an extracted clause."""
-        quote = clause.text[:180].strip()
-        if len(clause.text) > 180:
-            quote += "..."
+        quote = clause.text.strip()
         heading = getattr(clause, "clause_heading", None)
         return VerifiedCitation(
             clause_id=clause.clause_id,
